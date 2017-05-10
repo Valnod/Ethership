@@ -14,6 +14,8 @@ namespace EtherShip
 
         public GameWorld()
         {
+            //-------Hello world--------
+
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
