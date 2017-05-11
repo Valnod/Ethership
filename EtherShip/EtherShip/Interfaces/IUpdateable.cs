@@ -11,9 +11,6 @@ namespace EtherShip
 {
     interface IUpdateable
     {
-        public void Update(GameTime gameTime)
-        {
-
-        }
+        void Update(GameTime gameTime);
     }
 }

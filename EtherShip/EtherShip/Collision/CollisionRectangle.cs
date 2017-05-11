@@ -7,16 +7,18 @@ using System.Threading.Tasks;
 
 namespace EtherShip
 {
-    class Frame
+    class CollisionRectangle
     {
-        public Rectangle rect { get; }
-        public Vector2 offset;
+        public Rectangle rect;
 
-        public Frame(Rectangle rect, Vector2 offset)
+        public CollisionRectangle(Rectangle rect)
         {
             this.rect = rect;
-            this.offset = offset;
         }
 
+        public Rectangle GetRect()
+        {
+            return rect;
+        }
     }
 }

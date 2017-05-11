@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace EtherShip
 {
-    class Component
+    static class Save
     {
-        public GameObject obj;
+        static private XmlDocument xDoc;
+        static private XmlNode xNode;
 
-        public Component(GameObject obj)
+        static public void SaveGame()
         {
-            this.obj = obj;
+
         }
     }
 }

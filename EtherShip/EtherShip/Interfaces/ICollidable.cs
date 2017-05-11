@@ -12,10 +12,7 @@ namespace EtherShip
     interface ICollidable
     {
 
-        public void OBJCollision()
-        {
-
-        }
+        void OBJCollision();
        
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Media;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,19 +7,18 @@ using System.Threading.Tasks;
 
 namespace EtherShip
 {
-    class CollisionCircle
+    class SFX
     {
-        public float radius;
+        public Song song;
 
-        public CollisionCircle(float radius)
+        public SFX()
         {
 
         }
 
-        public float getRadius()
+        public void MediaPlayer()
         {
 
         }
-
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
 
 namespace EtherShip
 {
@@ -16,7 +17,7 @@ namespace EtherShip
 
         public GameObject(Vector2 position)
         {
-
+            this.position = position;
         }
 
         public void AddComponnent(List<Component> component)
@@ -34,7 +35,7 @@ namespace EtherShip
 
         }
 
-        public void LoadContent(Content content)
+        public void LoadContent(ContentManager content)
         {
 
         }

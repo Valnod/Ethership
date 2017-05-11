@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace EtherShip
 {
-    class Component
+    class CollisionCircle
     {
-        public GameObject obj;
+        public float Radius { get; }
 
-        public Component(GameObject obj)
+        public CollisionCircle(float radius)
         {
-            this.obj = obj;
+            this.Radius = radius;
         }
+
     }
 }
