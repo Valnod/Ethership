@@ -38,6 +38,9 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Component\Animator.cs" />
+    <Compile Include="Component\Component.cs" />
+    <Compile Include="Frame.cs" />
     <Compile Include="Clutter.cs" />
     <Compile Include="CollisionRectangle.cs" />
     <Compile Include="GameWorld.cs" />
@@ -45,6 +48,7 @@
     <Compile Include="HomeMenu\Menu.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="Map.cs" />
+    <Compile Include="IDrawable.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="HomeMenu\Save.cs" />
@@ -52,6 +56,7 @@
     <Compile Include="Tower.cs" />
     <Compile Include="Wall.cs" />
     <Compile Include="Whale.cs" />
+    <Compile Include="Component\SpriteRendere.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -67,7 +72,6 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Component\" />
     <Folder Include="Interfaces\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
