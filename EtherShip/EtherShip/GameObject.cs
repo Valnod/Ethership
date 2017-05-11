@@ -17,7 +17,7 @@ namespace EtherShip
 
         public GameObject(Vector2 position)
         {
-
+            this.position = position;
         }
 
         public void AddComponnent(List<Component> component)

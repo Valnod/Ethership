@@ -19,7 +19,10 @@ namespace EtherShip
 
         public Animator(GameObject obj, SpriteRendere spriteRendere, int currentIndex, float fps, string frameName) : base(obj)
         {
-
+            this.spriteRendere = spriteRendere;
+            this.currentIndex = currentIndex;
+            this.fps = fps;
+            this.frameName = frameName;
         }
 
         public void Update(GameTime gameTime)

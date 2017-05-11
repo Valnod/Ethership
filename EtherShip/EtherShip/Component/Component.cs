@@ -12,7 +12,7 @@ namespace EtherShip
 
         public Component(GameObject obj)
         {
-
+            this.obj = obj;
         }
     }
 }

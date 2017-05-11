@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace EtherShip
 {
-    class Level
+    static class Level
     {
-        public int wave;
+        static public int wave;
 
-        public void NewWave()
+        static public void NewWave()
         {
 
         }

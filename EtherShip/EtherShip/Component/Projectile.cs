@@ -9,20 +9,17 @@ using Microsoft.Xna.Framework.Input;
 
 namespace EtherShip
 {
-    class Projectile
+    class Projectile : Component, IUpdateable
     {
         public float speed;
-        public int damage;
+        public int Damage { get; }
         public GameObject target;
 
-        public Projectile(float speed, int damage, GameObject target)
+        public Projectile(GameObject obj, float speed, int damage, GameObject target) : base(obj)
         {
-
-        }
-
-        public void GetDamageProjectile()
-        {
-
+            this.speed = speed;
+            this.Damage = damage;
+            this.target = target;
         }
 
         public void Update(GameTime gameTime)

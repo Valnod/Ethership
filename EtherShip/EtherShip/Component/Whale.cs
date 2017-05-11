@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EtherShip
 {
-    class Whale
+    class Whale : Component, IUpdateable
     {
         public Vector2 target;
         public Vector2 direction;
@@ -15,7 +15,7 @@ namespace EtherShip
         public int health;
         public float speed;
 
-        public Whale(Vector2 target, Vector2 direction, int value, int health, float speed)
+        public Whale(GameObject obj, Vector2 target, Vector2 direction, int value, int health, float speed) : base(obj)
         {
             this.target = target;
             this.direction = direction;

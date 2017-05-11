@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace EtherShip
 {
-    class Tower
+    class Tower : Component, IUpdateable
     {
         private float gStrength;
         private float gRange;
 
-        public Tower(float gStrength, float gRange)
+        public Tower(GameObject obj, float gStrength, float gRange) : base(obj)
         {
             this.gStrength = gStrength;
             this.gRange = gRange;

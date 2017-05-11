@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace EtherShip
 {
-    class Wall
+    class Wall : Component
     {
-        public Wall()
+        public Wall(GameObject obj) : base(obj)
         {
 
         }

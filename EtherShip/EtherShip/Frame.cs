@@ -14,7 +14,8 @@ namespace EtherShip
 
         public Frame(Rectangle rect, Vector2 offset)
         {
-
+            this.rect = rect;
+            this.offset = offset;
         }
 
     }
