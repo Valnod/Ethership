@@ -58,12 +58,10 @@
     <Compile Include="Interfaces\IUpdateable.cs" />
     <Compile Include="Component\Player.cs" />
     <Compile Include="Interfaces\IDrawable.cs" />
-    <Compile Include="Player.cs" />
     <Compile Include="HomeMenu\Load.cs" />
     <Compile Include="HomeMenu\Menu.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="Map.cs" />
-    <Compile Include="IDrawable.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Component\Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
