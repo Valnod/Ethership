@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace EtherShip
 {
@@ -12,7 +13,24 @@ namespace EtherShip
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public GameWorld()
+        private static GameWorld instance;
+        private bool buildMode;
+        public Random rnd;
+
+
+        public static GameWorld Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new GameWorld();
+                }
+                return instance;
+            }
+        }
+
+        private GameWorld()
         {
             //-------Hello world--------
 
@@ -20,6 +38,7 @@ namespace EtherShip
             Content.RootDirectory = "Content";
         }
 
+       
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic
@@ -81,5 +100,6 @@ namespace EtherShip
 
             base.Draw(gameTime);
         }
+        
     }
 }

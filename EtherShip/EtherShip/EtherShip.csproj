@@ -38,7 +38,12 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BuildMode.cs" />
+    <Compile Include="CreateDataBase.cs" />
+    <Compile Include="DataBrigde.cs" />
     <Compile Include="GameWorld.cs" />
+    <Compile Include="HighScore.cs" />
+    <Compile Include="HighScoreUnit.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
