@@ -8,23 +8,13 @@ namespace EtherShip
 {
     class CollisionElipse
     {
-        public float lRadius;
-        public float sRadius;
+        public float LRadius { get; }
+        public float SRadius { get; }
         
         public CollisionElipse(float lRadius, float sRadius)
         {
-
+            this.LRadius = lRadius;
+            this.SRadius = sRadius;
         }
-
-        public float GetLRadius()
-        {
-            
-        }
-
-        public float GetSRadius()
-        {
-
-        }
-
     }
 }

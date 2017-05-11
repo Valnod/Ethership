@@ -8,16 +8,11 @@ namespace EtherShip
 {
     class CollisionCircle
     {
-        public float radius;
+        public float Radius { get; }
 
         public CollisionCircle(float radius)
         {
-
-        }
-
-        public float getRadius()
-        {
-
+            this.Radius = radius;
         }
 
     }

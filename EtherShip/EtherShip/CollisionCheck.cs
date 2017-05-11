@@ -17,7 +17,7 @@ namespace EtherShip
             return false;
         }
 
-        public bool CircleCircle(CollisionCircle circle1, Collisioncircle circle2)
+        public bool CircleCircle(CollisionCircle circle1, CollisionCircle circle2)
         {
             return false;
         }
@@ -25,7 +25,7 @@ namespace EtherShip
         {
             return false;
         }
-        public bool ElipseBox(CollisionElipse elipse, CollisionRect rect)
+        public bool ElipseBox(CollisionElipse elipse, CollisionRectangle rect)
         {
             return false;
         }
