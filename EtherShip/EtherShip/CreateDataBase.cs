@@ -7,12 +7,12 @@ using System.Xml;
 
 namespace EtherShip
 {
-    class CreateDataBase
+    static class CreateDataBase
     {
-        private XmlDocument xDoc;
-        private XmlNode xNode;
+        static private XmlDocument xDoc;
+        static private XmlNode xNode;
 
-        public CreateDataBase()
+        static CreateDataBase()
         {
 
         }

@@ -7,12 +7,12 @@ using System.Xml;
 
 namespace EtherShip
 {
-    class Load
+    static class Load
     {
-        private XmlDocument xDoc;
-        private XmlNode xNode;
+        static private XmlDocument xDoc;
+        static private XmlNode xNode;
 
-        public void LoadGame()
+        static public void LoadGame()
         {
 
         }

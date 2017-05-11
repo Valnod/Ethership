@@ -6,65 +6,65 @@ using System.Threading.Tasks;
 
 namespace EtherShip
 {
-    class DataBrigde
+    static class DataBrigde
     {
-        public float GetEnemySpeed()
+        static public float GetEnemySpeed()
         {
             return 0;
         }
-        public float GetPlayerSpeed()
+        static public float GetPlayerSpeed()
         {
             return 0;
         }
-        public float GetWhaleSpeed()
+        static public float GetWhaleSpeed()
         {
             return 0;
         }
-        public float GetProjectileSpeed()
+        static public float GetProjectileSpeed()
         {
             return 0;
         }
-        public int GetEnemyHealth()
+        static public int GetEnemyHealth()
         {
             return 0;
         }
-        public int GetPlayerHealth()
+        static public int GetPlayerHealth()
         {
             return 0;
         }
-        public int GetWhaleHealth()
+        static public int GetWhaleHealth()
         {
             return 0;
         }
-        public int GetTowerPrice()
+        static public int GetTowerPrice()
         {
             return 0;
         }
-        public int GetWallPrice()
+        static public int GetWallPrice()
         {
             return 0;
         }
-        public int GetWhaleValue()
+        static public int GetWhaleValue()
         {
             return 0;
         }
-        public int GetEnemyValue()
+        static public int GetEnemyValue()
         {
             return 0;
         }
-        public int GetProjectileDmg()
+        static public int GetProjectileDmg()
         {
             return 0;
         }
-        public float GetGravityRange()
+        static public float GetGravityRange()
         {
             return 0;
         }
-        public float GetGravityForce()
+        static public float GetGravityForce()
         {
             return 0;
         }
-        public int GetPlayerCooldown()
+        static public int GetPlayerCooldown()
         {
             return 0;
         }
