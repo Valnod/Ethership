@@ -46,9 +46,14 @@
     <Compile Include="Component\Animator.cs" />
     <Compile Include="Component\Component.cs" />
     <Compile Include="Frame.cs" />
+    <Compile Include="BuildMode.cs" />
+    <Compile Include="CreateDataBase.cs" />
+    <Compile Include="DataBrigde.cs" />
     <Compile Include="Clutter.cs" />
     <Compile Include="CollisionRectangle.cs" />
     <Compile Include="GameWorld.cs" />
+    <Compile Include="HighScore.cs" />
+    <Compile Include="HighScoreUnit.cs" />
     <Compile Include="Interfaces\ICollidable.cs" />
     <Compile Include="Interfaces\IUpdateable.cs" />
     <Compile Include="Player.cs" />
