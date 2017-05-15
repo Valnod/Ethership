@@ -10,9 +10,11 @@ using Microsoft.Xna.Framework.Content;
 
 namespace EtherShip
 {
-    class GameObject
+    public class GameObject
     {
-        public List<Component> component;
+        private bool isLoaded = false;
+
+        private List<Component> components = new List<Component>();
         public Vector2 position;
 
         public GameObject(Vector2 position)
@@ -20,19 +22,25 @@ namespace EtherShip
             this.position = position;
         }
 
-        public void AddComponnent(List<Component> component)
+        public void AddComponnent(Component component)
         {
-
+            components.Add(component);
         }
 
-        public void GetComponent(string componentName)
+        public Component GetComponent(string componentName)
         {
-
+            return components.Find(n => n.GetType().Name == componentName);
         }
 
         public void Update(GameTime gameTime)
         {
-
+            foreach (Component component in components)
+            {
+                if (component is IUpdateable)
+                {
+                    (component as IUpdateable).Update(gameTime);
+                }
+            }
         }
 
         public void LoadContent(ContentManager content)
@@ -42,10 +50,13 @@ namespace EtherShip
 
         public void Draw(SpriteBatch spriteBatch)
         {
-
+            foreach (Component component in components)
+            {
+                if (component is IDrawable)
+                {
+                    (component as IDrawable).Draw(spriteBatch);
+                }
+            }
         }
-
-
-
     }
 }

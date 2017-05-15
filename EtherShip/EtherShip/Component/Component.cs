@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace EtherShip
 {
-    class Component
+    public abstract class Component
     {
-        public GameObject obj;
+        public GameObject gameObject { get; private set; }
 
-        public Component(GameObject obj)
+        public Component(GameObject gameObject)
         {
-            this.obj = obj;
+            this.gameObject = gameObject;
         }
     }
 }

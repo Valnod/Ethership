@@ -11,84 +11,85 @@ using Microsoft.Xna.Framework.Input;
 
 namespace EtherShip
 {
-    class GameObjectPool
-    {  
-        // Enemy
-        public List<Enemy> ActiveEnemyList { get; }
-        public List<Enemy> InactiveEnemyList { get; }
+    static class GameObjectPool
+    {
+        private static GameObject gameObject;
+        //Enemy
+        public static List<Enemy> ActiveEnemyList = new List<Enemy>();
+        public static List<Enemy> InactiveEnemyList = new List<Enemy>();
         //Tower
-        public List<Tower> ActiveTowerList { get; }
-        public List<Tower> InactiveTwoerList { get; }
+        public static List<GameObject> ActiveTowerList { get; }
+        public static List<GameObject> InactiveTowerList { get; }
         //Wall 
-        public List<Wall> ActiveWallList { get; }
-        public List<Wall> InactiveWallList { get; }
+        public static List<GameObject> ActiveWallList { get; }
+        public static List<GameObject> InactiveWallList { get; }
         //Clutter
-        public List<Clutter> ActiveClutterList { get; }
-        public List<Clutter> InactiveClutterList { get; }
+        public static List<GameObject> ActiveClutterList { get; }
+        public static List<GameObject> InactiveClutterList { get; }
         //Whale
-        public List<Whale> ActiveWhaleList { get; }
-        public List<Whale> InactiveWhaleList { get; }
+        public static List<GameObject> ActiveWhaleList { get; }
+        public static List<GameObject> InactiveWhaleList { get; }
 
-        public Player player;
+        public static GameObject player;
 
-        public void CreateEnemy()
+        public static void CreateEnemy()
+        {
+            gameObject = new GameObject(new Vector2());
+            Enemy enemy = new Enemy(gameObject, 3, 80, 1, new Vector2(100, 100));
+            enemy.gameObject.AddComponnent(new SpriteRendere(gameObject, "enemyBlack1", 1));
+            ActiveEnemyList.Add(enemy);
+            InactiveEnemyList.Remove(enemy);
+        }
+
+        public static void DeleteEnemy(Enemy enemy)
+        {
+            ActiveEnemyList.Remove(enemy);
+            InactiveEnemyList.Add(enemy);
+        }
+
+        public static void CreateWall(Vector2 position)
         {
 
         }
 
-        public void DeleteEnemy(Enemy enemy)
+        public static void DeleteWall(GameObject wall)
         {
 
         }
 
-        public void CreateWall(Vector2 position)
+        public static void CreateClutter(Vector2 clutter)
         {
 
         }
 
-        public void DeleteWall(Wall wall)
+        public static void DeleteClutter(GameObject clutter)
         {
 
         }
 
-        public void CreateClutter(Vector2 clutter)
+        public static void CreateTower(Vector2 tower)
         {
 
         }
 
-        public void DeleteClutter(Clutter clutter)
+        public static void DeleteTower(GameObject tower)
         {
 
         }
 
-        public void CreateTower(Vector2 tower)
+        public static void CreateWhale()
         {
 
         }
 
-        public void DeleteTower(Tower tower)
+        public static void DeleteWhale(GameObject whale)
         {
 
         }
 
-        public void CreateWhale()
+        public static void CreatePlayer()
         {
 
         }
-
-        public void DeleteWhale(Whale whale)
-        {
-
-        }
-
-        public void CreatePlayer()
-        {
-
-        }
-
-       
-
-
-
     }
 }
