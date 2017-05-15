@@ -53,6 +53,7 @@
     <Compile Include="Collision\CollisionRectangle.cs" />
     <Compile Include="GameObjectPool.cs" />
     <Compile Include="GameWorld.cs" />
+    <Compile Include="GridPoint.cs" />
     <Compile Include="HighScore.cs" />
     <Compile Include="HighScoreUnit.cs" />
     <Compile Include="Interfaces\ICollidable.cs" />
