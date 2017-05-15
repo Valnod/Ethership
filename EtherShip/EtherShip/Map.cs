@@ -19,6 +19,9 @@ namespace EtherShip
         private int xGridPointAmount = 10;
         private int yGridPointAmount = 10;
 
+        private Texture2D pointSprite;
+        private Rectangle sourceRectPoint;
+
         public Map(string spriteName)
         {
             this.spriteName = spriteName;
@@ -27,6 +30,10 @@ namespace EtherShip
             GenerateMapGrid();
         }
 
+        /// <summary>
+        /// Draws the background of the game.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public void DrawBackground(SpriteBatch spriteBatch)
         {
             //spriteBatch.Draw(sprite, Vector2.Zero, sourceRect, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
@@ -34,13 +41,14 @@ namespace EtherShip
 #if DEBUG //draws the points which makes up the grid
             foreach(GridPoint gp in MapgGrid)
             {
-                Texture2D tempRect = new Texture2D(GameWorld.Instance.GraphicsDevice, 1, 1);
-                spriteBatch.Draw(tempRect, gp.Pos, Color.Black);
+                spriteBatch.Draw(pointSprite, gp.Pos, sourceRectPoint, Color.Black, 1f, Vector2.Zero, 1f, SpriteEffects.None, 1);
             }
 #endif
-
         }
 
+        /// <summary>
+        /// Generates the grid
+        /// </summary>
         private void GenerateMapGrid()
         {
             int xSize = GameWorld.Instance.Window.ClientBounds.Width / xGridPointAmount;
@@ -50,13 +58,23 @@ namespace EtherShip
             {
                 for(int y = 0; y < yGridPointAmount; y++)
                 {
-                    MapgGrid[x, y] = new GridPoint(new Vector2(x * xSize + (xSize / 2), y * ySize), null);
+                    MapgGrid[x, y] = new GridPoint(new Vector2(x * xSize + (xSize / 2), y * ySize + (ySize / 2)), null);
                 }
             }
         }
 
+        /// <summary>
+        /// Loads the content needed for the class.
+        /// </summary>
+        /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
+#if DEBUG  //Texture and rect to draw the point, which makes up the grid
+            pointSprite = content.Load<Texture2D>("rectangle");
+            sourceRectPoint = new Rectangle(0, 0, 2, 2);
+#endif
+
+            //Draws the background
             //sprite = content.Load<Texture2D>("Background");
             //sourceRect = new Rectangle(0, 0, sprite.Width, sprite.Height);
         }

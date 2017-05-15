@@ -53,9 +53,15 @@ namespace EtherShip
             //graphics.ToggleFullScreen();
             ////Makes the window borderless
             //Window.IsBorderless = true;
+            //Changes the windw resolution
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 720;
+            graphics.ApplyChanges();
+            this.Window.AllowUserResizing = true;
 
             //Initializes the map
             Map = new Map("Background");
+
 
             base.Initialize();
         }
