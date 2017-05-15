@@ -22,7 +22,6 @@ namespace EtherShip
 
         public SpriteRenderer(GameObject obj, string spriteName, float scaleFactor, float layerDepth) : base(obj)
         {
-            this.sprite = sprite;
             this.spriteName = spriteName;
             this.scaleFactor = scaleFactor;
             this.layerDepth = layerDepth;
@@ -31,6 +30,7 @@ namespace EtherShip
         public void LoadContent(ContentManager content)
         {
             sprite = content.Load<Texture2D>(spriteName);
+            spriteRectangle = new Rectangle(0, 0, sprite.Width, sprite.Height);
         }
 
         public void Update(GameTime gameTime)
