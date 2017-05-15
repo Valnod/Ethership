@@ -19,7 +19,6 @@ namespace EtherShip
         public Map Map { get; set; }
         public Random rnd;
 
-
         public static GameWorld Instance
         {
             get
