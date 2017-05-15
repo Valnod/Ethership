@@ -31,6 +31,7 @@ namespace EtherShip
         public void LoadContent(ContentManager content)
         {
             sprite = content.Load<Texture2D>(spriteName);
+            spriteRectangle = new Rectangle(0, 0, sprite.Width, sprite.Height);
         }
 
         public void Update(GameTime gameTime)
