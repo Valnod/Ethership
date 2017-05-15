@@ -20,7 +20,7 @@ namespace EtherShip
 
 
 
-        public SpriteRenderer(GameObject obj, Texture2D sprite, string spriteName, float scaleFactor, Rectangle spriteRectangle, float layerDepth) : base(obj)
+        public SpriteRenderer(GameObject obj, string spriteName, float scaleFactor, float layerDepth) : base(obj)
         {
             this.sprite = sprite;
             this.spriteName = spriteName;
