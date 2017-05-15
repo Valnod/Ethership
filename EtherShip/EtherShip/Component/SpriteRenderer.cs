@@ -17,6 +17,7 @@ namespace EtherShip
         public float scaleFactor;
         public Rectangle spriteRectangle { get; set; }
         public float layerDepth;
+        public Vector2 Offset { get; set; }
 
 
 
