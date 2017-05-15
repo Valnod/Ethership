@@ -17,6 +17,7 @@ namespace EtherShip
         private bool buildMode;
 
         public Map Map { get; set; }
+        public GameObjectPool gameObjectPool;
         public Random rnd;
 
 
@@ -62,6 +63,14 @@ namespace EtherShip
             //Initializes the map
             Map = new Map("Background");
 
+            //Initializes the gameObjectPool
+            gameObjectPool = new GameObjectPool();
+
+            //Adds some gameObjects for testing
+            gameObjectPool.CreatePlayer();
+            gameObjectPool.CreateTower(new Vector2(400, 400));
+
+            gameObjectPool.AddToActive();
 
             base.Initialize();
         }
@@ -101,6 +110,9 @@ namespace EtherShip
 
             // TODO: Add your update logic here
 
+            //Updates all gameObjects
+            gameObjectPool.Update(gameTime);
+
             base.Update(gameTime);
         }
 
@@ -115,7 +127,11 @@ namespace EtherShip
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
+            //Draws the map
             Map.DrawBackground(spriteBatch);
+
+            //Draws all gameObjects
+            gameObjectPool.Draw(spriteBatch);
 
             spriteBatch.End();
 

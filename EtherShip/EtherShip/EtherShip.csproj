@@ -49,7 +49,7 @@
     <Compile Include="BuildMode.cs" />
     <Compile Include="CreateDataBase.cs" />
     <Compile Include="DataBrigde.cs" />
-    <Compile Include="Clutter.cs" />
+    <Compile Include="Component\Clutter.cs" />
     <Compile Include="Collision\CollisionRectangle.cs" />
     <Compile Include="GameObjectPool.cs" />
     <Compile Include="GameWorld.cs" />
