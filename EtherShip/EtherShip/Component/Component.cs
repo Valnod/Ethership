@@ -8,11 +8,11 @@ namespace EtherShip
 {
     public abstract class Component
     {
-        public GameObject gameObject { get; private set; }
+        public GameObject obj { get; private set; }
 
-        public Component(GameObject gameObject)
+        public Component(GameObject obj)
         {
-            this.gameObject = gameObject;
+            this.obj = obj;
         }
     }
 }

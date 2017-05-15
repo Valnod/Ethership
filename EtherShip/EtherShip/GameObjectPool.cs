@@ -36,7 +36,7 @@ namespace EtherShip
         {
             gameObject = new GameObject(new Vector2());
             Enemy enemy = new Enemy(gameObject, 3, 80, 1, new Vector2(100, 100));
-            enemy.gameObject.AddComponnent(new SpriteRendere(gameObject, "enemyBlack1", 1));
+            enemy.obj.AddComponnent(new SpriteRenderer(gameObject, "enemyBlack1", 1, 1));
             ActiveEnemyList.Add(enemy);
             InactiveEnemyList.Remove(enemy);
         }
