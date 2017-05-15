@@ -71,7 +71,7 @@
     <Compile Include="Component\Tower.cs" />
     <Compile Include="Component\Wall.cs" />
     <Compile Include="Component\Whale.cs" />
-    <Compile Include="Component\SpriteRendere.cs" />
+    <Compile Include="Component\SpriteRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
