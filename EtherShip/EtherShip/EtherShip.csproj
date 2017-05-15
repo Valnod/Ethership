@@ -71,7 +71,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="HomeMenu\Save.cs" />
     <Compile Include="SFX.cs" />
-    <Compile Include="Interfaces\Tower.cs" />
+    <Compile Include="Component\Tower.cs" />
     <Compile Include="Component\Wall.cs" />
     <Compile Include="Component\Whale.cs" />
     <Compile Include="Component\SpriteRenderer.cs" />

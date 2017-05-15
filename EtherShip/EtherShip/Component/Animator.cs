@@ -79,7 +79,7 @@ namespace EtherShip
         }
         public void OnAnimationDone(string animationName)
         {
-            foreach (Component component in obj.component)
+            foreach (Component component in obj.components)
             {
                 
                 
