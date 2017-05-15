@@ -12,12 +12,12 @@ namespace EtherShip
     class Animator : Component, IUpdateable
     {
         public Dictionary<string, Frame> SpriteFrames { get; set; }
-        private SpriteRendere spriteRendere;
+        private SpriteRenderer spriteRendere;
         private int currentIndex;
         private float fps;
         public string frameName;
 
-        public Animator(GameObject obj, SpriteRendere spriteRendere, int currentIndex, float fps, string frameName) : base(obj)
+        public Animator(GameObject obj, SpriteRenderer spriteRendere, int currentIndex, float fps, string frameName) : base(obj)
         {
             this.spriteRendere = spriteRendere;
             this.currentIndex = currentIndex;
@@ -27,8 +27,11 @@ namespace EtherShip
 
         public void Update(GameTime gameTime)
         {
+            
 
+           
         }
+
 
     }
 }

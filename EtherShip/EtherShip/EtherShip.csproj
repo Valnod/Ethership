@@ -53,6 +53,7 @@
     <Compile Include="Collision\CollisionRectangle.cs" />
     <Compile Include="GameObjectPool.cs" />
     <Compile Include="GameWorld.cs" />
+    <Compile Include="GridPoint.cs" />
     <Compile Include="HighScore.cs" />
     <Compile Include="HighScoreUnit.cs" />
     <Compile Include="Interfaces\ICollidable.cs" />
@@ -71,7 +72,7 @@
     <Compile Include="Component\Tower.cs" />
     <Compile Include="Component\Wall.cs" />
     <Compile Include="Component\Whale.cs" />
-    <Compile Include="Component\SpriteRendere.cs" />
+    <Compile Include="Component\SpriteRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
