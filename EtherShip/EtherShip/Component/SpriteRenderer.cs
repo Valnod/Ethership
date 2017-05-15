@@ -41,7 +41,7 @@ namespace EtherShip
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(sprite, obj.position, spriteRectangle, Color.White, 1f, Vector2.Zero, scaleFactor, SpriteEffects.None, layerDepth);
+            spriteBatch.Draw(sprite, obj.position, spriteRectangle, Color.White, 0f, Vector2.Zero, scaleFactor, SpriteEffects.None, layerDepth);
         }
     }
 }

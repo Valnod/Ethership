@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace EtherShip
 {
-    class Clutter
+    class Clutter : Component
     {
-        public Clutter()
+        Clutter(GameObject obj) : base(obj)
         {
 
         }
