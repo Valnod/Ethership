@@ -15,7 +15,7 @@ namespace EtherShip
         public Vector2 direction;
         public int health;
         public float speed;
-
+        //Røv
         public bool antiGravity = false; //Anti-gravity effect
         public bool cdTimer = false; //Cooldown of the anti-gravity ability
         float timer = 0; //Timer for both anti-gravity effect and the anti gravity ability
