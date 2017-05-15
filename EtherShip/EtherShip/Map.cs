@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EtherShip
 {
-    class Map
+    class Map : Iloadable
     {
         public GridPoint[,] MapgGrid { get; set; }
 
