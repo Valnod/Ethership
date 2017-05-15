@@ -77,7 +77,7 @@ namespace EtherShip
 
         }
 
-        public void DeleteClutter(Clutter clutter)
+        public void DeleteClutter(GameObject clutter)
         {
 
         }

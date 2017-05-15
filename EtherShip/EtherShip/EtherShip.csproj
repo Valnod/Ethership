@@ -38,6 +38,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Clutter.cs" />
     <Compile Include="Collision\CollisionCheck.cs" />
     <Compile Include="Collision\CollisionCircle.cs" />
     <Compile Include="Collision\CollisionElipse.cs" />
@@ -49,7 +50,6 @@
     <Compile Include="BuildMode.cs" />
     <Compile Include="CreateDataBase.cs" />
     <Compile Include="DataBrigde.cs" />
-    <Compile Include="Component\Clutter.cs" />
     <Compile Include="Collision\CollisionRectangle.cs" />
     <Compile Include="GameObjectPool.cs" />
     <Compile Include="GameWorld.cs" />

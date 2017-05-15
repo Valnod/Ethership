@@ -8,7 +8,7 @@ namespace EtherShip
 {
     class Clutter : Component
     {
-        public Clutter(GameObject obj) : base(obj)
+        Clutter(GameObject obj) : base(obj)
         {
 
         }
