@@ -57,6 +57,7 @@
     <Compile Include="GridPoint.cs" />
     <Compile Include="HighScore.cs" />
     <Compile Include="HighScoreUnit.cs" />
+    <Compile Include="Interfaces\Iloadable.cs" />
     <Compile Include="Interfaces\ICollidable.cs" />
     <Compile Include="Interfaces\IUpdateable.cs" />
     <Compile Include="Component\Player.cs" />
