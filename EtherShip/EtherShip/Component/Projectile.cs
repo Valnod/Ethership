@@ -18,17 +18,22 @@ namespace EtherShip
         public Projectile(GameObject obj, float speed, int damage, GameObject target) : base(obj)
         {
             this.speed = speed;
+            speed = 10;
             this.Damage = damage;
+            damage = 50;
             this.target = target;
         }
 
         public void Update(GameTime gameTime)
         {
-
+            Move(gameTime);
         }
 
         public void Move(GameTime gameTime)
         {
+
+            Vector2 PM = Vector2.Normalize(obj.position - target.position) * speed;
+            obj.position += PM;
 
         }
 

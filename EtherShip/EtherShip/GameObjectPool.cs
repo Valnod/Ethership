@@ -86,6 +86,11 @@ namespace EtherShip
 
         }
 
+        public static TrackEnemy()
+        {
+            ActiveEnemyList = new list<>
+        }
+
        
 
 
