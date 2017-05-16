@@ -131,6 +131,7 @@ namespace EtherShip
             GameObject obj = new GameObject(new Vector2(100, 100));
             obj.AddComponnent(new Player(obj, new Vector2(1, 0), 3, false));
             obj.AddComponnent(new SpriteRenderer(obj, "circle", 1f, 0.5f));
+            obj.AddComponnent(new CollisionCircle(obj, 50));
             obj.LoadContent(GameWorld.Instance.Content);
             player = obj;
         }
