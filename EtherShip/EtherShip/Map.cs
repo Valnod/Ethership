@@ -11,12 +11,12 @@ namespace EtherShip
 {
     class Map : Iloadable
     {
-        public GridPoint[,] MapgGrid { get; set; }
+        public GridPoint[,] MapGrid { get; set; }
 
         private string spriteName;
         private Texture2D sprite;
         private Rectangle sourceRect;
-        private int xGridPointAmount = 10;
+        private int xGridPointAmount = 20;
         private int yGridPointAmount = 10;
 
         private Texture2D pointSprite;
@@ -26,7 +26,7 @@ namespace EtherShip
         {
             this.spriteName = spriteName;
 
-            MapgGrid = new GridPoint[xGridPointAmount, yGridPointAmount];
+            MapGrid = new GridPoint[xGridPointAmount, yGridPointAmount];
             GenerateMapGrid();
         }
 
@@ -39,7 +39,7 @@ namespace EtherShip
             //spriteBatch.Draw(sprite, Vector2.Zero, sourceRect, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
 
 #if DEBUG //draws the points which makes up the grid
-            foreach(GridPoint gp in MapgGrid)
+            foreach(GridPoint gp in MapGrid)
             {
                 spriteBatch.Draw(pointSprite, gp.Pos, sourceRectPoint, Color.Black, 1f, Vector2.Zero, 1f, SpriteEffects.None, 1);
             }
@@ -58,7 +58,7 @@ namespace EtherShip
             {
                 for(int y = 0; y < yGridPointAmount; y++)
                 {
-                    MapgGrid[x, y] = new GridPoint(new Vector2(x * xSize + (xSize / 2), y * ySize + (ySize / 2)), null);
+                    MapGrid[x, y] = new GridPoint(new Vector2(x * xSize + (xSize / 2), y * ySize + (ySize / 2)), null);
                 }
             }
         }

@@ -39,7 +39,7 @@ namespace EtherShip
 
         public void Update(GameTime gameTime)
         {
-            //andet projekt har ikke en update i spriteRenderer? 
+            //andet projekt har ikke en update i spriteRenderer ...? 
         }
 
         public void Draw(SpriteBatch spriteBatch)

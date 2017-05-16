@@ -17,7 +17,7 @@ namespace EtherShip
         public List<GameObject> RemoveActive { get; set; }
 
         // Enemy
-        private List<GameObject> ActiveEnemyList;
+        public List<GameObject> ActiveEnemyList { get; set; }
         private List<GameObject> InactiveEnemyList;
         //Tower
         private List<GameObject> ActiveTowerList;
@@ -130,7 +130,8 @@ namespace EtherShip
         {
             GameObject obj = new GameObject(new Vector2(100, 100));
             obj.AddComponnent(new Player(obj, new Vector2(1, 0), 3, false));
-            obj.AddComponnent(new SpriteRenderer(obj, "playerS", 1f, 0f, 0.5f));
+            obj.AddComponnent(new SpriteRenderer(obj, "circle", 1f, 0.5f));
+            obj.AddComponnent(new CollisionCircle(obj, 50));
             obj.LoadContent(GameWorld.Instance.Content);
             player = obj;
         }
@@ -174,10 +175,7 @@ namespace EtherShip
             foreach (GameObject go in ActiveClutterList)
                 go.Draw(spriteBatch);
         }
-        /*public static TrackEnemy()
-        {
-            ActiveEnemyList = new list<>
-        }*/
+      
 
        
 
