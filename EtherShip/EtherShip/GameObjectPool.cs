@@ -17,7 +17,7 @@ namespace EtherShip
         public List<GameObject> RemoveActive { get; set; }
 
         // Enemy
-        private List<GameObject> ActiveEnemyList;
+        public List<GameObject> ActiveEnemyList { get; set; }
         private List<GameObject> InactiveEnemyList;
         //Tower
         private List<GameObject> ActiveTowerList;
@@ -169,10 +169,7 @@ namespace EtherShip
             foreach (GameObject go in ActiveClutterList)
                 go.Draw(spriteBatch);
         }
-        public static TrackEnemy()
-        {
-            ActiveEnemyList = new list<>
-        }
+      
 
        
 

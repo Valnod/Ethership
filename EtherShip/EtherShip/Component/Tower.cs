@@ -21,6 +21,16 @@ namespace EtherShip
         private void Shoot()
         {
 
+            ////Vector2 SP = GameWorld.Instance.gameObjectPool.ActiveEnemyList
+
+            foreach (object CEL in (GameWorld.Instance.gameObjectPool.ActiveEnemyList))
+            {
+
+
+
+            }
+            
+
         }
 
         public Vector2 Gravity(Vector2 position)
