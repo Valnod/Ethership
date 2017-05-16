@@ -169,6 +169,12 @@ namespace EtherShip
             foreach (GameObject go in ActiveClutterList)
                 go.Draw(spriteBatch);
         }
+        public static TrackEnemy()
+        {
+            ActiveEnemyList = new list<>
+        }
+
+       
 
         /// <summary>
         /// Adds gameObjects from AddActive list to their correct active lists.
