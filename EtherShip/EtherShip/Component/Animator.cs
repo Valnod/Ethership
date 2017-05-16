@@ -33,22 +33,16 @@ namespace EtherShip
 
         public void Update(GameTime gameTime)
         {
+            timeElapsed += gameTime.ElapsedGameTime.Milliseconds;
+            currentIndex = (int)(timeElapsed * fps);
 
+            if (currentIndex > rectangles.Length - 1)
             {
-
-                timeElapsed += gameTime.ElapsedGameTime.Milliseconds;
-
-                currentIndex = (int)(timeElapsed * fps);
-
-                if (currentIndex > rectangles.Length - 1)
-                {
-                    OnAnimationDone(frameName);
-                    timeElapsed = 0;
-                    currentIndex = 0;
-                }
-                spriteRenderer.spriteRectangle = rectangles[currentIndex];
+                OnAnimationDone(frameName);
+                timeElapsed = 0;
+                currentIndex = 0;
             }
-
+            spriteRenderer.spriteRectangle = rectangles[currentIndex];
         }
 
         public void CreateAnimation(Animation animation, string name)
@@ -81,10 +75,7 @@ namespace EtherShip
         {
             foreach (Component component in obj.components)
             {
-                
-                
-                    OnAnimationDone(animationName);
-                
+                OnAnimationDone(animationName);
             }
         }
     }

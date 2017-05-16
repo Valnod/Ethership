@@ -20,7 +20,6 @@ namespace EtherShip
         public GameObjectPool gameObjectPool;
         public Random rnd;
 
-
         public static GameWorld Instance
         {
             get

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace EtherShip
 {
-    class Component
+    public abstract class Component
     {
-        public GameObject obj;
+        public GameObject obj { get; private set; }
 
         public Component(GameObject obj)
         {

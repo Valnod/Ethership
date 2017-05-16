@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace EtherShip
 {
-    class GameObject
+    public class GameObject
     {
         public List<Component> components;
         public Vector2 position;

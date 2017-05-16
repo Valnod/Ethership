@@ -186,6 +186,5 @@ namespace EtherShip
                     NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart - 1]);
             }
         }
-
     }
 }
