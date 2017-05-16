@@ -34,5 +34,16 @@ namespace EtherShip
 
 
 
+        static public bool Check()
+        {
+
+
+
+
+
+            return false;
+        }
+
+
     }
 }
