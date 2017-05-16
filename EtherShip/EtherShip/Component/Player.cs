@@ -25,7 +25,7 @@ namespace EtherShip
             this.direction = direction;
             this.health = health;
             this.antiGravity = antiGravity;
-            speed = 100;
+            speed = 10;
         }
 
         /// <summary>
@@ -55,8 +55,8 @@ namespace EtherShip
 
         public void Move(GameTime gameTime)
         {
-            KeyboardState keystate = Keyboard.GetState(); //Get the keyboard state
             Vector2 translation = Vector2.Zero; //Reset the translation
+            KeyboardState keystate = Keyboard.GetState(); //Get the keyboard state
 
             if (keystate.IsKeyDown(Keys.W))
             {
@@ -74,13 +74,17 @@ namespace EtherShip
             {
                 translation += new Vector2(1, 0); //Right
             }
-            translation.Normalize(); //Normalize the movement to 1 (doesn't add up in case of multible buttons press)
-            translation *= speed;
+            if (translation.X != float.NaN && translation.Y != float.NaN)
+            {
+                Vector2.Normalize(translation); //Normalize the movement to 1 (doesn't add up in case of multible buttons press)
+                translation *= speed;
+                this.obj.position += translation * speed / (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            }
 
             if (keystate.IsKeyDown(Keys.Q))
             {
                 AntiGravity(gameTime); //Activate anti-gravity ability
             }
         }
-    }
+    } 
 }

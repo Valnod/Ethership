@@ -52,32 +52,32 @@ namespace EtherShip
             RemoveActive = new List<GameObject>();
         }
 
-        public static void CreateEnemy()
+        public void CreateEnemy()
         {
-            gameObject = new GameObject(new Vector2());
+            /*gameObject = new GameObject(new Vector2());
             Enemy enemy = new Enemy(gameObject, 3, 80, 1, new Vector2(100, 100));
             enemy.obj.AddComponnent(new SpriteRenderer(gameObject, "enemyBlack1", 1, 1));
             ActiveEnemyList.Add(enemy);
-            InactiveEnemyList.Remove(enemy);
+            InactiveEnemyList.Remove(enemy);*/
         }
 
-        public static void DeleteEnemy(Enemy enemy)
+        public void DeleteEnemy(Enemy enemy)
         {
-            ActiveEnemyList.Remove(enemy);
-            InactiveEnemyList.Add(enemy);
+            /*ActiveEnemyList.Remove(enemy);
+            InactiveEnemyList.Add(enemy);*/
         }
 
-        public static void CreateWall(Vector2 position)
-        {
-
-        }
-
-        public static void DeleteWall(GameObject wall)
+        public void CreateWall(Vector2 position)
         {
 
         }
 
-        public static void CreateClutter(Vector2 clutter)
+        public void DeleteWall(GameObject wall)
+        {
+
+        }
+
+        public void CreateClutter(Vector2 clutter)
         {
 
         }
@@ -108,17 +108,17 @@ namespace EtherShip
             }
         }
 
-        public static void DeleteTower(GameObject tower)
+        public void DeleteTower(GameObject tower)
         {
 
         }
 
-        public static void CreateWhale()
+        public void CreateWhale()
         {
 
         }
 
-        public static void DeleteWhale(GameObject whale)
+        public void DeleteWhale(GameObject whale)
         {
 
         }
@@ -193,7 +193,6 @@ namespace EtherShip
                 if (go.GetComponent<Clutter>() != null)
                     ActiveClutterList.Add(go);
             }
-
             AddActive.Clear();
         }
 
@@ -215,7 +214,6 @@ namespace EtherShip
                 if (go.GetComponent<Clutter>() != null)
                     InactiveClutterList.Add(go);
             }
-
             RemoveActive.Clear();
         }
     }
