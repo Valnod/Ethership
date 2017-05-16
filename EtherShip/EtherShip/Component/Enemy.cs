@@ -10,13 +10,14 @@ namespace EtherShip
 {
     class Enemy : Component, IUpdateable
     {
+        private bool checkPath;
         public int health;
         public float speed;
         public Vector2 direction;
         public int value;
 
         List<GridPoint> Route;
-        List<GridPoint> AlternativeRoute;
+        List<GridPoint> UsablePoints;
         List<GridPoint> NotUsable;
 
         public Enemy(GameObject obj, int health, float speed, int value, Vector2 direction) : base(obj)
@@ -81,94 +82,105 @@ namespace EtherShip
                 }
             }
 
-           if (GameWorld.Instance.Map.MapGrid[xStart, yStart + 1].Occupant == null)
+            checkPath = true;
+            while (checkPath)
+            {
+                CheckForValidPath(xStart, yStart);
+               
+                
+            }
+           
+        }
+        public void CheckForValidPath(int xStart, int yStart)
+        {
+            if (GameWorld.Instance.Map.MapGrid[xStart, yStart + 1].Occupant == null)
             {
                 if (GameWorld.Instance.Map.MapGrid[xStart, yStart + 2].Occupant == null)
                 {
-                    AlternativeRoute.Add(GameWorld.Instance.Map.MapGrid[xStart, yStart + 2]);
+                    UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart, yStart + 2]);
                 }
                 else
                     NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart, yStart + 2]);
 
                 if (GameWorld.Instance.Map.MapGrid[xStart + 1, yStart + 1].Occupant == null)
                 {
-                    AlternativeRoute.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart + 1]);
+                    UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart + 1]);
                 }
                 else
                     NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart + 1]);
-                
+
                 if (GameWorld.Instance.Map.MapGrid[xStart - 1, yStart + 1].Occupant == null)
-                    {
-                    AlternativeRoute.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart + 1]);
-                    }
+                {
+                    UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart + 1]);
+                }
                 else
                     NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart + 1]);
-                    
+
             }
-           if(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart ].Occupant == null)
+            if (GameWorld.Instance.Map.MapGrid[xStart + 1, yStart].Occupant == null)
             {
                 if (GameWorld.Instance.Map.MapGrid[xStart + 2, yStart].Occupant == null)
                 {
-                    AlternativeRoute.Add(GameWorld.Instance.Map.MapGrid[xStart + 2, yStart]);
+                    UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart + 2, yStart]);
                 }
                 else
                     NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart + 2, yStart]);
-               
-                 if (GameWorld.Instance.Map.MapGrid[xStart + 1, yStart + 1].Occupant == null)
-                  {
-                AlternativeRoute.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart + 1]);
-            }
+
+                if (GameWorld.Instance.Map.MapGrid[xStart + 1, yStart + 1].Occupant == null)
+                {
+                    UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart + 1]);
+                }
                 else
-                NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart + 1]);
+                    NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart + 1]);
 
                 if (GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1].Occupant == null)
                 {
-                AlternativeRoute.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1]);
+                    UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1]);
                 }
                 else
-                NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1]);
+                    NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1]);
             }
 
-            if (GameWorld.Instance.Map.MapGrid[xStart , yStart - 1].Occupant == null)
+            if (GameWorld.Instance.Map.MapGrid[xStart, yStart - 1].Occupant == null)
             {
-                if (GameWorld.Instance.Map.MapGrid[xStart , yStart - 2].Occupant == null)
+                if (GameWorld.Instance.Map.MapGrid[xStart, yStart - 2].Occupant == null)
                 {
-                    AlternativeRoute.Add(GameWorld.Instance.Map.MapGrid[xStart, yStart - 2]);
+                    UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart, yStart - 2]);
                 }
                 else
                     NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart, yStart - 2]);
                 if (GameWorld.Instance.Map.MapGrid[xStart - 1, yStart - 1].Occupant == null)
                 {
-                    AlternativeRoute.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart - 1]);
+                    UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart - 1]);
                 }
                 else
                     NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart - 1]);
 
                 if (GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1].Occupant == null)
                 {
-                    AlternativeRoute.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1]);
+                    UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1]);
                 }
                 else
                     NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1]);
             }
-            if (GameWorld.Instance.Map.MapGrid[xStart - 1, yStart ].Occupant == null)
+            if (GameWorld.Instance.Map.MapGrid[xStart - 1, yStart].Occupant == null)
             {
                 if (GameWorld.Instance.Map.MapGrid[xStart - 2, yStart].Occupant == null)
                 {
-                    AlternativeRoute.Add(GameWorld.Instance.Map.MapGrid[xStart - 2, yStart]);
+                    UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart - 2, yStart]);
                 }
                 else
                     NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart - 2, yStart]);
                 if (GameWorld.Instance.Map.MapGrid[xStart - 1, yStart + 1].Occupant == null)
                 {
-                    AlternativeRoute.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart + 1]);
+                    UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart + 1]);
                 }
                 else
                     NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart + 1]);
 
                 if (GameWorld.Instance.Map.MapGrid[xStart - 1, yStart - 1].Occupant == null)
                 {
-                    AlternativeRoute.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart - 1]);
+                    UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart - 1]);
                 }
                 else
                     NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart - 1]);
