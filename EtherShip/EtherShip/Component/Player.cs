@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace EtherShip
 {
-    class Player : Component, IUpdateable
+    class Player : Component, IUpdateable, ICollidable
     {
         public Vector2 direction;
         public int health;
@@ -29,12 +29,43 @@ namespace EtherShip
         
         public void Update(GameTime gameTime)
         {
-
+            OBJCollision();
         }
 
         public void Move(GameTime gameTime)
         {
 
+        }
+
+        public void OBJCollision()
+        {
+            foreach(GameObject go in GameWorld.Instance.gameObjectPool.CollisionListForPlayer())
+            {
+                //Checks the distance to the objects, and only cheecks for collision if the given object is close enough for a check to be meaningfull.
+                if((obj.position - go.position).Length() < 100)
+                {
+                    if(go.GetComponent<Enemy>() != null)
+                    {
+                        if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, go.GetComponent<CollisionCircle>().edges))
+                            obj.GetComponent<SpriteRenderer>().Color = Color.Red;
+                    }
+                    else if (go.GetComponent<Whale>() != null)
+                    {
+                        if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, go.GetComponent<CollisionCircle>().edges))
+                            obj.GetComponent<SpriteRenderer>().Color = Color.Red;
+                    }
+                    else if (go.GetComponent<Tower>() != null)
+                    {
+                        if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, go.GetComponent<CollisionCircle>().edges))
+                            obj.GetComponent<SpriteRenderer>().Color = Color.Red;
+                    }
+                    else if (go.GetComponent<Wall>() != null)
+                    {
+                        if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, go.GetComponent<CollisionCircle>().edges))
+                            obj.GetComponent<SpriteRenderer>().Color = Color.Red;
+                    }
+                }
+            }
         }
     }
 }

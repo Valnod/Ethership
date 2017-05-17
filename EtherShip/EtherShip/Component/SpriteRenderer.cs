@@ -18,7 +18,7 @@ namespace EtherShip
         public Rectangle spriteRectangle { get; set; }
         public float layerDepth;
         public Vector2 Offset { get; set; }
-
+        public Color Color { get; set; }
 
 
         public SpriteRenderer(GameObject obj, string spriteName, float scaleFactor, float layerDepth) : base(obj)
@@ -26,6 +26,7 @@ namespace EtherShip
             this.spriteName = spriteName;
             this.scaleFactor = scaleFactor;
             this.layerDepth = layerDepth;
+            this.Color = Color.White;
         }
          
         public void LoadContent(ContentManager content)
@@ -41,7 +42,7 @@ namespace EtherShip
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(sprite, obj.position, spriteRectangle, Color.White, 0f, Vector2.Zero, scaleFactor, SpriteEffects.None, layerDepth);
+            spriteBatch.Draw(sprite, obj.position, spriteRectangle, Color, 0f, Vector2.Zero, scaleFactor, SpriteEffects.None, layerDepth);
         }
     }
 }

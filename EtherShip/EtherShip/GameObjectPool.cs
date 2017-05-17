@@ -98,6 +98,7 @@ namespace EtherShip
                 GameObject obj = new GameObject(towerPos);
                 obj.AddComponnent(new Tower(obj, 10, 100));
                 obj.AddComponnent(new SpriteRenderer(obj, "rectangle", 1f, 0.5f));
+                obj.AddComponnent(new CollisionCircle(obj, 50));
                 obj.LoadContent(GameWorld.Instance.Content);
                 AddActive.Add(obj);
             }
@@ -213,6 +214,22 @@ namespace EtherShip
             }
 
             RemoveActive.Clear();
+        }
+
+        /// <summary>
+        /// Returns a list of all GameObjects the player shall check collision with.
+        /// </summary>
+        /// <returns></returns>
+        public List<GameObject> CollisionListForPlayer()
+        {
+            List<GameObject> list = new List<GameObject>();
+
+            var allObjects = ActiveClutterList.Concat(ActiveEnemyList)
+                                    .Concat(ActiveWallList)
+                                    .Concat(ActiveTowerList)
+                                    .Concat(ActiveWhaleList)
+                                    .ToList();
+            return allObjects;
         }
     }
 }
