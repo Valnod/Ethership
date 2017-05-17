@@ -67,9 +67,27 @@ namespace EtherShip
             InactiveEnemyList.Add(enemy);*/
         }
 
+        /// <summary>
+        /// Creates a wall at the given location, position.
+        /// </summary>
+        /// <param name="position"></param>
         public void CreateWall(Vector2 position)
         {
-
+            if (InactiveWallList.Count > 0)
+            {
+                AddActive.Add(InactiveWallList[1]);
+                RemoveActive.Add(InactiveWallList[1]);
+            }
+            else
+            {
+                GameObject obj = new GameObject(position);
+                obj.AddComponnent(new Wall(obj));
+                obj.AddComponnent(new SpriteRenderer(obj, "rectangle", 1f, 0.5f));
+                obj.LoadContent(GameWorld.Instance.Content);
+                obj.AddComponnent(new CollisionRectangle(obj));
+                obj.GetComponent<CollisionRectangle>().LoadContent(GameWorld.Instance.Content);
+                AddActive.Add(obj);
+            }
         }
 
         public void DeleteWall(GameObject wall)
@@ -96,13 +114,13 @@ namespace EtherShip
             if (InactiveTwoerList.Count > 0)
             {
                 AddActive.Add(InactiveTwoerList[1]);
-                InactiveTwoerList.RemoveAt(1);
+                RemoveActive.Add(InactiveTwoerList[1]);
             }
             else
             {
                 GameObject obj = new GameObject(towerPos);
                 obj.AddComponnent(new Tower(obj, 10, 100));
-                obj.AddComponnent(new SpriteRenderer(obj, "rectangle", 1f, 0.5f));
+                obj.AddComponnent(new SpriteRenderer(obj, "circle", 1f, 0.5f));
                 obj.AddComponnent(new CollisionCircle(obj, 50));
                 obj.LoadContent(GameWorld.Instance.Content);
                 AddActive.Add(obj);

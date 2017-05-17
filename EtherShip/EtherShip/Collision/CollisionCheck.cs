@@ -39,7 +39,7 @@ namespace EtherShip
         /// <param name="edgesFigure1"></param>
         /// <param name="edgesFigure2"></param>
         /// <returns></returns>
-        static public bool Check(Vector2[,] edgesFigure1, Vector2[,] edgesFigure2)
+        static public bool Check(Vector2[,] edgesFigure1, Vector2 posFigure1, Vector2[,] edgesFigure2, Vector2 posFigure2)
         {
             //Gets the axes for both figures.
             Vector2[] axes1 = Normals(edgesFigure1);
@@ -50,8 +50,8 @@ namespace EtherShip
             {
                 Vector2 axis = axes1[i];
                 // project both shapes onto the axis
-                Projection p1 = FigureProjection(edgesFigure1, axis);
-                Projection p2 = FigureProjection(edgesFigure2, axis);
+                Projection p1 = FigureProjection(edgesFigure1, axis, posFigure1);
+                Projection p2 = FigureProjection(edgesFigure2, axis, posFigure2);
                 // do the projections overlap?
                 if (!p1.Overlapping(p2))
                 {
@@ -64,8 +64,8 @@ namespace EtherShip
             {
                 Vector2 axis = axes2[i];
                 // project both shapes onto the axis
-                Projection p1 = FigureProjection(edgesFigure1, axis);
-                Projection p2 = FigureProjection(edgesFigure2, axis);
+                Projection p1 = FigureProjection(edgesFigure1, axis, posFigure1);
+                Projection p2 = FigureProjection(edgesFigure2, axis, posFigure2);
                 // do the projections overlap?
                 if (!p1.Overlapping(p2))
                 {
@@ -98,11 +98,11 @@ namespace EtherShip
         }
 
         /// <summary>
-        /// Returns the projection of a figure onto an axis.
+        /// Returns the projection of a figures vertixes onto an axis.
         /// </summary>
         /// <param name="edges"></param>
         /// <returns></returns>
-        static private Projection FigureProjection(Vector2[,] edgesFigure, Vector2 axis)
+        static private Projection FigureProjection(Vector2[,] edgesFigure, Vector2 axis, Vector2 pos)
         {
             //When projecting a polygon onto an axis we; loop over all the vertices performing the dot product with the axis and storing the minimum and maximum.
 
@@ -113,13 +113,13 @@ namespace EtherShip
             //formal for the dot product between two vectors:  Dot(v1, v2) = (dx1 * dx2) + (dy1 * dy2)
 
             //Sets a starting point for the min and max values of the projection.
-            double min = DotProduct(axis, edgesFigure[0, 0]);
+            double min = DotProduct(axis, edgesFigure[0, 1] + pos);
             double max = min;
             //Projects the edges and replaces the min and/or max values if nessecary.
             for (int i = 1; i < edgesFigure.GetLength(0); i++)
             {
                 // NOTE: the axis must be normalized to get accurate projections
-                double p = DotProduct(axis, edgesFigure[i, 0]);
+                double p = DotProduct(axis, edgesFigure[i, 1] + pos);
                 if (p < min)
                 {
                     min = p;
