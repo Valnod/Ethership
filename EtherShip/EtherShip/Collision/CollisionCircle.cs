@@ -40,7 +40,7 @@ namespace EtherShip
             //The vector indicating the edge
             Vector2 edgeVec = new Vector2(0, 0);
             //Generates the rest of the points on the circles edge, and thereby makes the edges by combining two points.
-            for (int i = 1; i < numberOfEdges; i++)
+            for (int i = 0; i < numberOfEdges; i++)
             {
                 vecEnd = RotPointsAroundPointMath.RotatePoint(vecStart, Vector2.Zero, (360 / numberOfEdges));
                 edgeVec = vecEnd - vecStart;

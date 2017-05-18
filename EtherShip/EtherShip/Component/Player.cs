@@ -10,7 +10,7 @@ using System.Timers;
 
 namespace EtherShip
 {
-    class Player : Component, IUpdateable
+    class Player : Component, IUpdateable, ICollidable
     {
         public Vector2 direction;
         public int health;
@@ -42,7 +42,7 @@ namespace EtherShip
                 antiGravity = false; //Anti-gravity ability stops
             }
             if (timer >= 8000) //8 or more sec
-            {
+        {
                 cdTimer = false; //Cooldown finishes, anti gravity ability becomes available to the player again 
                 timer = 0; //Timer resets
             }
@@ -51,6 +51,7 @@ namespace EtherShip
         public void Update(GameTime gameTime)
         {
             Move(gameTime);
+            OBJCollision();
         }
 
         public void Move(GameTime gameTime)
@@ -86,5 +87,40 @@ namespace EtherShip
                 AntiGravity(gameTime); //Activate anti-gravity ability
             }
         }
-    } 
+
+        /// <summary>
+        /// Checks for collision and acts if there is a collision.
+        /// </summary>
+        public void OBJCollision()
+        {
+            //Checks if this collides with another gameobject.
+            foreach(GameObject go in GameWorld.Instance.gameObjectPool.CollisionListForPlayer())
+            {
+                //Checks the distance to the objects, and only cheecks for collision if the given object is close enough for a check to be meaningfull.
+                if((obj.position - go.position).Length() < 200)
+                {
+                    if(go.GetComponent<Enemy>() != null)
+                    {
+                        if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, obj.position, go.GetComponent<CollisionCircle>().edges, go.position))
+                            obj.GetComponent<SpriteRenderer>().Color = Color.Red;
+                    }
+                    else if (go.GetComponent<Whale>() != null)
+                    {
+                        if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, obj.position, go.GetComponent<CollisionCircle>().edges, go.position))
+                            obj.GetComponent<SpriteRenderer>().Color = Color.Blue;
+                    }
+                    else if (go.GetComponent<Tower>() != null)
+                    {
+                        if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, obj.position, go.GetComponent<CollisionCircle>().edges, go.position))
+                            obj.GetComponent<SpriteRenderer>().Color = Color.RoyalBlue;
+                    }
+                    else if (go.GetComponent<Wall>() != null)
+                    {
+                        if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, obj.position, go.GetComponent<CollisionRectangle>().edges, go.position))
+                            obj.GetComponent<SpriteRenderer>().Color = Color.Black;
+                    }
+                }
+            }
+        }
+    }
 }
