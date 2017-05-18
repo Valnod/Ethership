@@ -14,6 +14,9 @@ namespace EtherShip
         public int value;
         public int health;
         public float speed;
+        private int xSpawn;
+        private int ySpawn;
+        private Random rnd;
 
         public Whale(GameObject obj, Vector2 target, Vector2 direction, int value, int health, float speed) : base(obj)
         {

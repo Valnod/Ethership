@@ -68,6 +68,7 @@ namespace EtherShip
             //Adds some gameObjects for testing
             gameObjectPool.CreatePlayer();
             gameObjectPool.CreateTower(new Vector2(400, 400));
+            gameObjectPool.CreateEnemy();
 
             gameObjectPool.AddToActive();
 
