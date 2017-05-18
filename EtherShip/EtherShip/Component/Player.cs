@@ -7,17 +7,21 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Timers;
+using Microsoft.Xna.Framework.Content;
 
 namespace EtherShip
 {
     class Player : Component, IUpdateable
     {
-        public Vector2 direction;
-        public int health;
-        public float speed;
+        private Vector2 direction;
+        private SpriteRenderer spriteRenderer;
+        private int health;
+        private float speed;
+        private float maxSpeed;
+        private float minSpeed;
 
-        public bool antiGravity = false; //Anti-gravity effect
-        public bool cdTimer = false; //Cooldown of the anti-gravity ability
+        private bool antiGravity = false; //Anti-gravity effect
+        private bool cdTimer = false; //Cooldown of the anti-gravity ability
         float timer = 0; //Timer for both anti-gravity effect and the anti gravity ability
 
         public Player(GameObject obj, Vector2 direction, int health, bool antiGravity) : base(obj)
@@ -25,7 +29,10 @@ namespace EtherShip
             this.direction = direction;
             this.health = health;
             this.antiGravity = antiGravity;
-            speed = 10;
+            speed = 0;
+            spriteRenderer = obj.GetComponent<SpriteRenderer>();
+            minSpeed = 0;
+            maxSpeed = 5;
         }
 
         /// <summary>
@@ -50,60 +57,56 @@ namespace EtherShip
         
         public void Update(GameTime gameTime)
         {
-            //Move(gameTime);
-            MoveTest(gameTime);
-        }
-
-        public void MoveTest(GameTime gameTime)
-        {
-            float elapsed = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            Vector2 translation = Vector2.Zero; //Reset the translation
-            KeyboardState keystate = Keyboard.GetState(); //Get the keyboard state
-
-            if (keystate.IsKeyDown(Keys.W))
-            {
-                translation += new Vector2(0, -1); //Up
-            }
-            if (keystate.IsKeyDown(Keys.A))
-            {
-                translation += new Vector2(-1, 0); //Left
-            }
-            if (keystate.IsKeyDown(Keys.S))
-            {
-                translation += new Vector2(0, 1); //Down
-            }
-            if (keystate.IsKeyDown(Keys.D))
-            {
-                translation += new Vector2(1, 0); //Right
-            }
-            if (translation.X != float.NaN && translation.Y != float.NaN)
-            {
-                Vector2.Normalize(translation); //Normalize the movement to 1 (doesn't add up in case of multible buttons press)
-                translation *= speed;
-                this.obj.position += translation * speed / (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            }
+            Move(gameTime);
         }
 
         public void Move(GameTime gameTime)
         {
+            Vector2 direction = new Vector2((float)Math.Cos(spriteRenderer.Rotation), (float)Math.Sin(spriteRenderer.Rotation));
+            direction.Normalize();
+
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float circle = MathHelper.Pi * 2;
+
             Vector2 translation = Vector2.Zero; //Reset the translation
             KeyboardState keystate = Keyboard.GetState(); //Get the keyboard state
 
-            if (keystate.IsKeyDown(Keys.W))
+            while (keystate.IsKeyDown(Keys.W))
             {
-                translation += new Vector2(0, -1); //Up
+                if (speed <= maxSpeed) //Accelerate the player object forward as long as the W button is held
+                {
+                    speed += 0.3f - (float) gameTime.ElapsedGameTime.TotalSeconds;
+                    obj.position += direction * speed;
+                }
+                if (speed > maxSpeed) //Caps the player speed to 5
+                {
+                    speed = 5f;
+                }
+                break;
+            }
+            if (keystate.IsKeyUp(Keys.W))
+            {
+                if (speed >= minSpeed) //When the W button is released, the player object slowly lose momentum
+                {
+                    speed -= 0.1f;
+                    obj.position += direction * speed;
+                }
             }
             if (keystate.IsKeyDown(Keys.A))
             {
-                translation += new Vector2(-1, 0); //Left
+                spriteRenderer.Rotation -= elapsed;
+                spriteRenderer.Rotation = spriteRenderer.Rotation % circle;
+                spriteRenderer.Rotation -= 0.05f; // Rotate the sprite (clockwise left)
             }
             if (keystate.IsKeyDown(Keys.S))
             {
-                translation += new Vector2(0, 1); //Down
+                //Down (unnecessary?)
             }
             if (keystate.IsKeyDown(Keys.D))
             {
-                translation += new Vector2(1, 0); //Right
+                spriteRenderer.Rotation += elapsed;
+                spriteRenderer.Rotation = spriteRenderer.Rotation % circle;
+                spriteRenderer.Rotation += 0.05f; //Rotate the sprite (clockwise right)
             }
             if (translation.X != float.NaN && translation.Y != float.NaN)
             {
@@ -111,7 +114,6 @@ namespace EtherShip
                 translation *= speed;
                 this.obj.position += translation * speed / (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             }
-
             if (keystate.IsKeyDown(Keys.Q))
             {
                 AntiGravity(gameTime); //Activate anti-gravity ability

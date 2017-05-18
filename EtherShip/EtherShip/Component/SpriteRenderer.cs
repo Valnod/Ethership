@@ -15,7 +15,7 @@ namespace EtherShip
         public Texture2D sprite { get; set; }
         public string spriteName { get; set; }
         public float scaleFactor;
-        public float rotation;
+        public float Rotation { get; set; }
         public float layerDepth;
         public Rectangle spriteRectangle { get; set; }
         public Vector2 Offset { get; set; }
@@ -25,7 +25,7 @@ namespace EtherShip
         {
             this.spriteName = spriteName;
             this.scaleFactor = scaleFactor;
-            this.rotation = rotation;
+            this.Rotation = rotation;
             this.layerDepth = layerDepth;
         }
          
@@ -44,7 +44,7 @@ namespace EtherShip
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(sprite, obj.position, spriteRectangle, Color.White, rotation, origin, scaleFactor, SpriteEffects.None, layerDepth);
+            spriteBatch.Draw(sprite, obj.position, spriteRectangle, Color.White, Rotation, origin, scaleFactor, SpriteEffects.None, layerDepth);
         }
     }
 }
