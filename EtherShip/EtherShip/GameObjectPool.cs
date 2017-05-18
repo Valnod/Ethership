@@ -13,6 +13,8 @@ namespace EtherShip
 {
     class GameObjectPool
     {
+        public GameObject gameObject;
+       
         public List<GameObject> AddActive { get; set; }
         public List<GameObject> RemoveActive { get; set; }
 
@@ -21,7 +23,7 @@ namespace EtherShip
         private List<GameObject> InactiveEnemyList;
         //Tower
         private List<GameObject> ActiveTowerList;
-        private List<GameObject> InactiveTwoerList;
+        private List<GameObject> InactiveTowerList;
         //Wall 
         private List<GameObject> ActiveWallList;
         private List<GameObject> InactiveWallList;
@@ -44,7 +46,7 @@ namespace EtherShip
 
             InactiveClutterList = new List<GameObject>();
             InactiveEnemyList = new List<GameObject>();
-            InactiveTwoerList = new List<GameObject>();
+            InactiveTowerList = new List<GameObject>();
             InactiveWallList = new List<GameObject>();
             InactiveWhaleList = new List<GameObject>();
 
@@ -54,22 +56,47 @@ namespace EtherShip
 
         public void CreateEnemy()
         {
-            /*gameObject = new GameObject(new Vector2());
-            Enemy enemy = new Enemy(gameObject, 3, 80, 1, new Vector2(100, 100));
-            enemy.obj.AddComponnent(new SpriteRenderer(gameObject, "enemyBlack1", 1, 1));
-            ActiveEnemyList.Add(enemy);
-            InactiveEnemyList.Remove(enemy);*/
+            if (InactiveEnemyList.Count > 0)
+            {
+                AddActive.Add(InactiveEnemyList[1]);
+                InactiveEnemyList.RemoveAt(1);
+            }
+            else
+            {
+                GameObject obj = new GameObject(new Vector2(10,10));
+                obj.AddComponnent(new Enemy(obj, 100, 10f, 1, new Vector2()));
+                obj.AddComponnent(new SpriteRenderer(obj, "rectangle", 1f, 0.5f));
+                obj.LoadContent(GameWorld.Instance.Content);
+                AddActive.Add(obj);
+            }
         }
 
         public void DeleteEnemy(Enemy enemy)
         {
-            /*ActiveEnemyList.Remove(enemy);
-            InactiveEnemyList.Add(enemy);*/
+           
         }
 
+        /// <summary>
+        /// Creates a wall at the given location, position.
+        /// </summary>
+        /// <param name="position"></param>
         public void CreateWall(Vector2 position)
         {
-
+            if (InactiveWallList.Count > 0)
+            {
+                AddActive.Add(InactiveWallList[1]);
+                RemoveActive.Add(InactiveWallList[1]);
+            }
+            else
+            {
+                GameObject obj = new GameObject(position);
+                obj.AddComponnent(new Wall(obj));
+                obj.AddComponnent(new SpriteRenderer(obj, "rectangle", 1f, 0.5f));
+                obj.LoadContent(GameWorld.Instance.Content);
+                obj.AddComponnent(new CollisionRectangle(obj));
+                obj.GetComponent<CollisionRectangle>().LoadContent(GameWorld.Instance.Content);
+                AddActive.Add(obj);
+            }
         }
 
         public void DeleteWall(GameObject wall)
@@ -93,10 +120,10 @@ namespace EtherShip
         /// <param name="towerPos"></param>
         public void CreateTower(Vector2 towerPos)
         {
-            if (InactiveTwoerList.Count > 0)
+            if (InactiveTowerList.Count > 0)
             {
                 AddActive.Add(InactiveTwoerList[1]);
-                InactiveTwoerList.RemoveAt(1);
+                RemoveActive.Add(InactiveTwoerList[1]);
             }
             else
             {
@@ -205,7 +232,7 @@ namespace EtherShip
             foreach (GameObject go in AddActive)
             {
                 if (go.GetComponent<Tower>() != null)
-                    InactiveTwoerList.Add(go);
+                    InactiveTowerList.Add(go);
                 if (go.GetComponent<Enemy>() != null)
                     InactiveEnemyList.Add(go);
                 if (go.GetComponent<Wall>() != null)
@@ -216,6 +243,22 @@ namespace EtherShip
                     InactiveClutterList.Add(go);
             }
             RemoveActive.Clear();
+        }
+
+        /// <summary>
+        /// Returns a list of all GameObjects the player shall check collision with.
+        /// </summary>
+        /// <returns></returns>
+        public List<GameObject> CollisionListForPlayer()
+        {
+            List<GameObject> list = new List<GameObject>();
+
+            var allObjects = ActiveClutterList.Concat(ActiveEnemyList)
+                                    .Concat(ActiveWallList)
+                                    .Concat(ActiveTowerList)
+                                    .Concat(ActiveWhaleList)
+                                    .ToList();
+            return allObjects;
         }
     }
 }

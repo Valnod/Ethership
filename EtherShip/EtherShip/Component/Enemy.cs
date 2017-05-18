@@ -16,9 +16,9 @@ namespace EtherShip
         public Vector2 direction;
         public int value;
 
-        List<GridPoint> Route;
-        List<GridPoint> UsablePoints;
-        List<GridPoint> NotUsable;
+        List<GridPoint> Route = new List<GridPoint>();
+        List<GridPoint> UsablePoints = new List<GridPoint>();
+        List<GridPoint> NotUsable = new List<GridPoint>();
 
         public Enemy(GameObject obj, int health, float speed, int value, Vector2 direction) : base(obj)
         {
@@ -30,7 +30,7 @@ namespace EtherShip
 
         public void Update(GameTime gameTime)
         {
-
+            Move(gameTime);
         }
 
         public void Move(GameTime gameTime)
@@ -41,9 +41,9 @@ namespace EtherShip
             //something to check our Delta Length with. 
             float length = 100000000;
             //xLoc is closest x position
-            int xStart = 0;
+            int xStart = 10;
             //yLoc is closest y position
-            int yStart = 0;
+            int yStart = 10;
             //xEnd is closet position to player
             int xEnd = 0;
             //yEnd is closet position to player
@@ -57,7 +57,7 @@ namespace EtherShip
                 {
                     //lengthTemp is a variabel where we save our current closest position
                     float lengthTempStart = Math.Abs((GameWorld.Instance.Map.MapGrid[x, y].Pos - obj.position).Length());
-                    //checks if the lengthTemp is smaller than the length, the final found is the absolute shortest from the current position
+                    //checks if the lengthTemp is smaller than the length, the last one found is the absolute shortest from the current position
                     if (lengthTempStart < length)
                     {
                         length = lengthTempStart;
@@ -86,13 +86,19 @@ namespace EtherShip
             while (checkPath)
             {
                 CheckForValidPath(xStart, yStart);
-               
+                Route.Add(UsablePoints[UsablePoints.Count-1]);
                 
             }
            
         }
+
+        //checks all the points around the xStart and yStart for a valid route, then puts the valid point in the UsablePoints 
+        //List, and the invalids in the NotUsables List. 
+
+            //first diamond, Down
         public void CheckForValidPath(int xStart, int yStart)
         {
+            
             if (GameWorld.Instance.Map.MapGrid[xStart, yStart + 1].Occupant == null)
             {
                 if (GameWorld.Instance.Map.MapGrid[xStart, yStart + 2].Occupant == null)
@@ -115,6 +121,8 @@ namespace EtherShip
                 }
                 else
                     NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart + 1]);
+
+                //second diamond, right
 
             }
             if (GameWorld.Instance.Map.MapGrid[xStart + 1, yStart].Occupant == null)
@@ -141,6 +149,8 @@ namespace EtherShip
                     NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1]);
             }
 
+            //third diamond, Up
+
             if (GameWorld.Instance.Map.MapGrid[xStart, yStart - 1].Occupant == null)
             {
                 if (GameWorld.Instance.Map.MapGrid[xStart, yStart - 2].Occupant == null)
@@ -163,6 +173,8 @@ namespace EtherShip
                 else
                     NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1]);
             }
+
+            //fourth Diamond, left
             if (GameWorld.Instance.Map.MapGrid[xStart - 1, yStart].Occupant == null)
             {
                 if (GameWorld.Instance.Map.MapGrid[xStart - 2, yStart].Occupant == null)
