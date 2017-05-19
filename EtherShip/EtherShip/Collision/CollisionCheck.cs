@@ -139,7 +139,7 @@ namespace EtherShip
         /// <param name="v1"></param>
         /// <param name="v2"></param>
         /// <returns></returns>
-        static private double DotProduct(Vector2 v1, Vector2 v2)
+        static public double DotProduct(Vector2 v1, Vector2 v2)
         {
             return (v1.X * v2.X) + (v1.Y * v2.Y);
         }

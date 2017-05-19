@@ -24,6 +24,7 @@ namespace EtherShip
         private bool antiGravity = false; //Anti-gravity effect
         private bool cdTimer = false; //Cooldown of the anti-gravity ability
         float timer = 0; //Timer for both anti-gravity effect and the anti gravity ability
+        private Vector2 translation;
 
         public Player(GameObject obj, Vector2 direction, int health, bool antiGravity) : base(obj)
         {
@@ -60,18 +61,19 @@ namespace EtherShip
         public void Update(GameTime gameTime)
         {
             Move(gameTime);
-            //OBJCollision();
+            OBJCollision();
         }
 
         public void Move(GameTime gameTime)
         {
-            Vector2 direction = new Vector2((float)Math.Cos(spriteRenderer.Rotation), (float)Math.Sin(spriteRenderer.Rotation));
+            Vector2 direction = new Vector2((float)Math.Cos(obj.GetComponent<SpriteRenderer>().Rotation), 
+                (float)Math.Sin(obj.GetComponent<SpriteRenderer>().Rotation));
             direction.Normalize();
 
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             float circle = MathHelper.Pi * 2;
 
-            Vector2 translation = Vector2.Zero; //Reset the translation
+            translation = Vector2.Zero; //Reset the translation
             KeyboardState keystate = Keyboard.GetState(); //Get the keyboard state
 
             while (keystate.IsKeyDown(Keys.W))
@@ -79,7 +81,7 @@ namespace EtherShip
                 if (speed <= maxSpeed) //Accelerate the player object forward as long as the W button is held
                 {
                     speed += 0.3f - (float) gameTime.ElapsedGameTime.TotalSeconds;
-                    obj.position += direction * speed;
+                    translation += direction * speed;
                 }
                 if (speed > maxSpeed) //Caps the player speed to 5
                 {
@@ -92,14 +94,14 @@ namespace EtherShip
                 if (speed >= minSpeed) //When the W button is released, the player object slowly lose momentum
                 {
                     speed -= 0.1f;
-                    obj.position += direction * speed;
+                    translation += direction * speed;
                 }
             }
             if (keystate.IsKeyDown(Keys.A))
             {
-                spriteRenderer.Rotation -= elapsed;
-                spriteRenderer.Rotation = spriteRenderer.Rotation % circle;
-                spriteRenderer.Rotation -= 0.05f; // Rotate the sprite (clockwise left)
+                obj.GetComponent<SpriteRenderer>().Rotation -= elapsed;
+                obj.GetComponent<SpriteRenderer>().Rotation = obj.GetComponent<SpriteRenderer>().Rotation % circle;
+                obj.GetComponent<SpriteRenderer>().Rotation -= 0.05f; // Rotate the sprite (clockwise left)
             }
             if (keystate.IsKeyDown(Keys.S))
             {
@@ -107,14 +109,15 @@ namespace EtherShip
             }
             if (keystate.IsKeyDown(Keys.D))
             {
-                spriteRenderer.Rotation += elapsed;
-                spriteRenderer.Rotation = spriteRenderer.Rotation % circle;
-                spriteRenderer.Rotation += 0.05f; //Rotate the sprite (clockwise right)
+                obj.GetComponent<SpriteRenderer>().Rotation += elapsed;
+                obj.GetComponent<SpriteRenderer>().Rotation = obj.GetComponent<SpriteRenderer>().Rotation % circle;
+                obj.GetComponent<SpriteRenderer>().Rotation += 0.05f; //Rotate the sprite (clockwise right)
             }
             if (translation.X != float.NaN && translation.Y != float.NaN)
             {
                 Vector2.Normalize(translation); //Normalize the movement to 1 (doesn't add up in case of multible buttons press)
                 translation *= speed;
+                OBJCollision(); //Changes the translation if a collision happens
                 this.obj.position += translation * speed / (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             }
             if (keystate.IsKeyDown(Keys.Q))
@@ -126,7 +129,7 @@ namespace EtherShip
         /// <summary>
         /// Checks for collision and acts if there is a collision.
         /// </summary>
-        /*public void OBJCollision()
+        public void OBJCollision()
         {
             //Checks if this collides with another gameobject.
             foreach(GameObject go in GameWorld.Instance.gameObjectPool.CollisionListForPlayer())
@@ -134,25 +137,32 @@ namespace EtherShip
                 //Checks the distance to the objects, and only cheecks for collision if the given object is close enough for a check to be meaningfull.
                 if((obj.position - go.position).Length() < 200)
                 {
+                    //The collision checks are done with the upcoming location in mind. The division is just a adjustment, so the objects can come closer before colliding. 
                     if(go.GetComponent<Enemy>() != null)
                     {
-                        if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, obj.position, go.GetComponent<CollisionCircle>().edges, go.position))
+                        if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, obj.position + (translation / 2), go.GetComponent<CollisionCircle>().edges, go.position))
                             obj.GetComponent<SpriteRenderer>().Color = Color.Red;
                     }
                     else if (go.GetComponent<Whale>() != null)
                     {
-                        if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, obj.position, go.GetComponent<CollisionCircle>().edges, go.position))
+                        if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, obj.position + (translation / 2), go.GetComponent<CollisionCircle>().edges, go.position))
                             obj.GetComponent<SpriteRenderer>().Color = Color.Blue;
                     }
                     else if (go.GetComponent<Tower>() != null)
                     {
-                        if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, obj.position, go.GetComponent<CollisionCircle>().edges, go.position))
+                        if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, obj.position + (translation / 2), go.GetComponent<CollisionCircle>().edges, go.position))
+                        {
                             obj.GetComponent<SpriteRenderer>().Color = Color.RoyalBlue;
+                            translation = CollisionReaction.EllipseCircle(this.obj.position, this.translation, go.position);
+                        }
                     }
                     else if (go.GetComponent<Wall>() != null)
                     {
-                        if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, obj.position, go.GetComponent<CollisionRectangle>().edges, go.position))
+                        if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, obj.position + (translation / 2), go.GetComponent<CollisionRectangle>().edges, go.position))
+                        {
                             obj.GetComponent<SpriteRenderer>().Color = Color.Black;
+                            translation = CollisionReaction.EllipseRectangle(this.obj.position, translation, go.position, GameWorld.Instance.Map.GridPointSize);
+                        }
                     }
                 }
             }

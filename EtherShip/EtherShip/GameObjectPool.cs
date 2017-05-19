@@ -129,8 +129,10 @@ namespace EtherShip
             {
                 GameObject obj = new GameObject(towerPos);
                 obj.AddComponnent(new Tower(obj, 10, 100));
-                obj.AddComponnent(new SpriteRenderer(obj, "rectangle", 1f, 0f, 1f));
+                obj.AddComponnent(new SpriteRenderer(obj, "circle", 1f, 0f, 1f));
                 obj.LoadContent(GameWorld.Instance.Content);
+                obj.AddComponnent(new CollisionCircle(obj));
+                obj.GetComponent<CollisionCircle>().LoadContent(GameWorld.Instance.Content);
                 AddActive.Add(obj);
             }
         }
@@ -156,10 +158,11 @@ namespace EtherShip
         public void CreatePlayer()
         {
             GameObject obj = new GameObject(new Vector2(100, 100));
-            obj.AddComponnent(new SpriteRenderer(obj, "ShipP", 1f, 0f, 0.5f));
-            obj.AddComponnent(new Player(obj, new Vector2(0, 1), 3, false));
-            obj.AddComponnent(new CollisionCircle(obj, 50));
+            obj.AddComponnent(new Player(obj, new Vector2(1, 0), 3, false));
+            obj.AddComponnent(new SpriteRenderer(obj, "circle", 1f, 0f, 1f));
             obj.LoadContent(GameWorld.Instance.Content);
+            obj.AddComponnent(new CollisionCircle(obj));
+            obj.GetComponent<CollisionCircle>().LoadContent(GameWorld.Instance.Content);
             player = obj;
         }
 

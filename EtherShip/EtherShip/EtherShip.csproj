@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="Animation.cs" />
     <Compile Include="Clutter.cs" />
+    <Compile Include="Collision\CollisionReaction.cs" />
     <Compile Include="Collision\CollisionCheck.cs" />
     <Compile Include="Collision\CollisionCircle.cs" />
     <Compile Include="Collision\CollisionElipse.cs" />
