@@ -21,6 +21,10 @@ namespace EtherShip
         public Vector2 Offset { get; set; }
         private Vector2 origin;
         public Color Color { get; set; }
+        public Rectangle spriteRectangleForCollision
+        {
+            get { return new Rectangle(0, 0, sprite.Width, sprite.Height); }
+        }
 
         public SpriteRenderer(GameObject obj, string spriteName, float scaleFactor, float rotation, float layerDepth) : base(obj)
         {

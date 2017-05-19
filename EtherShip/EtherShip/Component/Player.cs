@@ -14,7 +14,6 @@ namespace EtherShip
     class Player : Component, IUpdateable, ICollidable
     {
         private Vector2 direction;
-        private SpriteRenderer spriteRenderer;
         private int health;
         private float speed;
         private float maxSpeed;
@@ -31,7 +30,6 @@ namespace EtherShip
             this.health = health;
             this.antiGravity = antiGravity;
             speed = 0;
-            spriteRenderer = obj.GetComponent<SpriteRenderer>();
             minSpeed = 0;
             maxSpeed = 5;
         }
@@ -64,13 +62,14 @@ namespace EtherShip
 
         public void Move(GameTime gameTime)
         {
-            Vector2 direction = new Vector2((float)Math.Cos(spriteRenderer.Rotation), (float)Math.Sin(spriteRenderer.Rotation));
+            Vector2 direction = new Vector2((float)Math.Cos(obj.GetComponent<SpriteRenderer>().Rotation), 
+                (float)Math.Sin(obj.GetComponent<SpriteRenderer>().Rotation));
             direction.Normalize();
 
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             float circle = MathHelper.Pi * 2;
 
-            Vector2 translation = Vector2.Zero; //Reset the translation
+            translation = Vector2.Zero; //Reset the translation
             KeyboardState keystate = Keyboard.GetState(); //Get the keyboard state
 
             while (keystate.IsKeyDown(Keys.W))
@@ -78,7 +77,7 @@ namespace EtherShip
                 if (speed <= maxSpeed) //Accelerate the player object forward as long as the W button is held
                 {
                     speed += 0.3f - (float) gameTime.ElapsedGameTime.TotalSeconds;
-                    obj.position += direction * speed;
+                    translation += direction * speed;
                 }
                 if (speed > maxSpeed) //Caps the player speed to 5
                 {
@@ -91,14 +90,14 @@ namespace EtherShip
                 if (speed >= minSpeed) //When the W button is released, the player object slowly lose momentum
                 {
                     speed -= 0.1f;
-                    obj.position += direction * speed;
+                    translation += direction * speed;
                 }
             }
             if (keystate.IsKeyDown(Keys.A))
             {
-                spriteRenderer.Rotation -= elapsed;
-                spriteRenderer.Rotation = spriteRenderer.Rotation % circle;
-                spriteRenderer.Rotation -= 0.05f; // Rotate the sprite (clockwise left)
+                obj.GetComponent<SpriteRenderer>().Rotation -= elapsed;
+                obj.GetComponent<SpriteRenderer>().Rotation = obj.GetComponent<SpriteRenderer>().Rotation % circle;
+                obj.GetComponent<SpriteRenderer>().Rotation -= 0.05f; // Rotate the sprite (clockwise left)
             }
             if (keystate.IsKeyDown(Keys.S))
             {
@@ -106,9 +105,9 @@ namespace EtherShip
             }
             if (keystate.IsKeyDown(Keys.D))
             {
-                spriteRenderer.Rotation += elapsed;
-                spriteRenderer.Rotation = spriteRenderer.Rotation % circle;
-                spriteRenderer.Rotation += 0.05f; //Rotate the sprite (clockwise right)
+                obj.GetComponent<SpriteRenderer>().Rotation += elapsed;
+                obj.GetComponent<SpriteRenderer>().Rotation = obj.GetComponent<SpriteRenderer>().Rotation % circle;
+                obj.GetComponent<SpriteRenderer>().Rotation += 0.05f; //Rotate the sprite (clockwise right)
             }
             if (translation.X != float.NaN && translation.Y != float.NaN)
             {
