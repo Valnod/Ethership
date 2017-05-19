@@ -98,73 +98,52 @@ namespace EtherShip
             //first diamond, Down
         public void CheckForValidPath(int xStart, int yStart)
         {
+            //if (GameWorld.Instance.Map.MapGrid[0] != null || GameWorld.Instance.Map.MapGrid[1] != null)
+            {
+                //execute code
+            }
             
-            if (GameWorld.Instance.Map.MapGrid[xStart, yStart + 1].Occupant == null)
-            {
-                if (GameWorld.Instance.Map.MapGrid[xStart, yStart + 2].Occupant == null)
+                if (GameWorld.Instance.Map.MapGrid[xStart, yStart + 1].Occupant == null)
                 {
-                    UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart, yStart + 2]);
-                }
-                else
-                    NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart, yStart + 2]);
+                    if (GameWorld.Instance.Map.MapGrid[xStart, yStart + 2].Occupant == null)
+                    {
+                        UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart, yStart + 2]);
+                    }
+                    else
+                        NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart, yStart + 2]);
 
-                if (GameWorld.Instance.Map.MapGrid[xStart + 1, yStart + 1].Occupant == null)
+                    if (GameWorld.Instance.Map.MapGrid[xStart + 1, yStart + 1].Occupant == null)
+                    {
+                        UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart + 1]);
+                    }
+                    else
+                        NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart + 1]);
+
+                    if (GameWorld.Instance.Map.MapGrid[xStart - 1, yStart + 1].Occupant == null)
+                    {
+                        UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart + 1]);
+                    }
+                    else
+                        NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart + 1]);
+
+                    //second diamond, right
+
+                }
+                if (GameWorld.Instance.Map.MapGrid[xStart + 1, yStart].Occupant == null)
                 {
-                    UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart + 1]);
-                }
-                else
-                    NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart + 1]);
+                    if (GameWorld.Instance.Map.MapGrid[xStart + 2, yStart].Occupant == null)
+                    {
+                        UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart + 2, yStart]);
+                    }
+                    else
+                        NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart + 2, yStart]);
 
-                if (GameWorld.Instance.Map.MapGrid[xStart - 1, yStart + 1].Occupant == null)
-                {
-                    UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart + 1]);
-                }
-                else
-                    NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart + 1]);
-
-                //second diamond, right
-
-            }
-            if (GameWorld.Instance.Map.MapGrid[xStart + 1, yStart].Occupant == null)
-            {
-                if (GameWorld.Instance.Map.MapGrid[xStart + 2, yStart].Occupant == null)
-                {
-                    UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart + 2, yStart]);
-                }
-                else
-                    NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart + 2, yStart]);
-
-                if (GameWorld.Instance.Map.MapGrid[xStart + 1, yStart + 1].Occupant == null)
-                {
-                    UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart + 1]);
-                }
-                else
-                    NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart + 1]);
-
-                if (GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1].Occupant == null)
-                {
-                    UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1]);
-                }
-                else
-                    NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1]);
-            }
-
-            //third diamond, Up
-
-            if (GameWorld.Instance.Map.MapGrid[xStart, yStart - 1].Occupant == null)
-            {
-                if (GameWorld.Instance.Map.MapGrid[xStart, yStart - 2].Occupant == null)
-                {
-                    UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart, yStart - 2]);
-                }
-                else
-                    NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart, yStart - 2]);
-                if (GameWorld.Instance.Map.MapGrid[xStart - 1, yStart - 1].Occupant == null)
-                {
-                    UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart - 1]);
-                }
-                else
-                    NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart - 1]);
+                    if (GameWorld.Instance.Map.MapGrid[xStart + 1, yStart + 1].Occupant == null)
+                    {
+                        UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart + 1]);
+                    }
+                    else
+                        NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart + 1]);
 
                 if (GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1].Occupant == null)
                 {
@@ -174,21 +153,46 @@ namespace EtherShip
                     NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1]);
             }
 
-            //fourth Diamond, left
-            if (GameWorld.Instance.Map.MapGrid[xStart - 1, yStart].Occupant == null)
-            {
-                if (GameWorld.Instance.Map.MapGrid[xStart - 2, yStart].Occupant == null)
+                //third diamond, Up
+
+                if (GameWorld.Instance.Map.MapGrid[xStart, yStart - 1].Occupant == null)
                 {
-                    UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart - 2, yStart]);
+                    if (GameWorld.Instance.Map.MapGrid[xStart, yStart - 2].Occupant == null)
+                    {
+                        UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart, yStart - 2]);
+                    }
+                    else
+                        NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart, yStart - 2]);
+                    if (GameWorld.Instance.Map.MapGrid[xStart - 1, yStart - 1].Occupant == null)
+                    {
+                        UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart - 1]);
+                    }
+                    else
+                        NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart - 1]);
+
+                    if (GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1].Occupant == null)
+                    {
+                        UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1]);
+                    }
+                    else
+                        NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1]);
                 }
-                else
-                    NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart - 2, yStart]);
-                if (GameWorld.Instance.Map.MapGrid[xStart - 1, yStart + 1].Occupant == null)
+
+                //fourth Diamond, left
+                if (GameWorld.Instance.Map.MapGrid[xStart - 1, yStart].Occupant == null)
                 {
-                    UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart + 1]);
-                }
-                else
-                    NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart + 1]);
+                    if (GameWorld.Instance.Map.MapGrid[xStart - 2, yStart].Occupant == null)
+                    {
+                        UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart - 2, yStart]);
+                    }
+                    else
+                        NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart - 2, yStart]);
+                    if (GameWorld.Instance.Map.MapGrid[xStart - 1, yStart + 1].Occupant == null)
+                    {
+                        UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart + 1]);
+                    }
+                    else
+                        NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart + 1]);
 
                 if (GameWorld.Instance.Map.MapGrid[xStart - 1, yStart - 1].Occupant == null)
                 {

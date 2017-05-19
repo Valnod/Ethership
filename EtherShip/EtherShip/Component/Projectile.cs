@@ -18,9 +18,7 @@ namespace EtherShip
         public Projectile(GameObject obj, float speed, int damage, GameObject target) : base(obj)
         {
             this.speed = speed;
-            speed = 10;
             this.Damage = damage;
-            damage = 50;
             this.target = target;
         }
 
