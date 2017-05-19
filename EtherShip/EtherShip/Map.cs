@@ -12,12 +12,11 @@ namespace EtherShip
     class Map : Iloadable
     {
         public GridPoint[,] MapGrid { get; set; }
+        public int GridPointSize { get; set; }
 
         private string spriteName;
         private Texture2D sprite;
         private Rectangle sourceRect;
-        private int xGridPointAmount = 20;
-        private int yGridPointAmount = 10;
 
         private Texture2D pointSprite;
         private Rectangle sourceRectPoint;
@@ -25,8 +24,7 @@ namespace EtherShip
         public Map(string spriteName)
         {
             this.spriteName = spriteName;
-
-            MapGrid = new GridPoint[xGridPointAmount, yGridPointAmount];
+            this.GridPointSize = 30;
             GenerateMapGrid();
         }
 
@@ -51,14 +49,16 @@ namespace EtherShip
         /// </summary>
         private void GenerateMapGrid()
         {
-            int xSize = GameWorld.Instance.Window.ClientBounds.Width / xGridPointAmount;
-            int ySize = GameWorld.Instance.Window.ClientBounds.Height / yGridPointAmount;
+            int xGridAmount = GameWorld.Instance.Window.ClientBounds.Width / GridPointSize;
+            int yGridAmount = GameWorld.Instance.Window.ClientBounds.Height / GridPointSize;
 
-            for (int x = 0; x < xGridPointAmount; x++)
+            MapGrid = new GridPoint[xGridAmount, yGridAmount];
+
+            for (int x = 0; x < xGridAmount; x++)
             {
-                for(int y = 0; y < yGridPointAmount; y++)
+                for (int y = 0; y < yGridAmount; y++)
                 {
-                    MapGrid[x, y] = new GridPoint(new Vector2(x * xSize + (xSize / 2), y * ySize + (ySize / 2)), null);
+                    MapGrid[x, y] = new GridPoint(new Vector2(x * GridPointSize + (GridPointSize / 2), y * GridPointSize + (GridPointSize / 2)), null);
                 }
             }
         }

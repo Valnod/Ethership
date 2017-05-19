@@ -15,22 +15,31 @@ namespace EtherShip
         public Texture2D sprite { get; set; }
         public string spriteName { get; set; }
         public float scaleFactor;
-        public Rectangle spriteRectangle { get; set; }
+        public float Rotation { get; set; }
         public float layerDepth;
+        public Rectangle spriteRectangle { get; set; }
         public Vector2 Offset { get; set; }
+        private Vector2 origin;
+        public Color Color { get; set; }
+        public Rectangle spriteRectangleForCollision
+        {
+            get { return new Rectangle(0, 0, sprite.Width, sprite.Height); }
+        }
 
-
-
-        public SpriteRenderer(GameObject obj, string spriteName, float scaleFactor, float layerDepth) : base(obj)
+        public SpriteRenderer(GameObject obj, string spriteName, float scaleFactor, float rotation, float layerDepth) : base(obj)
         {
             this.spriteName = spriteName;
             this.scaleFactor = scaleFactor;
+            this.Rotation = rotation;
             this.layerDepth = layerDepth;
+            this.Color = Color.White;
         }
          
         public void LoadContent(ContentManager content)
         {
             sprite = content.Load<Texture2D>(spriteName);
+            origin.X = sprite.Width / 2;
+            origin.Y = sprite.Height / 2;
             spriteRectangle = new Rectangle(0, 0, sprite.Width, sprite.Height);
         }
 
@@ -41,7 +50,7 @@ namespace EtherShip
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(sprite, obj.position, spriteRectangle, Color.White, 0f, Vector2.Zero, scaleFactor, SpriteEffects.None, layerDepth);
+            spriteBatch.Draw(sprite, obj.position, spriteRectangle, Color, Rotation, origin, scaleFactor, SpriteEffects.None, layerDepth);
         }
     }
 }
