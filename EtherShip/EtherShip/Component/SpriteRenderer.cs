@@ -27,7 +27,7 @@ namespace EtherShip
             this.scaleFactor = scaleFactor;
             this.Rotation = rotation;
             this.layerDepth = layerDepth;
-            this.Color = Color.White;
+            //this.Color = Color.White;
         }
          
         public void LoadContent(ContentManager content)

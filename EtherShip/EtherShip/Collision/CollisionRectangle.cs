@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EtherShip
 {
-    class CollisionRectangle : Component, IDrawable, Iloadable
+    class CollisionRectangle : Component/*, IDrawable*/, Iloadable
     {
         //One coloum is the edges ([i,0]), where the second ([i,1]) is a translocation used to indicated the vectors true placement in the world.
         public Vector2[,] edges;
@@ -21,10 +21,10 @@ namespace EtherShip
         public CollisionRectangle(GameObject obj) : base(obj)
         {
             edges = new Vector2[4, 4];
-            GenerateSides();
+            //GenerateSides();
         }
 
-        private void GenerateSides()
+        /*private void GenerateSides()
         {
             //The vertixes of the box
             edges[0, 1] = new Vector2(0, 0);
@@ -47,7 +47,7 @@ namespace EtherShip
                 spriteBatch.Draw(pointSprite, edges[i, 1] + obj.position, sourceRectPoint, Color.Black, 1f, Vector2.Zero, 1f, SpriteEffects.None, 1);
             }
 #endif
-        }
+        }*/
 
         public void LoadContent(ContentManager content)
         {

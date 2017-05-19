@@ -11,10 +11,11 @@ using Microsoft.Xna.Framework.Content;
 
 namespace EtherShip
 {
-    class Player : Component, IUpdateable, ICollidable
+    class Player : Component, IUpdateable//, ICollidable
     {
         private Vector2 direction;
         private SpriteRenderer spriteRenderer;
+        private Animator animator;
         private int health;
         private float speed;
         private float maxSpeed;
@@ -30,9 +31,10 @@ namespace EtherShip
             this.health = health;
             this.antiGravity = antiGravity;
             speed = 0;
-            spriteRenderer = obj.GetComponent<SpriteRenderer>();
             minSpeed = 0;
             maxSpeed = 5;
+            spriteRenderer = obj.GetComponent<SpriteRenderer>();
+            animator = obj.GetComponent<Animator>();
         }
 
         /// <summary>
@@ -58,7 +60,7 @@ namespace EtherShip
         public void Update(GameTime gameTime)
         {
             Move(gameTime);
-            OBJCollision();
+            //OBJCollision();
         }
 
         public void Move(GameTime gameTime)
@@ -124,7 +126,7 @@ namespace EtherShip
         /// <summary>
         /// Checks for collision and acts if there is a collision.
         /// </summary>
-        public void OBJCollision()
+        /*public void OBJCollision()
         {
             //Checks if this collides with another gameobject.
             foreach(GameObject go in GameWorld.Instance.gameObjectPool.CollisionListForPlayer())
@@ -154,6 +156,6 @@ namespace EtherShip
                     }
                 }
             }
-        }
+        }*/
     }
 }
