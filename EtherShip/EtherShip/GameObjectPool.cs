@@ -122,8 +122,8 @@ namespace EtherShip
         {
             if (InactiveTowerList.Count > 0)
             {
-                AddActive.Add(InactiveTwoerList[1]);
-                RemoveActive.Add(InactiveTwoerList[1]);
+                AddActive.Add(InactiveTowerList[1]);
+                RemoveActive.Add(InactiveTowerList[1]);
             }
             else
             {

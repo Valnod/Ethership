@@ -69,7 +69,7 @@ namespace EtherShip
             gameObjectPool.CreatePlayer();
             gameObjectPool.CreateTower(new Vector2(400, 400));
             gameObjectPool.CreateWall(new Vector2(300, 400));
-            gameObjectPool.CreateEnemy();
+            //gameObjectPool.CreateEnemy();
 
             gameObjectPool.AddToActive();
 
