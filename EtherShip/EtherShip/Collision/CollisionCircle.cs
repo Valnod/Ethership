@@ -12,7 +12,7 @@ namespace EtherShip
     class CollisionCircle : Component, Iloadable, IDrawable
     {
         public float Radius { get; }
-        //One coloum is the edges ([i,0]), where the second ([i,1]) is a translocation used to indicated the vectors true placement in the world.
+        //One coloum is the edges ([i,0]), where the second ([i,1]) is a translocation used to indicated the vectors true placement around the position.
         public Vector2[,] edges;
         public List<float> lengthOfEdges;
 
@@ -23,9 +23,9 @@ namespace EtherShip
         private Texture2D pointSprite;
         private Rectangle sourceRectPoint;
 
-        public CollisionCircle(GameObject obj, float radius) : base(obj)
+        public CollisionCircle(GameObject obj) : base(obj)
         {
-            this.Radius = radius;
+            this.Radius = obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Width/2;
             edges = new Vector2[numberOfEdges, 2];
             lengthOfEdges = new List<float>();
             GenerateSides();

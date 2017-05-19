@@ -19,6 +19,7 @@ namespace EtherShip
         public bool antiGravity = false; //Anti-gravity effect
         public bool cdTimer = false; //Cooldown of the anti-gravity ability
         float timer = 0; //Timer for both anti-gravity effect and the anti gravity ability
+        private Vector2 translation;
 
         public Player(GameObject obj, Vector2 direction, int health, bool antiGravity) : base(obj)
         {
@@ -56,7 +57,7 @@ namespace EtherShip
 
         public void Move(GameTime gameTime)
         {
-            Vector2 translation = Vector2.Zero; //Reset the translation
+            translation = Vector2.Zero; //Reset the translation
             KeyboardState keystate = Keyboard.GetState(); //Get the keyboard state
 
             if (keystate.IsKeyDown(Keys.W))
@@ -79,6 +80,7 @@ namespace EtherShip
             {
                 Vector2.Normalize(translation); //Normalize the movement to 1 (doesn't add up in case of multible buttons press)
                 translation *= speed;
+                OBJCollision(); //Changes the translation if a collision happens
                 this.obj.position += translation * speed / (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             }
 
@@ -99,25 +101,32 @@ namespace EtherShip
                 //Checks the distance to the objects, and only cheecks for collision if the given object is close enough for a check to be meaningfull.
                 if((obj.position - go.position).Length() < 200)
                 {
+                    //The collision checks are done with the upcoming location in mind. The division is just a adjustment, so the objects can come closer before colliding. 
                     if(go.GetComponent<Enemy>() != null)
                     {
-                        if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, obj.position, go.GetComponent<CollisionCircle>().edges, go.position))
+                        if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, obj.position + (translation / 2), go.GetComponent<CollisionCircle>().edges, go.position))
                             obj.GetComponent<SpriteRenderer>().Color = Color.Red;
                     }
                     else if (go.GetComponent<Whale>() != null)
                     {
-                        if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, obj.position, go.GetComponent<CollisionCircle>().edges, go.position))
+                        if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, obj.position + (translation / 2), go.GetComponent<CollisionCircle>().edges, go.position))
                             obj.GetComponent<SpriteRenderer>().Color = Color.Blue;
                     }
                     else if (go.GetComponent<Tower>() != null)
                     {
-                        if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, obj.position, go.GetComponent<CollisionCircle>().edges, go.position))
+                        if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, obj.position + (translation / 2), go.GetComponent<CollisionCircle>().edges, go.position))
+                        {
                             obj.GetComponent<SpriteRenderer>().Color = Color.RoyalBlue;
+                            translation = CollisionReaction.EllipseCircle(this.obj.position, this.translation, go.position);
+                        }
                     }
                     else if (go.GetComponent<Wall>() != null)
                     {
-                        if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, obj.position, go.GetComponent<CollisionRectangle>().edges, go.position))
+                        if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, obj.position + (translation / 2), go.GetComponent<CollisionRectangle>().edges, go.position))
+                        {
                             obj.GetComponent<SpriteRenderer>().Color = Color.Black;
+                            translation = CollisionReaction.EllipseRectangle(this.obj.position, translation, go.position, GameWorld.Instance.Map.GridPointSize);
+                        }
                     }
                 }
             }

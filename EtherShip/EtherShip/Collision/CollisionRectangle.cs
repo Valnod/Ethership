@@ -11,7 +11,7 @@ namespace EtherShip
 {
     class CollisionRectangle : Component, IDrawable, Iloadable
     {
-        //One coloum is the edges ([i,0]), where the second ([i,1]) is a translocation used to indicated the vectors true placement in the world.
+        //One coloum is the edges ([i,0]), where the second ([i,1]) is a translocation used to indicated the vectors true placement around the position.
         public Vector2[,] edges;
 
         //Used to draw the points
