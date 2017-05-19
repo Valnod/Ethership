@@ -20,6 +20,7 @@ namespace EtherShip
         public Rectangle spriteRectangle { get; set; }
         public Vector2 Offset { get; set; }
         private Vector2 origin;
+        public Color Color { get; set; }
 
         public SpriteRenderer(GameObject obj, string spriteName, float scaleFactor, float rotation, float layerDepth) : base(obj)
         {
@@ -45,7 +46,7 @@ namespace EtherShip
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(sprite, obj.position, spriteRectangle, Color.White, Rotation, origin, scaleFactor, SpriteEffects.None, layerDepth);
+            spriteBatch.Draw(sprite, obj.position, spriteRectangle, Color, Rotation, origin, scaleFactor, SpriteEffects.None, layerDepth);
         }
     }
 }
