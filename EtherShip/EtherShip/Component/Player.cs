@@ -62,6 +62,7 @@ namespace EtherShip
         {
             Move(gameTime);
             OBJCollision();
+            MapCollision();
         }
 
         public void Move(GameTime gameTime)
@@ -132,13 +133,13 @@ namespace EtherShip
         public void OBJCollision()
         {
             //Checks if this collides with another gameobject.
-            foreach(GameObject go in GameWorld.Instance.gameObjectPool.CollisionListForPlayer())
+            foreach (GameObject go in GameWorld.Instance.gameObjectPool.CollisionListForPlayer())
             {
                 //Checks the distance to the objects, and only cheecks for collision if the given object is close enough for a check to be meaningfull.
-                if((obj.position - go.position).Length() < 200)
+                if ((obj.position - go.position).Length() < 200)
                 {
                     //The collision checks are done with the upcoming location in mind. The division is just a adjustment, so the objects can come closer before colliding. 
-                    if(go.GetComponent<Enemy>() != null)
+                    if (go.GetComponent<Enemy>() != null)
                     {
                         if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, obj.position + (translation / 2), go.GetComponent<CollisionCircle>().edges, go.position))
                             obj.GetComponent<SpriteRenderer>().Color = Color.Red;
@@ -166,6 +167,25 @@ namespace EtherShip
                     }
                 }
             }
-        }*/
+        }
+
+        public void MapCollision()
+        {
+            if (GameWorld.Instance.Window != null)
+            {
+                if (!float.IsNaN(GameWorld.Instance.Window.ClientBounds.Width))
+                {
+                    if (obj.position.X > GameWorld.Instance.Window.ClientBounds.Width)
+                    {
+                        obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+
+                    }
+                    else if (-GameWorld.Instance.Window.ClientBounds.Width /*/ 30*/ > obj.position.X)
+                    {
+                        obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+                    }
+                }
+            }
+        }
     }
 }
