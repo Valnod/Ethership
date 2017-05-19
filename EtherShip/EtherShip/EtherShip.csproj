@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="Animation.cs" />
     <Compile Include="Clutter.cs" />
+    <Compile Include="Collision\CollisionReaction.cs" />
     <Compile Include="Collision\CollisionCheck.cs" />
     <Compile Include="Collision\CollisionCircle.cs" />
     <Compile Include="Collision\CollisionElipse.cs" />
@@ -87,6 +88,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\enemyBlack1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ShipP.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Icon.ico" />

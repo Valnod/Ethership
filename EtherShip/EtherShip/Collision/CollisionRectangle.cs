@@ -11,7 +11,7 @@ namespace EtherShip
 {
     class CollisionRectangle : Component, IDrawable, Iloadable
     {
-        //One coloum is the edges ([i,0]), where the second ([i,1]) is a translocation used to indicated the vectors true placement in the world.
+        //One coloum is the edges ([i,0]), where the second ([i,1]) is a translocation used to indicated the vectors true placement around the position.
         public Vector2[,] edges;
 
         //Used to draw the points
@@ -26,11 +26,14 @@ namespace EtherShip
 
         private void GenerateSides()
         {
+            //Position adjustment
+            int adjustment = GameWorld.Instance.Map.GridPointSize / 2;
             //The vertixes of the box
-            edges[0, 1] = new Vector2(0, 0);
-            edges[1, 1] = new Vector2(0, obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Height);
-            edges[2, 1] = new Vector2(obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Width, obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Height);
-            edges[3, 1] = new Vector2(obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Width, 0);
+            edges[0, 1] = new Vector2(-adjustment, -adjustment);
+            edges[1, 1] = new Vector2(-adjustment, obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Height - adjustment);
+            edges[2, 1] = new Vector2(obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Width - adjustment, 
+                obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Height - adjustment);
+            edges[3, 1] = new Vector2(obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Width - adjustment, -adjustment);
 
             //The edges of the box
             edges[0, 0] = edges[1, 1] - edges[0, 1];

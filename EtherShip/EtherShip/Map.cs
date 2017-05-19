@@ -12,11 +12,11 @@ namespace EtherShip
     class Map : Iloadable
     {
         public GridPoint[,] MapGrid { get; set; }
+        public int GridPointSize { get; set; }
 
         private string spriteName;
         private Texture2D sprite;
         private Rectangle sourceRect;
-        private int gridPointSize = 30;
 
         private Texture2D pointSprite;
         private Rectangle sourceRectPoint;
@@ -24,7 +24,7 @@ namespace EtherShip
         public Map(string spriteName)
         {
             this.spriteName = spriteName;
-
+            this.GridPointSize = 30;
             GenerateMapGrid();
         }
 
@@ -49,8 +49,8 @@ namespace EtherShip
         /// </summary>
         private void GenerateMapGrid()
         {
-            int xGridAmount = GameWorld.Instance.Window.ClientBounds.Width / gridPointSize;
-            int yGridAmount = GameWorld.Instance.Window.ClientBounds.Height / gridPointSize;
+            int xGridAmount = GameWorld.Instance.Window.ClientBounds.Width / GridPointSize;
+            int yGridAmount = GameWorld.Instance.Window.ClientBounds.Height / GridPointSize;
 
             MapGrid = new GridPoint[xGridAmount, yGridAmount];
 
@@ -58,7 +58,7 @@ namespace EtherShip
             {
                 for (int y = 0; y < yGridAmount; y++)
                 {
-                    MapGrid[x, y] = new GridPoint(new Vector2(x * gridPointSize + (gridPointSize / 2), y * gridPointSize + (gridPointSize / 2)), null);
+                    MapGrid[x, y] = new GridPoint(new Vector2(x * GridPointSize + (GridPointSize / 2), y * GridPointSize + (GridPointSize / 2)), null);
                 }
             }
         }
