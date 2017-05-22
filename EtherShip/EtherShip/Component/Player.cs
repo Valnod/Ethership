@@ -157,7 +157,7 @@ namespace EtherShip
         public void OBJCollision()
         {
             return;
-            //Checks if this collides with another gameobject.
+            //Checks if this collides with another gameobject. nej da
             foreach (GameObject go in GameWorld.Instance.gameObjectPool.CollisionListForPlayer())
             {
                 //Checks the distance to the objects, and only cheecks for collision if the given object is close enough for a check to be meaningfull.
