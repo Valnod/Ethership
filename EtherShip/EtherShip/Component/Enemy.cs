@@ -44,8 +44,8 @@ namespace EtherShip
                     height = GameWorld.Instance.Window.ClientBounds.Height;
                new System.Threading.Thread(() => Route = AI.Pathfind(GameWorld.Instance.Map[obj.position], GameWorld.Instance.Map[GameWorld.Instance.gameObjectPool.player.position],
                    width, height)).Start();
+                
                 Generating = true;
-            
             }
             else if (Route != null)
             {
@@ -61,6 +61,8 @@ namespace EtherShip
                     Route = null;
                 }
                 obj.position = newPosition;
+
+                
             }
         }
     }
