@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using System.Threading;
 
 namespace EtherShip
 {
@@ -12,14 +13,14 @@ namespace EtherShip
 
         
 
-        static public List<GridPoint> Pathfind(GridPoint start, GridPoint end)
+        static public List<GridPoint> Pathfind(GridPoint start, GridPoint end, int windowWidth, int windowHeight)
         {
             //end position ind map coordinate (x,y)
             int endX = (int)(end.Pos.X / GameWorld.Instance.Map.GridPointSize);
             int endY = (int)(end.Pos.Y / GameWorld.Instance.Map.GridPointSize);
             //finds the amount of gridpoint on the x and y axis
-            int xGridAmount = GameWorld.Instance.Window.ClientBounds.Width / GameWorld.Instance.Map.GridPointSize;
-            int yGridAmount = GameWorld.Instance.Window.ClientBounds.Height / GameWorld.Instance.Map.GridPointSize;
+            int xGridAmount = windowWidth / GameWorld.Instance.Map.GridPointSize;
+            int yGridAmount = windowHeight / GameWorld.Instance.Map.GridPointSize;
 
             //GridPoints that have been checked and put in closed list
             var CheckedGridPoints = new List<AStarNode>();
@@ -55,7 +56,7 @@ namespace EtherShip
                 //Checks the gridPoints around the currentGP for any "candidates" 
                 for (int xOffset = -1; xOffset <= 1; xOffset++ )
                 {
-                    for (int yOffset = -1; xOffset <= 1; yOffset++ )
+                    for (int yOffset = -1; yOffset <= 1; yOffset++ )
                     {
                         //checks of the gridpoint is inside the array (gameWindow)
                         if (x + xOffset >= 0 && y + yOffset >= 0 && x + xOffset < xGridAmount && y + yOffset < yGridAmount && (xOffset != 0 || yOffset != 0))
@@ -74,12 +75,13 @@ namespace EtherShip
                                 AStarNode asn = new AStarNode();
                                 asn.currentGP = gp;
                                 asn.parent = currentASN;
-                                //brackets is an if condition with the condition of 14 and else of 10
+                                //brackets is an if condition with the "condition" of 14 and "else" of 10
                                 asn.pathValue = currentASN.pathValue + (xOffset != 0 && yOffset != 0 ? 14 : 10);
                                 //finding the nearest gridpoint to a possible "end" way using 90 degree angles only, using the heuristic values
                                 asn.finalValue = asn.pathValue + ((Math.Abs(endX - (x + xOffset) + Math.Abs(endY - (y + yOffset)))) * 10);
-                                
+
                                 //FARVE GRØN!!!!! hell
+                                asn.currentGP.Color = Color.Green;
 
 
                                 //makes sure that the UncheckGridPoints list is sorted with the lowest number first ([0])
@@ -129,8 +131,18 @@ namespace EtherShip
                 UnCheckedGridPoints.Remove(currentASN);
                 CheckedGridPoints.Add(currentASN);
                 //FARVE BLÅ!!!!!!!!!!
+                //Thread.Sleep(1000);
+                currentASN.currentGP.Color = Color.Blue;
             }
-            if(UnCheckedGridPoints.Count == 0)
+            foreach (AStarNode asn in UnCheckedGridPoints)
+            {
+                asn.currentGP.Color = Color.Black;
+            }
+            foreach (AStarNode asn in CheckedGridPoints)
+            {
+                asn.currentGP.Color = Color.Black;
+            }
+            if (CheckedGridPoints.Count == 0)
             {
                 return null;
             }
@@ -140,6 +152,7 @@ namespace EtherShip
                 for (AStarNode asn = currentASN; asn != null; asn = asn.parent)
                 {
                     //FARVE RØD!!!!!!!!!!
+                    asn.currentGP.Color = Color.Red;
                     path.Add(asn.currentGP);
                 }
                 
