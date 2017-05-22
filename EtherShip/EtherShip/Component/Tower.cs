@@ -33,11 +33,29 @@ namespace EtherShip
 
         }
 
-        public Vector2 Gravity(Vector2 position)
+        public Vector2 Gravity(Vector2 position, float maxSpeed)
         {
-            return position;
+            float distance = (position - this.obj.position).Length();
+            if (distance > gRange)
+                return Vector2.Zero;
+            Vector2 elkg = position - this.obj.position;
+            Vector2 gravDirection = Vector2.Normalize(this.obj.position - position);
+
+            //Calculates the strength of the gravitation at the given point
+            //float gravStrength = 10 + gStrength * (float)Math.Exp(distance);
+            float gravStrength = gStrength / (distance * distance);
+            //Ensures the gravity wont keep the given object indefently
+            if (gravStrength > maxSpeed*3)
+                gravStrength = maxSpeed*3;
+            if (gravStrength < 0)
+                gravStrength = 0;
+            Vector2 positionalGravStrength = gravDirection * gravStrength;
+
+            return positionalGravStrength;
         }
-        
+
+
+
         public void Update(GameTime gameTime)
         {
 

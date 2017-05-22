@@ -22,7 +22,7 @@ namespace EtherShip
         public List<GameObject> ActiveEnemyList { get; set; }
         private List<GameObject> InactiveEnemyList;
         //Tower
-        private List<GameObject> ActiveTowerList;
+        public List<GameObject> ActiveTowerList { get; set; }
         private List<GameObject> InactiveTowerList;
         //Wall 
         private List<GameObject> ActiveWallList;
@@ -128,7 +128,7 @@ namespace EtherShip
             else
             {
                 GameObject obj = new GameObject(towerPos);
-                obj.AddComponnent(new Tower(obj, 10, 100));
+                obj.AddComponnent(new Tower(obj, 500000, 300));
                 obj.AddComponnent(new SpriteRenderer(obj, "circle", 1f, 0f, 1f));
                 obj.LoadContent(GameWorld.Instance.Content);
                 obj.AddComponnent(new CollisionCircle(obj));
