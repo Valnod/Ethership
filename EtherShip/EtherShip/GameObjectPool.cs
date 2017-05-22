@@ -65,7 +65,7 @@ namespace EtherShip
             {
                 GameObject obj = new GameObject(new Vector2(10,10));
                 obj.AddComponnent(new Enemy(obj, 100, 10f, 1, new Vector2()));
-                obj.AddComponnent(new SpriteRenderer(obj, "rectangle", 1f, 0.5f, 1f));
+                obj.AddComponnent(new SpriteRenderer(obj, "rectangle", 1f, 0f, 0.5f));
                 obj.LoadContent(GameWorld.Instance.Content);
                 AddActive.Add(obj);
             }
@@ -91,7 +91,7 @@ namespace EtherShip
             {
                 GameObject obj = new GameObject(position);
                 obj.AddComponnent(new Wall(obj));
-                obj.AddComponnent(new SpriteRenderer(obj, "rectangle", 1f, 0f, 1f));
+                obj.AddComponnent(new SpriteRenderer(obj, "rectangle", 1f, 0f, 0.5f));
                 obj.LoadContent(GameWorld.Instance.Content);
                 obj.AddComponnent(new CollisionRectangle(obj));
                 obj.GetComponent<CollisionRectangle>().LoadContent(GameWorld.Instance.Content);
@@ -159,7 +159,7 @@ namespace EtherShip
         {
             GameObject obj = new GameObject(new Vector2(100, 100));
             obj.AddComponnent(new Player(obj, new Vector2(1, 0), 3, false));
-            obj.AddComponnent(new SpriteRenderer(obj, "circle", 1f, 0f, 1f));
+            obj.AddComponnent(new SpriteRenderer(obj, "ShipP", 1f, 0f, 1f));
             obj.LoadContent(GameWorld.Instance.Content);
             obj.AddComponnent(new CollisionCircle(obj));
             obj.GetComponent<CollisionCircle>().LoadContent(GameWorld.Instance.Content);

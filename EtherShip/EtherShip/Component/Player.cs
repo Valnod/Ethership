@@ -11,9 +11,11 @@ using Microsoft.Xna.Framework.Content;
 
 namespace EtherShip
 {
-    class Player : Component, IUpdateable, ICollidable
+    class Player : Component, IUpdateable//, ICollidable
     {
         private Vector2 direction;
+        private SpriteRenderer spriteRenderer;
+        private Animator animator;
         private int health;
         private float speed;
         private float maxSpeed;
@@ -32,7 +34,9 @@ namespace EtherShip
             this.antiGravity = antiGravity;
             speed = 0;
             minSpeed = 0;
-            maxSpeed = 7;
+            maxSpeed = 5;
+            spriteRenderer = obj.GetComponent<SpriteRenderer>();
+            animator = obj.GetComponent<Animator>();
         }
 
         /// <summary>
@@ -59,6 +63,7 @@ namespace EtherShip
         {
             Move(gameTime);
             OBJCollision();
+            MapCollision();
         }
 
         public void Move(GameTime gameTime)
@@ -141,13 +146,13 @@ namespace EtherShip
         public void OBJCollision()
         {
             //Checks if this collides with another gameobject.
-            foreach(GameObject go in GameWorld.Instance.gameObjectPool.CollisionListForPlayer())
+            foreach (GameObject go in GameWorld.Instance.gameObjectPool.CollisionListForPlayer())
             {
                 //Checks the distance to the objects, and only cheecks for collision if the given object is close enough for a check to be meaningfull.
-                if((obj.position - go.position).Length() < 200)
+                if ((obj.position - go.position).Length() < 200)
                 {
                     //The collision checks are done with the upcoming location in mind. The division is just a adjustment, so the objects can come closer before colliding. 
-                    if(go.GetComponent<Enemy>() != null)
+                    if (go.GetComponent<Enemy>() != null)
                     {
                         if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, obj.position + (translation / 2), go.GetComponent<CollisionCircle>().edges, go.position))
                             obj.GetComponent<SpriteRenderer>().Color = Color.Red;
@@ -174,6 +179,44 @@ namespace EtherShip
                             translation = CollisionReaction.EllipseRectangle(this.obj.position, translation, go.position, GameWorld.Instance.Map.GridPointSize);
                             g = Vector2.Zero;
                         }
+                    }
+                }
+            }
+        }
+
+        public void MapCollision()
+        {
+            int minX = obj.GetComponent<SpriteRenderer>().sprite.Width / 2;
+            int maxX = GameWorld.Instance.GraphicsDevice.Viewport.Width - obj.GetComponent<SpriteRenderer>().sprite.Width / 2;
+            int minY = obj.GetComponent<SpriteRenderer>().sprite.Height / 2;
+            int maxY = GameWorld.Instance.GraphicsDevice.Viewport.Height - obj.GetComponent<SpriteRenderer>().sprite.Height / 2;
+
+            if (GameWorld.Instance.Window != null)
+            {
+                if (!float.IsNaN(GameWorld.Instance.GraphicsDevice.DisplayMode.Width))
+                {
+                    if (obj.position.X > maxX)
+                    {
+                        obj.position.X = maxX;
+                        obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+                    }
+                    else if (obj.position.X < minX)
+                    {
+                        obj.position.X = minX;
+                        obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+                    }
+                }
+                if (!float.IsNaN(GameWorld.Instance.GraphicsDevice.DisplayMode.Height))
+                {
+                    if (obj.position.Y > maxY)
+                    {
+                        obj.position.Y = maxY;
+                        obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+                    }
+                    else if (obj.position.Y < minY)
+                    {
+                        obj.position.Y = minY;
+                        obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
                     }
                 }
             }

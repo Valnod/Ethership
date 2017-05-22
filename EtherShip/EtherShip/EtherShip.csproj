@@ -38,6 +38,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AI.cs" />
     <Compile Include="Animation.cs" />
     <Compile Include="Clutter.cs" />
     <Compile Include="Collision\CollisionReaction.cs" />
