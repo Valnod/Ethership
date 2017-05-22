@@ -171,16 +171,36 @@ namespace EtherShip
 
         public void MapCollision()
         {
+            int minX = obj.GetComponent<SpriteRenderer>().sprite.Width / 2;
+            int maxX = GameWorld.Instance.GraphicsDevice.Viewport.Width - obj.GetComponent<SpriteRenderer>().sprite.Width / 2;
+            int minY = obj.GetComponent<SpriteRenderer>().sprite.Height / 2;
+            int maxY = GameWorld.Instance.GraphicsDevice.Viewport.Height - obj.GetComponent<SpriteRenderer>().sprite.Height / 2;
+
             if (GameWorld.Instance.Window != null)
             {
                 if (!float.IsNaN(GameWorld.Instance.GraphicsDevice.DisplayMode.Width))
                 {
-                    if (obj.position.X > GameWorld.Instance.Window.ClientBounds.Width)
+                    if (obj.position.X > maxX)
                     {
+                        obj.position.X = maxX;
                         obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
                     }
-                    else if (-GameWorld.Instance.Window.ClientBounds.Width / 30 > obj.position.X)
+                    else if (obj.position.X < minX)
                     {
+                        obj.position.X = minX;
+                        obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+                    }
+                }
+                if (!float.IsNaN(GameWorld.Instance.GraphicsDevice.DisplayMode.Height))
+                {
+                    if (obj.position.Y > maxY)
+                    {
+                        obj.position.Y = maxY;
+                        obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+                    }
+                    else if (obj.position.Y < minY)
+                    {
+                        obj.position.Y = minY;
                         obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
                     }
                 }

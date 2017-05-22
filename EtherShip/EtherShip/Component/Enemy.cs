@@ -36,8 +36,7 @@ namespace EtherShip
             if(Route == null)
             {
                 //.Pathfind(obj.position, GameWorld.Instance.gameObjectPool.player);
-            }
-            
-        }
+            }            
+        }*/
     }
 }
