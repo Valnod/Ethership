@@ -178,7 +178,6 @@ namespace EtherShip
                     if (obj.position.X > GameWorld.Instance.Window.ClientBounds.Width)
                     {
                         obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
-
                     }
                     else if (-GameWorld.Instance.Window.ClientBounds.Width / 30 > obj.position.X)
                     {
