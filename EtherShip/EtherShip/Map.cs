@@ -28,10 +28,19 @@ namespace EtherShip
             GenerateMapGrid();
         }
 
+
+        //returns the gridpoint that is closest to the enemy position
+public GridPoint this[Vector2 position]
+        {
+            get
+            {
+                return MapGrid[(int)(position.X / GridPointSize), (int)(position.X / GridPointSize)];
+            }
+        }
         /// <summary>
         /// Draws the background of the game.
         /// </summary>
-        /// <param name="spriteBatch"></param>
+        /// <param name="spriteBatch"></param> 
         public void DrawBackground(SpriteBatch spriteBatch)
         {
             //spriteBatch.Draw(sprite, Vector2.Zero, sourceRect, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
@@ -39,7 +48,7 @@ namespace EtherShip
 #if DEBUG //draws the points which makes up the grid
             foreach(GridPoint gp in MapGrid)
             {
-                spriteBatch.Draw(pointSprite, gp.Pos, sourceRectPoint, Color.Black, 1f, Vector2.Zero, 1f, SpriteEffects.None, 1);
+                spriteBatch.Draw(pointSprite, gp.Pos, sourceRectPoint, gp.Color, 1f, Vector2.Zero, 1f, SpriteEffects.None, 1);
             }
 #endif
         }
@@ -61,6 +70,12 @@ namespace EtherShip
                     MapGrid[x, y] = new GridPoint(new Vector2(x * GridPointSize + (GridPointSize / 2), y * GridPointSize + (GridPointSize / 2)), null);
                 }
             }
+
+            for (int x = 0; x < xGridAmount -1; x++)
+            {
+                MapGrid[x, 1].Occupant = new GameObject(Vector2.Zero);
+            }
+
         }
 
         /// <summary>

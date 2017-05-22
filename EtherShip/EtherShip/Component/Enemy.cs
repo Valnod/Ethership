@@ -10,6 +10,8 @@ namespace EtherShip
 {
     class Enemy : Component, IUpdateable
     {
+        private bool Generating = false;
+
         private bool checkPath;
         public int health;
         public float speed;
@@ -28,14 +30,18 @@ namespace EtherShip
 
         public void Update(GameTime gameTime)
         {
-            //Move(gameTime);
+            Move(gameTime);
         }
 
-        /*public void Move(GameTime gameTime)
+        public void Move(GameTime gameTime)
         {
-            if(Route == null)
+            if(Route == null && !Generating)
             {
-                //.Pathfind(obj.position, GameWorld.Instance.gameObjectPool.player);
+                int width = GameWorld.Instance.Window.ClientBounds.Width,
+                    height = GameWorld.Instance.Window.ClientBounds.Height;
+               new System.Threading.Thread(() => Route = AI.Pathfind(GameWorld.Instance.Map[obj.position], GameWorld.Instance.Map[GameWorld.Instance.gameObjectPool.player.position],
+                   width, height)).Start();
+                Generating = true;
             }
             
         }

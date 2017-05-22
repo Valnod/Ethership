@@ -39,16 +39,16 @@ namespace EtherShip
         /// <param name="edgesFigure1"></param>
         /// <param name="edgesFigure2"></param>
         /// <returns></returns>
-        static public bool Check(Vector2[,] edgesFigure1, Vector2 posFigure1, Vector2[,] edgesFigure2, Vector2 posFigure2)
+        static public bool Check(Microsoft.Xna.Framework.Vector2[,] edgesFigure1, Microsoft.Xna.Framework.Vector2 posFigure1, Microsoft.Xna.Framework.Vector2[,] edgesFigure2, Microsoft.Xna.Framework.Vector2 posFigure2)
         {
             //Gets the axes for both figures.
-            Vector2[] axes1 = Normals(edgesFigure1);
-            Vector2[] axes2 = Normals(edgesFigure2);
+            Microsoft.Xna.Framework.Vector2[] axes1 = Normals(edgesFigure1);
+            Microsoft.Xna.Framework.Vector2[] axes2 = Normals(edgesFigure2);
 
             // loop over the axes1
             for (int i = 0; i < axes1.GetLength(0); i++)
             {
-                Vector2 axis = axes1[i];
+                Microsoft.Xna.Framework.Vector2 axis = axes1[i];
                 // project both shapes onto the axis
                 Projection p1 = FigureProjection(edgesFigure1, axis, posFigure1);
                 Projection p2 = FigureProjection(edgesFigure2, axis, posFigure2);
@@ -62,7 +62,7 @@ namespace EtherShip
             // loop over the axes2
             for (int i = 0; i < axes2.GetLength(0); i++)
             {
-                Vector2 axis = axes2[i];
+                Microsoft.Xna.Framework.Vector2 axis = axes2[i];
                 // project both shapes onto the axis
                 Projection p1 = FigureProjection(edgesFigure1, axis, posFigure1);
                 Projection p2 = FigureProjection(edgesFigure2, axis, posFigure2);
@@ -84,14 +84,14 @@ namespace EtherShip
         /// Returns the normals of to the edges.
         /// <param name="edges"></param>
         /// <returns></returns>
-        static private Vector2[] Normals(Vector2[,] edges)
+        static private Microsoft.Xna.Framework.Vector2[] Normals(Microsoft.Xna.Framework.Vector2[,] edges)
         {
-            Vector2[] normals = new Vector2[edges.GetLength(0)];
+            Microsoft.Xna.Framework.Vector2[] normals = new Microsoft.Xna.Framework.Vector2[edges.GetLength(0)];
             // loop over the vertices
             for (int i = 0; i < edges.GetLength(0); i++)
             {
                 // the perpendicular method is just (x, y) => (-y, x) or (y, -x) depending on which direction the wanted normal should point
-                normals[i] = new Vector2(- edges[i, 0].Y, edges[i, 0].X);
+                normals[i] = new Microsoft.Xna.Framework.Vector2(- edges[i, 0].Y, edges[i, 0].X);
             }
 
             return normals;
@@ -102,12 +102,12 @@ namespace EtherShip
         /// </summary>
         /// <param name="edges"></param>
         /// <returns></returns>
-        static private Projection FigureProjection(Vector2[,] edgesFigure, Vector2 axis, Vector2 pos)
+        static private Projection FigureProjection(Microsoft.Xna.Framework.Vector2[,] edgesFigure, Microsoft.Xna.Framework.Vector2 axis, Microsoft.Xna.Framework.Vector2 pos)
         {
             //When projecting a polygon onto an axis we; loop over all the vertices performing the dot product with the axis and storing the minimum and maximum.
 
             //Normalizes the axis to get accurate projections.
-            Vector2 normAxis = axis;
+            Microsoft.Xna.Framework.Vector2 normAxis = axis;
             normAxis.Normalize();
 
             //formal for the dot product between two vectors:  Dot(v1, v2) = (dx1 * dx2) + (dy1 * dy2)
@@ -139,7 +139,7 @@ namespace EtherShip
         /// <param name="v1"></param>
         /// <param name="v2"></param>
         /// <returns></returns>
-        static public double DotProduct(Vector2 v1, Vector2 v2)
+        static public double DotProduct(Microsoft.Xna.Framework.Vector2 v1, Microsoft.Xna.Framework.Vector2 v2)
         {
             return (v1.X * v2.X) + (v1.Y * v2.Y);
         }

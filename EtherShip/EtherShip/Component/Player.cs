@@ -132,6 +132,7 @@ namespace EtherShip
         /// </summary>
         public void OBJCollision()
         {
+            return;
             //Checks if this collides with another gameobject.
             foreach (GameObject go in GameWorld.Instance.gameObjectPool.CollisionListForPlayer())
             {
