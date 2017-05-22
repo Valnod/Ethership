@@ -28,10 +28,10 @@ namespace EtherShip
 
         public void Update(GameTime gameTime)
         {
-            Move(gameTime);
+            //Move(gameTime);
         }
 
-        public void Move(GameTime gameTime)
+        /*public void Move(GameTime gameTime)
         {
             if(Route == null)
             {

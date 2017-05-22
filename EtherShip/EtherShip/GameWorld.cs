@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 
+
 namespace EtherShip
 {
     /// <summary>
@@ -48,7 +49,7 @@ namespace EtherShip
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+        
             ////set the GraphicsDeviceManager's fullscreen property
             //graphics.ToggleFullScreen();
             ////Makes the window borderless
