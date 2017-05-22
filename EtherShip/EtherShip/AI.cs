@@ -79,7 +79,7 @@ namespace EtherShip
                                 //finding the nearest gridpoint to a possible "end" way using 90 degree angles only, using the heuristic values
                                 asn.finalValue = asn.pathValue + ((Math.Abs(endX - (x + xOffset) + Math.Abs(endY - (y + yOffset)))) * 10);
                                 
-                                //FARVE GRØN!!!!!
+                                //FARVE GRØN!!!!! hell
 
 
                                 //makes sure that the UncheckGridPoints list is sorted with the lowest number first ([0])
