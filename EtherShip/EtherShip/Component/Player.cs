@@ -20,6 +20,7 @@ namespace EtherShip
         private float speed;
         private float maxSpeed;
         private float minSpeed;
+        private Vector2 g;
 
         private bool antiGravity = false; //Anti-gravity effect
         private bool cdTimer = false; //Cooldown of the anti-gravity ability
@@ -86,7 +87,7 @@ namespace EtherShip
                 }
                 if (speed > maxSpeed) //Caps the player speed to 5
                 {
-                    speed = 5f;
+                    speed = maxSpeed;
                 }
                 break;
             }
@@ -116,15 +117,27 @@ namespace EtherShip
             }
             if (translation.X != float.NaN && translation.Y != float.NaN)
             {
-                Vector2.Normalize(translation); //Normalize the movement to 1 (doesn't add up in case of multible buttons press)
+                if (translation.X != 0 || translation.Y != 0)
+                    translation = Vector2.Normalize(translation); //Normalize the movement to 1 (doesn't add up in case of multible buttons press)
                 translation *= speed;
+                g = GravityPull();
                 OBJCollision(); //Changes the translation if a collision happens
-                this.obj.position += translation * speed / (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+                this.obj.position += (g + translation * speed) / (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             }
             if (keystate.IsKeyDown(Keys.Q))
             {
                 AntiGravity(gameTime); //Activate anti-gravity ability
             }
+        }
+
+        private Vector2 GravityPull()
+        {
+            Vector2 totalGravPull = Vector2.Zero;
+            foreach(GameObject tower in GameWorld.Instance.gameObjectPool.ActiveTowerList)
+            {
+                totalGravPull += tower.GetComponent<Tower>().Gravity(this.obj.position, maxSpeed);
+            }
+            return totalGravPull;
         }
 
         /// <summary>
@@ -155,6 +168,7 @@ namespace EtherShip
                         {
                             obj.GetComponent<SpriteRenderer>().Color = Color.RoyalBlue;
                             translation = CollisionReaction.EllipseCircle(this.obj.position, this.translation, go.position);
+                            g = Vector2.Zero;
                         }
                     }
                     else if (go.GetComponent<Wall>() != null)
@@ -163,6 +177,7 @@ namespace EtherShip
                         {
                             obj.GetComponent<SpriteRenderer>().Color = Color.Black;
                             translation = CollisionReaction.EllipseRectangle(this.obj.position, translation, go.position, GameWorld.Instance.Map.GridPointSize);
+                            g = Vector2.Zero;
                         }
                     }
                 }
