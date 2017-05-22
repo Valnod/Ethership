@@ -173,14 +173,14 @@ namespace EtherShip
         {
             if (GameWorld.Instance.Window != null)
             {
-                if (!float.IsNaN(GameWorld.Instance.Window.ClientBounds.Width))
+                if (!float.IsNaN(GameWorld.Instance.GraphicsDevice.DisplayMode.Width))
                 {
                     if (obj.position.X > GameWorld.Instance.Window.ClientBounds.Width)
                     {
                         obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
 
                     }
-                    else if (-GameWorld.Instance.Window.ClientBounds.Width /*/ 30*/ > obj.position.X)
+                    else if (-GameWorld.Instance.Window.ClientBounds.Width / 30 > obj.position.X)
                     {
                         obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
                     }
