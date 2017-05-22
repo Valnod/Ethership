@@ -25,6 +25,7 @@ namespace EtherShip
             radius = 1000;
         }
 
+
         public bool IsInRange(Vector2 position)
         {
             if (Vector2.Distance(this.obj.position, position) <= radius)
