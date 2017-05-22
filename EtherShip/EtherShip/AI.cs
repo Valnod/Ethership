@@ -66,7 +66,7 @@ namespace EtherShip
                             {
                                 if (xOffset != 0 && yOffset != 0)
                                 {
-                                    if (GameWorld.Instance.Map.MapGrid[x + xOffset ,y].Occupant == null && GameWorld.Instance.Map.MapGrid[x, y + yOffset].Occupant == null)
+                                    if (GameWorld.Instance.Map.MapGrid[x + xOffset ,y].Occupant != null || GameWorld.Instance.Map.MapGrid[x, y + yOffset].Occupant != null)
                                     {
                                         continue;
                                     }
@@ -80,7 +80,7 @@ namespace EtherShip
                                 //finding the nearest gridpoint to a possible "end" way using 90 degree angles only, using the heuristic values
                                 asn.finalValue = asn.pathValue + ((Math.Abs(endX - (x + xOffset) + Math.Abs(endY - (y + yOffset)))) * 10);
 
-                                //FARVE GRØN!!!!! hell
+                                //FARVE GRØN!!!!!
                                 asn.currentGP.Color = Color.Green;
 
 

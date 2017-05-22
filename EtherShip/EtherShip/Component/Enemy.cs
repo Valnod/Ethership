@@ -12,11 +12,14 @@ namespace EtherShip
     {
         private bool Generating = false;
 
+        private float acceleration;
+        private float speedElement;
+        private int currentWayPoint = 0;
         private bool checkPath;
-        public int health;
-        public float speed;
-        public Vector2 direction;
-        public int value;
+        private int health;
+        private float speed;
+        private Vector2 direction;
+        private int value;
 
         List<GridPoint> Route = null;
     
@@ -42,8 +45,23 @@ namespace EtherShip
                new System.Threading.Thread(() => Route = AI.Pathfind(GameWorld.Instance.Map[obj.position], GameWorld.Instance.Map[GameWorld.Instance.gameObjectPool.player.position],
                    width, height)).Start();
                 Generating = true;
-            }
             
+            }
+            else if (Route != null)
+            {
+                Generating = false;
+                Vector2 routeDirection = Route[currentWayPoint].Pos - obj.position;
+                Vector2 newPosition = obj.position + Vector2.Normalize(routeDirection) * speed;
+
+                if ((Route[currentWayPoint].Pos - newPosition).Length() > (Route[currentWayPoint].Pos - obj.position).Length())
+                    currentWayPoint++;
+                if (currentWayPoint == Route.Count)
+                {
+                    currentWayPoint = 0;
+                    Route = null;
+                }
+                obj.position = newPosition;
+            }
         }
     }
 }

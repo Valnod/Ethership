@@ -35,7 +35,7 @@ namespace EtherShip
             this.cdTimer = false;
             speed = 0;
             minSpeed = 0;
-            maxSpeed = 5;
+            maxSpeed = 10;
             spriteRenderer = obj.GetComponent<SpriteRenderer>();
             animator = obj.GetComponent<Animator>();
         }
@@ -156,7 +156,7 @@ namespace EtherShip
         /// </summary>
         public void OBJCollision()
         {
-            return;
+            
             //Checks if this collides with another gameobject.
             foreach (GameObject go in GameWorld.Instance.gameObjectPool.CollisionListForPlayer())
             {
