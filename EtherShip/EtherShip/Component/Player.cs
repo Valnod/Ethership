@@ -22,8 +22,8 @@ namespace EtherShip
         private float minSpeed;
         private Vector2 g;
 
-        private bool antiGravity = false; //Anti-gravity effect
-        private bool cdTimer = false; //Cooldown of the anti-gravity ability
+        private bool antiGravity; //Anti-gravity effect
+        private bool cdTimer; //Cooldown of the anti-gravity ability
         float timer = 0; //Timer for both anti-gravity effect and the anti gravity ability
         private Vector2 translation;
 
@@ -31,7 +31,8 @@ namespace EtherShip
         {
             this.direction = direction;
             this.health = health;
-            this.antiGravity = antiGravity;
+            this.antiGravity = false;
+            this.cdTimer = false;
             speed = 0;
             minSpeed = 0;
             maxSpeed = 5;
@@ -45,22 +46,29 @@ namespace EtherShip
         /// <param name="gameTime"></param>
         public void AntiGravity(GameTime gameTime)
         {
+            g = Vector2.Zero; //Reset gravity
             antiGravity = true;
             cdTimer = true;
-            timer += gameTime.ElapsedGameTime.Milliseconds;
-            if (timer >= 5000) //5 or more sec
-            {
-                antiGravity = false; //Anti-gravity ability stops
-            }
-            if (timer >= 8000) //8 or more sec
-        {
-                cdTimer = false; //Cooldown finishes, anti gravity ability becomes available to the player again 
-                timer = 0; //Timer resets
-            }
         }
         
         public void Update(GameTime gameTime)
         {
+            if (antiGravity == true || cdTimer == true)
+            {
+                obj.GetComponent<SpriteRenderer>().Color = Color.DarkGreen;
+                timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (timer >= 5) //5 or more sec
+                {
+                    antiGravity = false; //Anti-gravity ability stops
+                    obj.GetComponent<SpriteRenderer>().Color = Color.ForestGreen;
+                }
+                if (timer >= 8) //8 or more sec
+                {
+                    cdTimer = false; //Cooldown finishes, anti gravity ability becomes available to the player again 
+                    timer = 0; //Timer resets
+                    obj.GetComponent<SpriteRenderer>().Color = Color.White;
+                }
+            }
             Move(gameTime);
             OBJCollision();
             MapCollision();
@@ -120,7 +128,10 @@ namespace EtherShip
                 if (translation.X != 0 || translation.Y != 0)
                     translation = Vector2.Normalize(translation); //Normalize the movement to 1 (doesn't add up in case of multible buttons press)
                 translation *= speed;
-                g = GravityPull();
+                if (antiGravity == false)
+                {
+                    g = GravityPull();
+                }
                 OBJCollision(); //Changes the translation if a collision happens
                 this.obj.position += (g + translation * speed) / (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             }
