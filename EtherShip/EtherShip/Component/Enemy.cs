@@ -30,10 +30,10 @@ namespace EtherShip
 
         public void Update(GameTime gameTime)
         {
-            Move(gameTime);
+            //Move(gameTime);
         }
 
-        public void Move(GameTime gameTime)
+        /*public void Move(GameTime gameTime)
         {
            
             //the enenmy checks the position of the array and the enemy and finds the closest arrayGrid
@@ -145,13 +145,13 @@ namespace EtherShip
                     else
                         NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart + 1]);
 
-                    if (GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1].Occupant == null)
-                    {
-                        UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1]);
-                    }
-                    else
-                        NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1]);
+                if (GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1].Occupant == null)
+                {
+                    UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1]);
                 }
+                else
+                    NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart + 1, yStart - 1]);
+            }
 
                 //third diamond, Up
 
@@ -194,14 +194,13 @@ namespace EtherShip
                     else
                         NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart + 1]);
 
-                    if (GameWorld.Instance.Map.MapGrid[xStart - 1, yStart - 1].Occupant == null)
-                    {
-                        UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart - 1]);
-                    }
-                    else
-                        NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart - 1]);
-                
+                if (GameWorld.Instance.Map.MapGrid[xStart - 1, yStart - 1].Occupant == null)
+                {
+                    UsablePoints.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart - 1]);
                 }
-        }
+                else
+                    NotUsable.Add(GameWorld.Instance.Map.MapGrid[xStart - 1, yStart - 1]);
+            }
+        }*/
     }
 }
