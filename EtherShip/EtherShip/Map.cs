@@ -34,7 +34,7 @@ public GridPoint this[Vector2 position]
         {
             get
             {
-                return MapGrid[(int)(position.X / GridPointSize), (int)(position.X / GridPointSize)];
+                return MapGrid[(int)(position.X / GridPointSize), (int)(position.Y / GridPointSize)];
             }
         }
         /// <summary>
