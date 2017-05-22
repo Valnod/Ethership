@@ -176,16 +176,16 @@ namespace EtherShip
             int minY = obj.GetComponent<SpriteRenderer>().sprite.Height / 2;
             int maxY = GameWorld.Instance.GraphicsDevice.Viewport.Height - obj.GetComponent<SpriteRenderer>().sprite.Height / 2;
 
-            if (GameWorld.Instance.Window != null)
+            if (GameWorld.Instance.Window != null) //Prevents the program from crashing, when the window is closed
             {
                 if (!float.IsNaN(GameWorld.Instance.GraphicsDevice.DisplayMode.Width))
                 {
-                    if (obj.position.X > maxX)
+                    if (obj.position.X > maxX) //Right GameWindow collision
                     {
                         obj.position.X = maxX;
                         obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
                     }
-                    else if (obj.position.X < minX)
+                    else if (obj.position.X < minX) //Left GameWindow collision
                     {
                         obj.position.X = minX;
                         obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
@@ -193,12 +193,12 @@ namespace EtherShip
                 }
                 if (!float.IsNaN(GameWorld.Instance.GraphicsDevice.DisplayMode.Height))
                 {
-                    if (obj.position.Y > maxY)
+                    if (obj.position.Y > maxY) //Bottom GameWindow collsion
                     {
                         obj.position.Y = maxY;
                         obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
                     }
-                    else if (obj.position.Y < minY)
+                    else if (obj.position.Y < minY) //Top GameWindow collision
                     {
                         obj.position.Y = minY;
                         obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
