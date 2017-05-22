@@ -20,6 +20,7 @@ namespace EtherShip
         private float speed;
         private float maxSpeed;
         private float minSpeed;
+        private Vector2 g;
 
         private bool antiGravity = false; //Anti-gravity effect
         private bool cdTimer = false; //Cooldown of the anti-gravity ability
@@ -86,7 +87,7 @@ namespace EtherShip
                 }
                 if (speed > maxSpeed) //Caps the player speed to 5
                 {
-                    speed = 5f;
+                    speed = maxSpeed;
                 }
                 break;
             }
@@ -116,15 +117,27 @@ namespace EtherShip
             }
             if (translation.X != float.NaN && translation.Y != float.NaN)
             {
-                Vector2.Normalize(translation); //Normalize the movement to 1 (doesn't add up in case of multible buttons press)
+                if (translation.X != 0 || translation.Y != 0)
+                    translation = Vector2.Normalize(translation); //Normalize the movement to 1 (doesn't add up in case of multible buttons press)
                 translation *= speed;
+                g = GravityPull();
                 OBJCollision(); //Changes the translation if a collision happens
-                this.obj.position += translation * speed / (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+                this.obj.position += (g + translation * speed) / (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             }
             if (keystate.IsKeyDown(Keys.Q))
             {
                 AntiGravity(gameTime); //Activate anti-gravity ability
             }
+        }
+
+        private Vector2 GravityPull()
+        {
+            Vector2 totalGravPull = Vector2.Zero;
+            foreach(GameObject tower in GameWorld.Instance.gameObjectPool.ActiveTowerList)
+            {
+                totalGravPull += tower.GetComponent<Tower>().Gravity(this.obj.position, maxSpeed);
+            }
+            return totalGravPull;
         }
 
         /// <summary>
@@ -156,6 +169,7 @@ namespace EtherShip
                         {
                             obj.GetComponent<SpriteRenderer>().Color = Color.RoyalBlue;
                             translation = CollisionReaction.EllipseCircle(this.obj.position, this.translation, go.position);
+                            g = Vector2.Zero;
                         }
                     }
                     else if (go.GetComponent<Wall>() != null)
@@ -164,6 +178,7 @@ namespace EtherShip
                         {
                             obj.GetComponent<SpriteRenderer>().Color = Color.Black;
                             translation = CollisionReaction.EllipseRectangle(this.obj.position, translation, go.position, GameWorld.Instance.Map.GridPointSize);
+                            g = Vector2.Zero;
                         }
                     }
                 }
@@ -172,17 +187,36 @@ namespace EtherShip
 
         public void MapCollision()
         {
-            if (GameWorld.Instance.Window != null)
-            {
-                if (!float.IsNaN(GameWorld.Instance.Window.ClientBounds.Width))
-                {
-                    if (obj.position.X > GameWorld.Instance.Window.ClientBounds.Width)
-                    {
-                        obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+            int minX = obj.GetComponent<SpriteRenderer>().sprite.Width / 2;
+            int maxX = GameWorld.Instance.GraphicsDevice.Viewport.Width - obj.GetComponent<SpriteRenderer>().sprite.Width / 2;
+            int minY = obj.GetComponent<SpriteRenderer>().sprite.Height / 2;
+            int maxY = GameWorld.Instance.GraphicsDevice.Viewport.Height - obj.GetComponent<SpriteRenderer>().sprite.Height / 2;
 
-                    }
-                    else if (-GameWorld.Instance.Window.ClientBounds.Width /*/ 30*/ > obj.position.X)
+            if (GameWorld.Instance.Window != null) //Prevents the program from crashing, when the window is closed
+            {
+                if (!float.IsNaN(GameWorld.Instance.GraphicsDevice.DisplayMode.Width))
+                {
+                    if (obj.position.X > maxX) //Right GameWindow collision
                     {
+                        obj.position.X = maxX;
+                        obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+                    }
+                    else if (obj.position.X < minX) //Left GameWindow collision
+                    {
+                        obj.position.X = minX;
+                        obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+                    }
+                }
+                if (!float.IsNaN(GameWorld.Instance.GraphicsDevice.DisplayMode.Height))
+                {
+                    if (obj.position.Y > maxY) //Bottom GameWindow collsion
+                    {
+                        obj.position.Y = maxY;
+                        obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+                    }
+                    else if (obj.position.Y < minY) //Top GameWindow collision
+                    {
+                        obj.position.Y = minY;
                         obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
                     }
                 }
