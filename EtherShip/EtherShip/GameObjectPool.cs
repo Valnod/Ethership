@@ -309,6 +309,10 @@ namespace EtherShip
             {
                 if (go.GetComponent<Tower>() != null)
                 {
+                    /*if (go.position == go.position)
+                    {
+
+                    }*/
                     InactiveTowerList.Add(go);
                     ActiveTowerList.Remove(go);
                 }
