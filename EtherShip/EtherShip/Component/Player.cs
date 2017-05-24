@@ -90,7 +90,7 @@ namespace EtherShip
             {
                 if (speed <= maxSpeed) //Accelerate the player object forward as long as the W button is held
                 {
-                    speed += 0.3f - (float) gameTime.ElapsedGameTime.TotalSeconds;
+                    speed += 0.6f - (float) gameTime.ElapsedGameTime.TotalSeconds;
                     translation += direction * speed;
                 }
                 if (speed > maxSpeed) //Caps the player speed to 5
@@ -156,7 +156,6 @@ namespace EtherShip
         /// </summary>
         public void OBJCollision()
         {
-            return;
             //Checks if this collides with another gameobject.
             foreach (GameObject go in GameWorld.Instance.gameObjectPool.CollisionListForPlayer())
             {
@@ -167,7 +166,10 @@ namespace EtherShip
                     if (go.GetComponent<Enemy>() != null)
                     {
                         if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, obj.position + (translation / 2), go.GetComponent<CollisionCircle>().edges, go.position))
+                        {
                             obj.GetComponent<SpriteRenderer>().Color = Color.Red;
+                            health -= 1;
+                        }
                     }
                     else if (go.GetComponent<Whale>() != null)
                     {

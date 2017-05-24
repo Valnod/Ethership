@@ -115,6 +115,9 @@ namespace EtherShip
             //Updates all gameObjects
             gameObjectPool.Update(gameTime);
 
+            gameObjectPool.RemoveFromActive();
+            gameObjectPool.AddToActive();
+
             base.Update(gameTime);
         }
 

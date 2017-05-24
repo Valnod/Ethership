@@ -10,9 +10,6 @@ namespace EtherShip
 {
     static class AI
     {
-
-        
-
         static public List<GridPoint> Pathfind(GridPoint start, GridPoint end, int windowWidth, int windowHeight)
         {
             //end position ind map coordinate (x,y)
@@ -33,15 +30,12 @@ namespace EtherShip
 
             AStarNode currentASN = null;
 
-            
             startASN.parent = null;
 
             //set final value & pathValue = 0 
             startASN.finalValue = startASN.pathValue = 0;
 
             startASN.currentGP = start;
-
-
 
             UnCheckedGridPoints.Add(startASN);
 
@@ -96,9 +90,7 @@ namespace EtherShip
                                         UnCheckedGridPoints.Insert(i, asn);
                                         break;
                                     }
-
                                 }   
-
                             }
                             else  
                             {
@@ -155,15 +147,11 @@ namespace EtherShip
                     asn.currentGP.Color = Color.Red;
                     path.Add(asn.currentGP);
                 }
-                
                 path.Reverse();
                 return path;
-
             }
         }
-
-       
-
+ 
         private class AStarNode
         {
             //Candidate for shortest known path
