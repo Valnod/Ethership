@@ -21,7 +21,7 @@ namespace EtherShip
         private Vector2 translation;
         private int value;
         private float timer;
-        private float cooldown = 1000;
+        private float cooldown = 300;
 
         public int Health { get; set; }
 
@@ -46,7 +46,7 @@ namespace EtherShip
         {
             timer += gameTime.ElapsedGameTime.Milliseconds;
 
-            if (NewRoute == null || !Generating || timer >= cooldown)
+            if (NewRoute == null || (!Generating && timer >= cooldown))
             {
                int width = GameWorld.Instance.Window.ClientBounds.Width,
                     height = GameWorld.Instance.Window.ClientBounds.Height;
