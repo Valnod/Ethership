@@ -11,6 +11,10 @@ namespace EtherShip
     {
         private float gStrength;
         private float gRange;
+        private GameObject target;
+        private float timer;
+        private float shootCooldown = 1000;
+        private bool canShoot;
         protected float radius;
 
         public float Radius
@@ -22,7 +26,8 @@ namespace EtherShip
         {
             this.gStrength = gStrength;
             this.gRange = gRange;
-            radius = 1000;
+            radius = 300;
+            canShoot = true;
         }
 
         public bool IsInRange(Vector2 position)
@@ -34,7 +39,7 @@ namespace EtherShip
         }
         private void Shoot()
         {
-            float length = 100000;
+            float length = 400;
             //xLoc is closest x position
             int xStart = 0;
             //yLoc is closest y position
@@ -43,24 +48,24 @@ namespace EtherShip
             int xEnd = 0;
             //yEnd is closet position to TOwer
             int yEnd = 0;
+            //Target
+            target = null;
 
-          
             for (int x = 0; x < GameWorld.Instance.gameObjectPool.ActiveEnemyList.Count; x++)
             {
-                GameObject target = GameWorld.Instance.gameObjectPool.ActiveEnemyList[x];
-
-                if (IsInRange(target.position) &&(this.obj.position - target.position).Length() < length)
-
+                if (IsInRange(GameWorld.Instance.gameObjectPool.ActiveEnemyList[x].position) &&
+                    ((this.obj.position - GameWorld.Instance.gameObjectPool.ActiveEnemyList[x].position).Length() < length))
                 {
                     length = (this.obj.position - GameWorld.Instance.gameObjectPool.ActiveEnemyList[x].position).Length();
-                    new Projectile(obj, 10f, 10, target);
-
+                    target = GameWorld.Instance.gameObjectPool.ActiveEnemyList[x];
                 }
             }
-
-    
-            
-
+            if (target != null)
+            {
+                GameWorld.Instance.gameObjectPool.CreateProjectile(obj.position, target);
+                canShoot = false;
+                timer = 0;
+            }
         }
 
         public Vector2 Gravity(Vector2 position, float maxSpeed)
@@ -86,7 +91,14 @@ namespace EtherShip
 
         public void Update(GameTime gameTime)
         {
-
+            if(!canShoot)
+                timer += (float)gameTime.ElapsedGameTime.Milliseconds;
+            if (canShoot)
+                Shoot();
+            else if (timer > shootCooldown)
+                canShoot = true;
+            else
+                timer += 1;
         }
     }
 }

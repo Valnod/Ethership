@@ -24,6 +24,9 @@ namespace EtherShip
         //Tower
         public List<GameObject> ActiveTowerList { get; set; }
         private List<GameObject> InactiveTowerList;
+        //Projectile
+        public List<GameObject> ActiveProjectileList { get; set; }
+        private List<GameObject> InactiveProjectileList;
         //Wall 
         private List<GameObject> ActiveWallList;
         private List<GameObject> InactiveWallList;
@@ -43,12 +46,14 @@ namespace EtherShip
             ActiveClutterList = new List<GameObject>();
             ActiveWallList = new List<GameObject>();
             ActiveWhaleList = new List<GameObject>();
+            ActiveProjectileList = new List<GameObject>();
 
             InactiveClutterList = new List<GameObject>();
             InactiveEnemyList = new List<GameObject>();
             InactiveTowerList = new List<GameObject>();
             InactiveWallList = new List<GameObject>();
             InactiveWhaleList = new List<GameObject>();
+            InactiveProjectileList = new List<GameObject>();
 
             AddActive = new List<GameObject>();
             RemoveActive = new List<GameObject>();
@@ -58,15 +63,16 @@ namespace EtherShip
         {
             if (InactiveEnemyList.Count > 0)
             {
-                AddActive.Add(InactiveEnemyList[1]);
-                InactiveEnemyList.RemoveAt(1);
+                AddActive.Add(InactiveEnemyList[0]);
             }
             else
             {
-                GameObject obj = new GameObject(new Vector2(10,10));
-                obj.AddComponnent(new Enemy(obj, 100, 10f, 1, new Vector2()));
-                obj.AddComponnent(new SpriteRenderer(obj, "rectangle", 1f, 0f, 0.5f));
+                GameObject obj = new GameObject(new Vector2(400, 400));
+                obj.AddComponnent(new Enemy(obj, 10, 3f, 1, new Vector2()));
+                obj.AddComponnent(new SpriteRenderer(obj, "circle", 1f, 0f, 0.5f));
                 obj.LoadContent(GameWorld.Instance.Content);
+                obj.AddComponnent(new CollisionCircle(obj));
+                obj.GetComponent<CollisionCircle>().LoadContent(GameWorld.Instance.Content);
                 AddActive.Add(obj);
             }
         }
@@ -84,8 +90,10 @@ namespace EtherShip
         {
             if (InactiveWallList.Count > 0)
             {
-                AddActive.Add(InactiveWallList[1]);
-                RemoveActive.Add(InactiveWallList[1]);
+                InactiveWallList[0].position = position;
+                AddActive.Add(InactiveWallList[0]);
+
+                GameWorld.Instance.Map[position].Occupant = InactiveTowerList[0];
             }
             else
             {
@@ -96,6 +104,8 @@ namespace EtherShip
                 obj.AddComponnent(new CollisionRectangle(obj));
                 obj.GetComponent<CollisionRectangle>().LoadContent(GameWorld.Instance.Content);
                 AddActive.Add(obj);
+
+                GameWorld.Instance.Map[position].Occupant = obj;
             }
         }
 
@@ -122,8 +132,10 @@ namespace EtherShip
         {
             if (InactiveTowerList.Count > 0)
             {
-                AddActive.Add(InactiveTowerList[1]);
-                RemoveActive.Add(InactiveTowerList[1]);
+                InactiveTowerList[0].position = towerPos;
+                AddActive.Add(InactiveTowerList[0]);
+
+                GameWorld.Instance.Map[towerPos].Occupant = InactiveTowerList[0];
             }
             else
             {
@@ -134,10 +146,41 @@ namespace EtherShip
                 obj.AddComponnent(new CollisionCircle(obj));
                 obj.GetComponent<CollisionCircle>().LoadContent(GameWorld.Instance.Content);
                 AddActive.Add(obj);
+
+                GameWorld.Instance.Map[towerPos].Occupant = obj;
             }
         }
 
         public void DeleteTower(GameObject tower)
+        {
+
+        }
+
+        /// <summary>
+        /// Creates a projectile at the given location, towerPos.
+        /// </summary>
+        /// <param name="towerPos"></param>
+        public void CreateProjectile(Vector2 projectileStartPos, GameObject target)
+        {
+            if (InactiveProjectileList.Count > 0)
+            {
+                InactiveProjectileList[0].GetComponent<Projectile>().target = target;
+                InactiveProjectileList[0].position = projectileStartPos;
+                AddActive.Add(InactiveProjectileList[0]);
+            }
+            else
+            {
+                GameObject obj = new GameObject(projectileStartPos);
+                obj.AddComponnent(new Projectile(obj, 70, 1, target));
+                obj.AddComponnent(new SpriteRenderer(obj, "circle", 1f, 0f, 1f));
+                obj.LoadContent(GameWorld.Instance.Content);
+                obj.AddComponnent(new CollisionCircle(obj));
+                obj.GetComponent<CollisionCircle>().LoadContent(GameWorld.Instance.Content);
+                AddActive.Add(obj);
+            }
+        }
+
+        public void DeleteProjectile(GameObject projectile)
         {
 
         }
@@ -184,6 +227,8 @@ namespace EtherShip
                 go.Update(gameTime);
             foreach (GameObject go in ActiveClutterList)
                 go.Update(gameTime);
+            foreach (GameObject go in ActiveProjectileList)
+                go.Update(gameTime);
         }
 
         /// <summary>
@@ -204,6 +249,8 @@ namespace EtherShip
                 go.Draw(spriteBatch);
             foreach (GameObject go in ActiveClutterList)
                 go.Draw(spriteBatch);
+            foreach (GameObject go in ActiveProjectileList)
+                go.Draw(spriteBatch);
         }
 
         /// <summary>
@@ -214,36 +261,82 @@ namespace EtherShip
             foreach(GameObject go in AddActive)
             {
                 if (go.GetComponent<Tower>() != null)
+                {
                     ActiveTowerList.Add(go);
+                    if (InactiveTowerList.Contains(go))
+                        InactiveTowerList.Remove(go);
+                }
                 if (go.GetComponent<Enemy>() != null)
+                {
                     ActiveEnemyList.Add(go);
+                    if (InactiveEnemyList.Contains(go))
+                        InactiveEnemyList.Remove(go);
+                }
                 if (go.GetComponent<Wall>() != null)
+                {
                     ActiveWallList.Add(go);
+                    if (InactiveWallList.Contains(go))
+                        InactiveWallList.Remove(go);
+                }
                 if (go.GetComponent<Whale>() != null)
+                {
                     ActiveWhaleList.Add(go);
+                    if (InactiveWhaleList.Contains(go))
+                        InactiveWhaleList.Remove(go);
+                }
                 if (go.GetComponent<Clutter>() != null)
+                {
                     ActiveClutterList.Add(go);
+                    if (InactiveClutterList.Contains(go))
+                        InactiveClutterList.Remove(go);
+                }
+                if (go.GetComponent<Projectile>() != null)
+                {
+                    ActiveProjectileList.Add(go);
+                    if (InactiveProjectileList.Contains(go))
+                        InactiveProjectileList.Remove(go);
+                }
             }
             AddActive.Clear();
         }
 
         /// <summary>
-        /// Moves gameObjects from active lists to inactive lists  
+        /// Moves gameObjects from RemoveActive lists to inactive lists  
         /// </summary>
         public void RemoveFromActive()
         {
-            foreach (GameObject go in AddActive)
+            foreach (GameObject go in RemoveActive)
             {
                 if (go.GetComponent<Tower>() != null)
+                {
                     InactiveTowerList.Add(go);
+                    ActiveTowerList.Remove(go);
+                }
                 if (go.GetComponent<Enemy>() != null)
+                {
                     InactiveEnemyList.Add(go);
+                    ActiveEnemyList.Remove(go);
+                }
                 if (go.GetComponent<Wall>() != null)
+                {
                     InactiveWallList.Add(go);
+                    ActiveWallList.Remove(go);
+                }
                 if (go.GetComponent<Whale>() != null)
+                {
                     InactiveWhaleList.Add(go);
+                    ActiveWhaleList.Remove(go);
+                }
                 if (go.GetComponent<Clutter>() != null)
+                {
                     InactiveClutterList.Add(go);
+                    ActiveClutterList.Remove(go);
+                }
+                if (go.GetComponent<Projectile>() != null)
+                {
+                    InactiveProjectileList.Add(go);
+                    ActiveProjectileList.Remove(go);
+                }
             }
             RemoveActive.Clear();
         }
@@ -260,6 +353,21 @@ namespace EtherShip
                                     .Concat(ActiveWallList)
                                     .Concat(ActiveTowerList)
                                     .Concat(ActiveWhaleList)
+                                    .ToList();
+            return allObjects;
+        }
+
+        /// <summary>
+        /// Returns a list of all GameObjects the enemy shall check collision with.
+        /// </summary>
+        /// <returns></returns>
+        public List<GameObject> CollisionListForEnemy()
+        {
+            List<GameObject> list = new List<GameObject>();
+
+            var allObjects = ActiveClutterList.Concat(ActiveEnemyList)
+                                    .Concat(ActiveWallList)
+                                    .Concat(ActiveTowerList)
                                     .ToList();
             return allObjects;
         }

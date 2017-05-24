@@ -14,7 +14,7 @@ namespace EtherShip
         public float LRadius { get; }
         public float SRadius { get; }
 
-        //One coloum is the edges ([i,0]), where the second ([i,1]) is a translocation used to indicated the vectors true placement around the position.
+        ////One coloum is the edges ([i,0]), where the second ([i,1]) is a translocation used to indicated the vectors true placement around the position.
         public Vector2[,] edges;
         public List<float> lengthOfEdges;
 

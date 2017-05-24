@@ -16,6 +16,7 @@ namespace EtherShip
 
         private static GameWorld instance;
         private bool buildMode;
+        private BuildMode build;
 
         public Map Map { get; set; }
         public GameObjectPool gameObjectPool;
@@ -60,6 +61,9 @@ namespace EtherShip
             graphics.ApplyChanges();
             this.Window.AllowUserResizing = true;
 
+            buildMode = false;
+            build = new BuildMode("circle", "rectangle");
+
             //Initializes the map
             Map = new Map("Background");
 
@@ -68,8 +72,6 @@ namespace EtherShip
 
             //Adds some gameObjects for testing
             gameObjectPool.CreatePlayer();
-            gameObjectPool.CreateTower(new Vector2(400, 400));
-            gameObjectPool.CreateWall(new Vector2(300, 400));
             gameObjectPool.CreateEnemy();
 
             gameObjectPool.AddToActive();
@@ -112,8 +114,31 @@ namespace EtherShip
 
             // TODO: Add your update logic here
 
-            //Updates all gameObjects
-            gameObjectPool.Update(gameTime);
+            //Get the keyboard state
+            KeyboardState keystate = Keyboard.GetState();
+
+            if (keystate.IsKeyDown(Keys.B)) //now places towers
+            {
+                buildMode = true;
+                this.IsMouseVisible = true;
+            }
+            else if (keystate.IsKeyDown(Keys.N))
+            {
+                buildMode = false;
+                this.IsMouseVisible = false;
+            }
+
+            //Updates mouse state
+            InputManager.Update();
+
+            if (!buildMode)
+                gameObjectPool.Update(gameTime); //Updates all gameObjects
+            else
+                build.Update(gameTime); //Build mode
+
+            //Adds and removes GameObjects from the game
+            gameObjectPool.RemoveFromActive();
+            gameObjectPool.AddToActive();
 
             base.Update(gameTime);
         }

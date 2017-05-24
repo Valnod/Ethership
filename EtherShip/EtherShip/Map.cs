@@ -29,7 +29,7 @@ namespace EtherShip
         }
 
 
-        //returns the gridpoint that is closest to the enemy position
+        //returns the gridpoint that is closest to the position
 public GridPoint this[Vector2 position]
         {
             get
@@ -70,12 +70,6 @@ public GridPoint this[Vector2 position]
                     MapGrid[x, y] = new GridPoint(new Vector2(x * GridPointSize + (GridPointSize / 2), y * GridPointSize + (GridPointSize / 2)), null);
                 }
             }
-
-            for (int x = 0; x < xGridAmount -1; x++)
-            {
-                MapGrid[x, 1].Occupant = new GameObject(Vector2.Zero);
-            }
-
         }
 
         /// <summary>
@@ -92,6 +86,21 @@ public GridPoint this[Vector2 position]
             //Draws the background
             //sprite = content.Load<Texture2D>("Background");
             //sourceRect = new Rectangle(0, 0, sprite.Width, sprite.Height);
+        }
+
+        public void RemoveOccupant(GridPoint gridPoint)
+        {
+            for(int x = 0; x < MapGrid.GetLength(0); x++)
+            {
+                for(int y = 0; y < MapGrid.GetLength(1); y++)
+                {
+                    if(MapGrid[x, y] == gridPoint)
+                    {
+                        GameWorld.Instance.gameObjectPool.RemoveActive.Add(MapGrid[x, y].Occupant);
+                        MapGrid[x, y].Occupant = null;
+                    }
+                }
+            }
         }
     }
 }
