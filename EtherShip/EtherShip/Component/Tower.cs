@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EtherShip
 {
-    class Tower : Component, IUpdateable
+    public class Tower : Component, IUpdateable
     {
         private float gStrength;
         private float gRange;
@@ -25,7 +25,6 @@ namespace EtherShip
             radius = 1000;
         }
 
-
         public bool IsInRange(Vector2 position)
         {
             if (Vector2.Distance(this.obj.position, position) <= radius)
@@ -35,8 +34,7 @@ namespace EtherShip
         }
         private void Shoot()
         {
-
-        float length = 100000;
+            float length = 100000;
             //xLoc is closest x position
             int xStart = 0;
             //yLoc is closest y position
@@ -46,7 +44,6 @@ namespace EtherShip
             //yEnd is closet position to TOwer
             int yEnd = 0;
 
-         
           
             for (int x = 0; x < GameWorld.Instance.gameObjectPool.ActiveEnemyList.Count; x++)
             {
@@ -86,8 +83,6 @@ namespace EtherShip
 
             return positionalGravStrength;
         }
-
-
 
         public void Update(GameTime gameTime)
         {
