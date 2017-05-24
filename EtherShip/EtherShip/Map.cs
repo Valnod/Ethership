@@ -87,5 +87,20 @@ public GridPoint this[Vector2 position]
             //sprite = content.Load<Texture2D>("Background");
             //sourceRect = new Rectangle(0, 0, sprite.Width, sprite.Height);
         }
+
+        public void RemoveOccupant(GridPoint gridPoint)
+        {
+            for(int x = 0; x < MapGrid.GetLength(0); x++)
+            {
+                for(int y = 0; y < MapGrid.GetLength(1); y++)
+                {
+                    if(MapGrid[x, y] == gridPoint)
+                    {
+                        GameWorld.Instance.gameObjectPool.RemoveActive.Add(MapGrid[x, y].Occupant);
+                        MapGrid[x, y].Occupant = null;
+                    }
+                }
+            }
+        }
     }
 }

@@ -6,11 +6,5 @@ using System.Threading.Tasks;
 
 namespace EtherShip
 {
-    class Wall : Component
-    {
-        public Wall(GameObject obj) : base(obj)
-        {
-
-        }
-    }
+    public enum MouseButton { Left, Middle, Right }
 }

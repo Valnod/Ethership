@@ -67,7 +67,7 @@ namespace EtherShip
             }
             else
             {
-                GameObject obj = new GameObject(new Vector2(10,10));
+                GameObject obj = new GameObject(new Vector2(400, 400));
                 obj.AddComponnent(new Enemy(obj, 10, 3f, 1, new Vector2()));
                 obj.AddComponnent(new SpriteRenderer(obj, "circle", 1f, 0f, 0.5f));
                 obj.LoadContent(GameWorld.Instance.Content);
@@ -92,6 +92,8 @@ namespace EtherShip
             {
                 InactiveWallList[0].position = position;
                 AddActive.Add(InactiveWallList[0]);
+
+                GameWorld.Instance.Map[position].Occupant = InactiveTowerList[0];
             }
             else
             {
@@ -102,6 +104,8 @@ namespace EtherShip
                 obj.AddComponnent(new CollisionRectangle(obj));
                 obj.GetComponent<CollisionRectangle>().LoadContent(GameWorld.Instance.Content);
                 AddActive.Add(obj);
+
+                GameWorld.Instance.Map[position].Occupant = obj;
             }
         }
 
@@ -130,6 +134,8 @@ namespace EtherShip
             {
                 InactiveTowerList[0].position = towerPos;
                 AddActive.Add(InactiveTowerList[0]);
+
+                GameWorld.Instance.Map[towerPos].Occupant = InactiveTowerList[0];
             }
             else
             {
@@ -140,6 +146,8 @@ namespace EtherShip
                 obj.AddComponnent(new CollisionCircle(obj));
                 obj.GetComponent<CollisionCircle>().LoadContent(GameWorld.Instance.Content);
                 AddActive.Add(obj);
+
+                GameWorld.Instance.Map[towerPos].Occupant = obj;
             }
         }
 
