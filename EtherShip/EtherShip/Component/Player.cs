@@ -86,7 +86,7 @@ namespace EtherShip
             translation = Vector2.Zero; //Reset the translation
             KeyboardState keystate = Keyboard.GetState(); //Get the keyboard state
 
-            while (keystate.IsKeyDown(Keys.W))
+            if (keystate.IsKeyDown(Keys.W))
             {
                 if (speed <= maxSpeed) //Accelerate the player object forward as long as the W button is held
                 {
@@ -97,7 +97,6 @@ namespace EtherShip
                 {
                     speed = maxSpeed;
                 }
-                break;
             }
             if (keystate.IsKeyUp(Keys.W))
             {

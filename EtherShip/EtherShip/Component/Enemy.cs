@@ -20,10 +20,13 @@ namespace EtherShip
         private Vector2 direction;
         private Vector2 translation;
         private int value;
+        private float timer;
+        private float cooldown = 1000;
 
         public int Health { get; set; }
 
-        List<GridPoint> Route = null;
+        List<GridPoint> NewRoute = null;
+        List<GridPoint> CurrentRoute = null;
     
         public Enemy(GameObject obj, int health, float speed, int value, Vector2 direction) : base(obj)
         {
@@ -41,30 +44,37 @@ namespace EtherShip
 
         public void Move(GameTime gameTime)
         {
-            if(Route == null && !Generating)
+            timer += gameTime.ElapsedGameTime.Milliseconds;
+
+            if (NewRoute == null || !Generating || timer >= cooldown)
             {
                int width = GameWorld.Instance.Window.ClientBounds.Width,
                     height = GameWorld.Instance.Window.ClientBounds.Height;
-               new System.Threading.Thread(() => Route = AI.Pathfind(GameWorld.Instance.Map[obj.position], GameWorld.Instance.Map[GameWorld.Instance.gameObjectPool.player.position],
+               new System.Threading.Thread(() => NewRoute = AI.Pathfind(GameWorld.Instance.Map[obj.position], GameWorld.Instance.Map[GameWorld.Instance.gameObjectPool.player.position],
                    width, height)).Start();
                 Generating = true;
-            
+                timer = 0;
             }
-            else if (Route != null)
+            else if (NewRoute != null)
             {
-                Generating = false;
-                Vector2 routeDirection = Route[currentWayPoint].Pos - obj.position;
-                translation = Vector2.Normalize(routeDirection) * speed;
-                Vector2 newPosition = obj.position + translation;
+                CurrentRoute = NewRoute;
 
-                if ((Route[currentWayPoint].Pos - newPosition).Length() > (Route[currentWayPoint].Pos - obj.position).Length())
-                    currentWayPoint++;
-                if (currentWayPoint == Route.Count)
+                if (CurrentRoute.Count > currentWayPoint)
                 {
-                    currentWayPoint = 0;
-                    Route = null;
+                    Generating = false;
+                    Vector2 routeDirection = CurrentRoute[currentWayPoint].Pos - obj.position;
+                    translation = Vector2.Normalize(routeDirection) * speed;
+                    Vector2 newPosition = obj.position + translation;
+
+                    if ((CurrentRoute[currentWayPoint].Pos - newPosition).Length() > (CurrentRoute[currentWayPoint].Pos - obj.position).Length())
+                        currentWayPoint++;
+                    if (currentWayPoint == CurrentRoute.Count)
+                    {
+                        currentWayPoint = 0;
+                        CurrentRoute = null;
+                    }
+                    obj.position = newPosition;
                 }
-                obj.position = newPosition;
             }
         }
 
