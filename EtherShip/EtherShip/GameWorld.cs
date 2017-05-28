@@ -13,8 +13,8 @@ namespace EtherShip
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
         private static GameWorld instance;
+        private bool betweenRounds;
         private bool buildMode;
         private BuildMode build;
 
@@ -61,6 +61,7 @@ namespace EtherShip
             graphics.ApplyChanges();
             this.Window.AllowUserResizing = true;
 
+            betweenRounds = true;
             buildMode = false;
             build = new BuildMode("circle", "rectangle");
 
@@ -109,6 +110,8 @@ namespace EtherShip
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+           
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
@@ -117,16 +120,22 @@ namespace EtherShip
             //Get the keyboard state
             KeyboardState keystate = Keyboard.GetState();
 
-            if (keystate.IsKeyDown(Keys.B)) //now places towers
-            {
-                buildMode = true;
-                this.IsMouseVisible = true;
-            }
-            else if (keystate.IsKeyDown(Keys.N))
-            {
-                buildMode = false;
-                this.IsMouseVisible = false;
-            }
+          
+             if(betweenRounds == true)
+                {
+                    buildMode = true;
+                    this.IsMouseVisible = true;
+
+
+                }
+                
+            
+                  if (keystate.IsKeyDown(Keys.P) )
+                  {
+                     betweenRounds = false;
+                     buildMode = false;
+                     this.IsMouseVisible = false;
+                  }
 
             //Updates mouse state
             InputManager.Update();
