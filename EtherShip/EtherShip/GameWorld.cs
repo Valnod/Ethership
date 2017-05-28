@@ -22,6 +22,8 @@ namespace EtherShip
         public GameObjectPool gameObjectPool;
         public Random rnd;
 
+        Wave wave;
+
         public static GameWorld Instance
         {
             get
@@ -73,7 +75,12 @@ namespace EtherShip
 
             //Adds some gameObjects for testing
             gameObjectPool.CreatePlayer();
-            gameObjectPool.CreateEnemy();
+            //enemy is out for testing
+            //gameObjectPool.CreateEnemy();
+
+            //testing waves
+            wave = new Wave(0, 10, Map);
+            wave.Start();
 
             gameObjectPool.AddToActive();
 
@@ -141,10 +148,13 @@ namespace EtherShip
             InputManager.Update();
 
             if (!buildMode)
+            {
                 gameObjectPool.Update(gameTime); //Updates all gameObjects
+                wave.Update(gameTime);
+            }
             else
                 build.Update(gameTime); //Build mode
-
+            
             //Adds and removes GameObjects from the game
             gameObjectPool.RemoveFromActive();
             gameObjectPool.AddToActive();
@@ -169,6 +179,7 @@ namespace EtherShip
             //Draws all gameObjects
             gameObjectPool.Draw(spriteBatch);
 
+            wave.Update(gameTime);
             spriteBatch.End();
 
             base.Draw(gameTime);

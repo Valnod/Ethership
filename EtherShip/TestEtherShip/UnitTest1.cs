@@ -36,7 +36,7 @@ namespace TestEtherShip
         [TestMethod]
         public void TestEnemy()
         {
-            Assert.AreEqual(100, e.health); //Test if the enemy's health is 100
+            Assert.AreEqual(100, e.Health); //Test if the enemy's health is 100
         }
     }
 }
