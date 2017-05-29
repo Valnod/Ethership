@@ -11,18 +11,11 @@ namespace EtherShip
 {
     class BuildMode
     {
-        public string spriteNameTower;
-        public string spriteNameWall;
-        public Texture2D spriteTower;
-        public Texture2D spriteWall;
-
         private bool placingTower;
         private bool placingWall;
 
         public BuildMode(string spriteNameTower, string spriteNameWall)
         {
-            spriteNameTower = this.spriteNameTower;
-            spriteNameWall = this.spriteNameWall;
             placingTower = true;
             placingWall = false;
         }

@@ -55,3 +55,9 @@
 /processorParam:TextureFormat=Compressed
 /build:buildingError.spritefont
 
+#begin hitSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:hitSound.wav
+

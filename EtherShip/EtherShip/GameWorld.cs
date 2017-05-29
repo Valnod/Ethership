@@ -40,7 +40,6 @@ namespace EtherShip
             Content.RootDirectory = "Content";
         }
 
-       
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic
@@ -89,7 +88,6 @@ namespace EtherShip
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Map.LoadContent(Content);
-
             // TODO: use this.Content to load your game content here
         }
 
