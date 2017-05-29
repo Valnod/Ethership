@@ -21,19 +21,22 @@ namespace EtherShip
         private Vector2 translation;
         private int value;
         private float timer;
-        public float cooldown = 1000;
+        private float cooldown = 300;
 
         public int Health { get; set; }
+        private int maxHealth;
 
         List<GridPoint> NewRoute = null;
         List<GridPoint> CurrentRoute = null;
     
-        public Enemy(GameObject obj, int health, float speed, int value, Vector2 direction) : base(obj)
+        public Enemy(GameObject obj, int maxHealth, float speed, int value, Vector2 direction) : base(obj)
         {
-            this.Health = health;
+            this.maxHealth = maxHealth;
             this.speed = speed;
             this.direction = direction;
             this.value = value;
+
+            ResetHealth();
         }
 
         public void Update(GameTime gameTime)
@@ -41,12 +44,15 @@ namespace EtherShip
             Move(gameTime);
             CheckAmIDead();
         }
-
+        public void ResetHealth()
+        {
+            Health = maxHealth;
+        }
         public void Move(GameTime gameTime)
         {
             timer += gameTime.ElapsedGameTime.Milliseconds;
 
-            if (NewRoute == null || !Generating || timer >= cooldown)
+            if (NewRoute == null || (!Generating && timer >= cooldown))
             {
                int width = GameWorld.Instance.Window.ClientBounds.Width,
                     height = GameWorld.Instance.Window.ClientBounds.Height;
@@ -125,5 +131,6 @@ namespace EtherShip
             if (Health < 0)
                 GameWorld.Instance.gameObjectPool.RemoveActive.Add(obj);
         }
+      
     }
 }

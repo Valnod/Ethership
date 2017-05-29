@@ -20,7 +20,8 @@ namespace EtherShip
         private float speed;
         private float maxSpeed;
         private float minSpeed;
-        private Vector2 g;
+        private Vector2 g; //Gravity vector
+        private Vector2 push; //Push vector for when colliding with solid objects
 
         public bool antiGravity; //Anti-gravity effect
         private bool cdTimer; //Cooldown of the anti-gravity ability
@@ -72,7 +73,6 @@ namespace EtherShip
                 }
             }
             Move(gameTime);
-            OBJCollision();
             MapCollision();
         }
 
@@ -133,8 +133,17 @@ namespace EtherShip
                 {
                     g = GravityPull();
                 }
-                OBJCollision(); //Changes the translation if a collision happens
-                this.obj.position += (g + translation * speed) / (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+                //Ensures that the gravity pull can't be greater than the tranlation vector, ensuring you can't be trapped by gravity
+                if (g.Length() > translation.Length())
+                    g = Vector2.Normalize(g) * maxSpeed * 6;
+                translation = (g + translation * speed) / (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
+                //Checks collision and changes the push vector accordingly
+                OBJCollisionV2();
+
+                //Changes the position
+                this.obj.position += push + translation;
+
             }
             if (keystate.IsKeyDown(Keys.Q))
             {
@@ -196,6 +205,51 @@ namespace EtherShip
                             g = Vector2.Zero;
                         }
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Checks for collision and acts if there is a collision.
+        /// </summary>
+        public void OBJCollisionV2()
+        {
+            push = Vector2.Zero;
+            //Checks if this collides with another gameobject.
+            foreach (GameObject go in GameWorld.Instance.gameObjectPool.CollisionListForPlayer())
+            {
+                //Checks the distance to the objects, and only cheecks for collision if the given object is close enough for a check to be meaningfull.
+                if ((obj.position - go.position).Length() < 200)
+                {
+                    //The collision checks are done with the upcoming location in mind. The division is just a adjustment, so the objects can come closer before colliding. 
+                    if (go.GetComponent<Enemy>() != null)
+                        push += CollisionCheck.CheckV2(obj.GetComponent<CollisionCircle>().edges, obj.position + translation, go.GetComponent<CollisionCircle>().edges, go.position);
+                    else if (go.GetComponent<Whale>() != null)
+                        push += CollisionCheck.CheckV2(obj.GetComponent<CollisionCircle>().edges, obj.position + translation, go.GetComponent<CollisionCircle>().edges, go.position);
+                    else if (go.GetComponent<Tower>() != null)
+                        push += CollisionCheck.CheckV2(obj.GetComponent<CollisionCircle>().edges, obj.position + translation, go.GetComponent<CollisionCircle>().edges, go.position);
+                    else if (go.GetComponent<Wall>() != null)
+                        push += CollisionCheck.CheckV2(obj.GetComponent<CollisionCircle>().edges, obj.position + translation, go.GetComponent<CollisionRectangle>().edges, go.position);                    
+                    
+                    //If push's length is greater than 0 a collisions happens, and depending on what is hit different things can happen
+                    if(push.Length() > 0)
+                    {
+                        if (go.GetComponent<Enemy>() != null)
+                        {
+                            obj.GetComponent<SpriteRenderer>().Color = Color.Red;
+                            health -= 1;
+                        }
+                        else if (go.GetComponent<Whale>() != null)
+                            obj.GetComponent<SpriteRenderer>().Color = Color.Blue;
+                        else if (go.GetComponent<Tower>() != null)
+                            obj.GetComponent<SpriteRenderer>().Color = Color.RoyalBlue;
+                        else if (go.GetComponent<Wall>() != null)
+                            obj.GetComponent<SpriteRenderer>().Color = Color.Black;
+                    }
+
+                    //Ensures that the push vector can't be greater than the translation vector.
+                    if (push.Length() > translation.Length())
+                        push = Vector2.Normalize(push) * translation.Length();
                 }
             }
         }

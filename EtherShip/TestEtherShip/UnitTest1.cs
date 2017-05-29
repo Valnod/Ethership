@@ -36,7 +36,7 @@ namespace TestEtherShip
         [TestMethod]
         public void TestEnemy()
         {
-            Assert.AreEqual(1000, e.cooldown); //Test if the enemy's cooldown is 1 sec
+            Assert.AreEqual(100, e.Health); //Test if the enemy's health is 100
         }
     }
 }

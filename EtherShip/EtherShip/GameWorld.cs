@@ -2,7 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-
+using System.Collections.Generic;
+using System.IO;
+using System.Xml;
 
 namespace EtherShip
 {
@@ -13,14 +15,16 @@ namespace EtherShip
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
         private static GameWorld instance;
+        private bool betweenRounds;
         private bool buildMode;
         private BuildMode build;
 
         public Map Map { get; set; }
         public GameObjectPool gameObjectPool;
         public Random rnd;
+
+        Wave wave;
 
         public static GameWorld Instance
         {
@@ -31,6 +35,32 @@ namespace EtherShip
                     instance = new GameWorld();
                 }
                 return instance;
+            }
+        }
+
+        public bool BetweenRounds
+        {
+            get
+            {
+                return betweenRounds;
+            }
+
+            set
+            {
+                betweenRounds = value;
+            }
+        }
+
+        public bool BuildMode
+        {
+            get
+            {
+                return buildMode;
+            }
+
+            set
+            {
+                buildMode = value;
             }
         }
 
@@ -60,6 +90,7 @@ namespace EtherShip
             graphics.ApplyChanges();
             this.Window.AllowUserResizing = true;
 
+            betweenRounds = true;
             buildMode = false;
             build = new BuildMode("circle", "rectangle");
 
@@ -71,7 +102,12 @@ namespace EtherShip
 
             //Adds some gameObjects for testing
             gameObjectPool.CreatePlayer();
-            gameObjectPool.CreateEnemy();
+            //enemy is out for testing
+            //gameObjectPool.CreateEnemy();
+
+            //testing waves
+            wave = new Wave(0, 1, Map);
+            wave.Start();
 
             gameObjectPool.AddToActive();
 
@@ -107,6 +143,8 @@ namespace EtherShip
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+           
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
@@ -115,25 +153,38 @@ namespace EtherShip
             //Get the keyboard state
             KeyboardState keystate = Keyboard.GetState();
 
-            if (keystate.IsKeyDown(Keys.B)) //now places towers
-            {
-                buildMode = true;
+          
+            if(betweenRounds == true)
+                {
+                if (keystate.IsKeyDown(Keys.B))
+                    buildMode = true;
+                else if(keystate.IsKeyDown(Keys.N))
+                    buildMode = false;
+
                 this.IsMouseVisible = true;
-            }
-            else if (keystate.IsKeyDown(Keys.N))
-            {
-                buildMode = false;
-                this.IsMouseVisible = false;
-            }
+
+
+                }
+                
+            
+            if (keystate.IsKeyDown(Keys.P) )
+                {
+                     betweenRounds = false;
+                     buildMode = false;
+                     this.IsMouseVisible = false;
+                }
 
             //Updates mouse state
             InputManager.Update();
 
-            if (!buildMode)
+            if (!betweenRounds)
+            {
                 gameObjectPool.Update(gameTime); //Updates all gameObjects
+                wave.Update(gameTime);
+            }
             else
                 build.Update(gameTime); //Build mode
-
+            
             //Adds and removes GameObjects from the game
             gameObjectPool.RemoveFromActive();
             gameObjectPool.AddToActive();
@@ -158,6 +209,7 @@ namespace EtherShip
             //Draws all gameObjects
             gameObjectPool.Draw(spriteBatch);
 
+            wave.Update(gameTime);
             spriteBatch.End();
 
             base.Draw(gameTime);
