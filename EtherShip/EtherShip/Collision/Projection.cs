@@ -30,5 +30,15 @@ namespace EtherShip
             //If they doesn't overlap
             return true;
         }
+
+        /// <summary>
+        /// Checks if the two projections overlap and if so returns a push size greater than 0.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public double OverlappingV2(Projection other)
+        {
+            return this.Max - other.Min;
+        }
     }
 }

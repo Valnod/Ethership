@@ -24,7 +24,7 @@ namespace EtherShip
         public Map(string spriteName)
         {
             this.spriteName = spriteName;
-            this.GridPointSize = 30;
+            this.GridPointSize = 25;
             GenerateMapGrid();
         }
 

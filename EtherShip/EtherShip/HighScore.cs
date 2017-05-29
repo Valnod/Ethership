@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,29 +12,78 @@ namespace EtherShip
     {
         private XmlDocument xDoc;
         private XmlNode xNode;
-        private List<HighScoreUnit> highScoreList;
+        private static HighScore instance;
 
-        internal List<HighScoreUnit> HighScoreList
+        public static HighScore Instance
         {
             get
             {
-                return highScoreList;
+                return instance == null ? instance = new HighScore() : instance;
             }
+        }
 
-            set
+        //Returns a list of highScoreUnits based on the xml file HighScore
+        public List<HighScoreUnit> Scores
+        {
+            get
             {
-                highScoreList = value;
+                List<HighScoreUnit> units = new List<HighScoreUnit>();
+
+                foreach (XmlNode cNode in xNode.ChildNodes)
+                    units.Add(new HighScoreUnit(cNode.SelectSingleNode("Name").InnerText, int.Parse(cNode.SelectSingleNode("Score").InnerText)));
+
+                return units;
             }
         }
 
-        public HighScore()
+        private HighScore()
         {
+            if (File.Exists("HighScore.xml"))
+            {
+                xDoc = new XmlDocument();
+                xDoc.Load("HighScore.xml");
+            }
+            else
+            {
+                xDoc = new XmlDocument();
+                XmlElement head = xDoc.CreateElement("Head");
+                xDoc.AppendChild(head);
+                xDoc.Save("HighScore.xml");
 
+                XmlNode scoreElement = xDoc.CreateElement("scoreElement");
+
+                XmlNode name = xDoc.CreateElement("Name");
+                name.InnerText = "Bob";
+                scoreElement.AppendChild(name);
+
+                XmlNode s = xDoc.CreateElement("Score");
+                s.InnerText = "1000";
+                scoreElement.AppendChild(s);
+
+                xDoc.DocumentElement.AppendChild(scoreElement);
+                xDoc.Save("HighScore.xml");
+            }
+            xNode = xDoc.SelectSingleNode("Head");
         }
-        
-        public void AddHighScore(HighScoreUnit highScoreUnit)
-        {
 
+        /// <summary>
+        /// Adds a score to the local score list.
+        /// </summary>
+        /// <param name="score"></param>
+        public void AddScore(HighScoreUnit score)
+        {
+            XmlNode scoreElement = xDoc.CreateElement("scoreElement");
+
+            XmlNode name = xDoc.CreateElement("Name");
+            name.InnerText = score.Name;
+            scoreElement.AppendChild(name);
+
+            XmlNode s = xDoc.CreateElement("Score");
+            s.InnerText = score.Score.ToString();
+            scoreElement.AppendChild(s);
+
+            xDoc.DocumentElement.AppendChild(scoreElement);
+            xDoc.Save("HighScore.xml");
         }
     }
 }
