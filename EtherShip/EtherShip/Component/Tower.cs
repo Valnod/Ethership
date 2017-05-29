@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EtherShip
 {
-    class Tower : Component, IUpdateable
+    public class Tower : Component, IUpdateable
     {
         private float gStrength;
         private float gRange;
@@ -29,7 +29,6 @@ namespace EtherShip
             radius = 300;
             canShoot = true;
         }
-
 
         public bool IsInRange(Vector2 position)
         {

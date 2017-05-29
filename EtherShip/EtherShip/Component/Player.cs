@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace EtherShip
 {
-    class Player : Component, IUpdateable//, ICollidable
+    public class Player : Component, IUpdateable//, ICollidable
     {
         private Vector2 direction;
         private SpriteRenderer spriteRenderer;
@@ -23,7 +23,7 @@ namespace EtherShip
         private Vector2 g; //Gravity vector
         private Vector2 push; //Push vector for when colliding with solid objects
 
-        private bool antiGravity; //Anti-gravity effect
+        public bool antiGravity; //Anti-gravity effect
         private bool cdTimer; //Cooldown of the anti-gravity ability
         float timer = 0; //Timer for both anti-gravity effect and the anti gravity ability
         private Vector2 translation;
