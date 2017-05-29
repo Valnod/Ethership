@@ -68,7 +68,7 @@ namespace EtherShip
             else
             {
                 GameObject obj = new GameObject(new Vector2(400, 400));
-                obj.AddComponnent(new Enemy(obj, 10, 3f, 1, new Vector2()));
+                obj.AddComponnent(new Enemy(obj, 10, 5f, 1, new Vector2()));
                 obj.AddComponnent(new SpriteRenderer(obj, "circle", 1f, 0f, 0.5f));
                 obj.LoadContent(GameWorld.Instance.Content);
                 obj.AddComponnent(new CollisionCircle(obj));
@@ -187,6 +187,21 @@ namespace EtherShip
 
         public void CreateWhale()
         {
+
+            if (InactiveWhaleList.Count > 0)
+            {
+                AddActive.Add(InactiveWhaleList[0]);
+            }
+            else
+            {
+                GameObject obj = new GameObject(new Vector2(400, 400));
+                obj.AddComponnent(new Whale(obj, new Vector2(1, 0), new Vector2(1, 0), 10, 5, 1f));
+                obj.AddComponnent(new SpriteRenderer(obj, "ShipP", 1f, 0f, 0.5f));
+                obj.LoadContent(GameWorld.Instance.Content);
+                obj.AddComponnent(new CollisionCircle(obj));
+                obj.GetComponent<CollisionCircle>().LoadContent(GameWorld.Instance.Content);
+                AddActive.Add(obj);
+            }
 
         }
 
