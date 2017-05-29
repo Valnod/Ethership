@@ -63,11 +63,13 @@ namespace EtherShip
         {
             if (InactiveEnemyList.Count > 0)
             {
+                InactiveEnemyList[0].position = new Vector2(GameWorld.Instance.Window.ClientBounds.Width / 2, 40);
+                InactiveEnemyList[0].GetComponent<Enemy>().ResetHealth();
                 AddActive.Add(InactiveEnemyList[0]);
             }
             else
             {
-                GameObject obj = new GameObject(new Vector2(400, 400));
+                GameObject obj = new GameObject(new Vector2(GameWorld.Instance.Window.ClientBounds.Width / 2, 40));
                 obj.AddComponnent(new Enemy(obj, 10, 3f, 1, new Vector2()));
                 obj.AddComponnent(new SpriteRenderer(obj, "circle", 1f, 0f, 0.5f));
                 obj.LoadContent(GameWorld.Instance.Content);

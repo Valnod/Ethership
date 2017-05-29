@@ -36,6 +36,32 @@ namespace EtherShip
             }
         }
 
+        public bool BetweenRounds
+        {
+            get
+            {
+                return betweenRounds;
+            }
+
+            set
+            {
+                betweenRounds = value;
+            }
+        }
+
+        public bool BuildMode
+        {
+            get
+            {
+                return buildMode;
+            }
+
+            set
+            {
+                buildMode = value;
+            }
+        }
+
         private GameWorld()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -79,7 +105,7 @@ namespace EtherShip
             //gameObjectPool.CreateEnemy();
 
             //testing waves
-            wave = new Wave(0, 10, Map);
+            wave = new Wave(0, 1, Map);
             wave.Start();
 
             gameObjectPool.AddToActive();
@@ -128,26 +154,30 @@ namespace EtherShip
             KeyboardState keystate = Keyboard.GetState();
 
           
-             if(betweenRounds == true)
+            if(betweenRounds == true)
                 {
+                if (keystate.IsKeyDown(Keys.B))
                     buildMode = true;
-                    this.IsMouseVisible = true;
+                else if(keystate.IsKeyDown(Keys.N))
+                    buildMode = false;
+
+                this.IsMouseVisible = true;
 
 
                 }
                 
             
-                  if (keystate.IsKeyDown(Keys.P) )
-                  {
+            if (keystate.IsKeyDown(Keys.P) )
+                {
                      betweenRounds = false;
                      buildMode = false;
                      this.IsMouseVisible = false;
-                  }
+                }
 
             //Updates mouse state
             InputManager.Update();
 
-            if (!buildMode)
+            if (!betweenRounds)
             {
                 gameObjectPool.Update(gameTime); //Updates all gameObjects
                 wave.Update(gameTime);
