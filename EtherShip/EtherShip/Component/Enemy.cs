@@ -8,9 +8,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 namespace EtherShip
 {
-    class Enemy : Component, IUpdateable
+    public class Enemy : Component, IUpdateable
     {
-        private bool Generating = false;
+        public bool Generating = false;
 
         private float acceleration;
         private float speedElement;
