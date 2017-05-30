@@ -79,16 +79,17 @@ namespace EtherShip
             GameWorld.Instance.BetweenRounds = true;
             waveNumber++;
             spawningEnemies = true;
+            enemiesSpawned = 0;
         }
        
        public void Update(GameTime gameTime)
         {
             //first we check if we have the desired number of enemies otherwise we spawn our enemies 
-            if(enemiesSpawned >= (numberOfEnemies + waveNumber))
+            if (enemiesSpawned >= (numberOfEnemies + waveNumber))
             {
                 spawningEnemies = false; 
             }
-            if (spawningEnemies )
+            else if (spawningEnemies)
             {
                 spawnTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if(spawnTimer > 2)

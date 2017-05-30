@@ -106,7 +106,7 @@ namespace EtherShip
             //gameObjectPool.CreateEnemy();
 
             //testing waves
-            wave = new Wave(0, 1, Map);
+            wave = new Wave(0, 100, Map);
             wave.Start();
 
             gameObjectPool.AddToActive();
@@ -162,9 +162,10 @@ namespace EtherShip
                     buildMode = false;
 
                 this.IsMouseVisible = true;
+                if(!buildMode)
+                    gameObjectPool.Update(gameTime); //Updates all gameObjects
 
-
-                }
+            }
                 
             
             if (keystate.IsKeyDown(Keys.P) )
@@ -182,8 +183,12 @@ namespace EtherShip
                 gameObjectPool.Update(gameTime); //Updates all gameObjects
                 wave.Update(gameTime);
             }
-            else
+            else if (buildMode)
+            {
                 build.Update(gameTime); //Build mode
+             
+            }
+                
             
             //Adds and removes GameObjects from the game
             gameObjectPool.RemoveFromActive();
@@ -209,7 +214,7 @@ namespace EtherShip
             //Draws all gameObjects
             gameObjectPool.Draw(spriteBatch);
 
-            wave.Update(gameTime);
+         
             spriteBatch.End();
 
             base.Draw(gameTime);
