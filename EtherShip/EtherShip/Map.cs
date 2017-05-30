@@ -94,15 +94,8 @@ namespace EtherShip
                 {
                     if(MapGrid[x, y] == gridPoint)
                     {
-                        if (MapGrid[x, y].Occupant == null) //If there's no object on the spot
-                        {
-                            //Do nothing
-                        }
-                        else //If there is an object on the spot; remove it
-                        {
-                            GameWorld.Instance.gameObjectPool.RemoveActive.Add(MapGrid[x, y].Occupant);
-                            MapGrid[x, y].Occupant = null;
-                        }
+                        GameWorld.Instance.gameObjectPool.RemoveActive.Add(MapGrid[x, y].Occupant);
+                        MapGrid[x, y].Occupant = null;
                     }
                 }
             }
