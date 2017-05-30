@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,10 +12,12 @@ namespace EtherShip
     {
         public bool controls;
         public bool viewHighscore;
-
+        List<UI> main = new List<UI>();
         public Menu()
         {
-
+            main.Add(new UI("gui"));
+            main.Add(new UI("play"));
+            main.Add(new UI("Exit"));
         }
 
         public void SaveGame()
@@ -36,6 +40,16 @@ namespace EtherShip
         {
 
         }
+        public void LoadContent(ContentManager content)
+        {
+            foreach (UI element in main)
+            {
+                element.LoadContent(content);
+            }
+            
+            main.Find(x => x.TextureName == "Exit").MoveElement(50, 0);
+            main.Find(x => x.TextureName == "play").MoveElement(0, 0);
+        }
         public void Upddate()
         {
 
@@ -43,6 +57,13 @@ namespace EtherShip
         public void Quit()
         {
 
+        }
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            foreach(UI element in main)
+            {
+                element.Draw(spriteBatch);
+            }
         }
     }
 }
