@@ -24,13 +24,12 @@ namespace EtherShip
         public Map(string spriteName)
         {
             this.spriteName = spriteName;
-            this.GridPointSize = 30;
+            this.GridPointSize = 25;
             GenerateMapGrid();
         }
 
-
         //returns the gridpoint that is closest to the position
-public GridPoint this[Vector2 position]
+        public GridPoint this[Vector2 position]
         {
             get
             {
@@ -82,7 +81,6 @@ public GridPoint this[Vector2 position]
             pointSprite = content.Load<Texture2D>("rectangle");
             sourceRectPoint = new Rectangle(0, 0, 2, 2);
 #endif
-
             //Draws the background
             //sprite = content.Load<Texture2D>("Background");
             //sourceRect = new Rectangle(0, 0, sprite.Width, sprite.Height);
@@ -96,8 +94,15 @@ public GridPoint this[Vector2 position]
                 {
                     if(MapGrid[x, y] == gridPoint)
                     {
-                        GameWorld.Instance.gameObjectPool.RemoveActive.Add(MapGrid[x, y].Occupant);
-                        MapGrid[x, y].Occupant = null;
+                        if (MapGrid[x, y].Occupant == null) //If there's no object on the spot
+                        {
+                            //Do nothing
+                        }
+                        else //If there is an object on the spot; remove it
+                        {
+                            GameWorld.Instance.gameObjectPool.RemoveActive.Add(MapGrid[x, y].Occupant);
+                            MapGrid[x, y].Occupant = null;
+                        }
                     }
                 }
             }

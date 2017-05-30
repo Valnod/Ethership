@@ -68,6 +68,7 @@
     <Compile Include="Interfaces\IDrawable.cs" />
     <Compile Include="HomeMenu\Load.cs" />
     <Compile Include="HomeMenu\Menu.cs" />
+    <Compile Include="UI.cs" />
     <Compile Include="Wave.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Program.cs" />

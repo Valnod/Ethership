@@ -8,39 +8,13 @@ namespace EtherShip
 {
     class HighScoreUnit
     {
-        private string name;
-        private int score;
-
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
-
-            set
-            {
-                name = value;
-            }
-        }
-
-        public int Score
-        {
-            get
-            {
-                return score;
-            }
-
-            set
-            {
-                score = value;
-            }
-        }
+        public string Name { get; private set; }
+        public int Score { get; private set; }
 
         public HighScoreUnit(string name, int score)
         {
-            name = this.Name;
-            score = this.Score;
+            this.Name = name;
+            this.Score = score;
         }
     }
     

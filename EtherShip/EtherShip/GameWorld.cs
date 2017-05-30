@@ -2,7 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-
+using System.Collections.Generic;
+using System.IO;
+using System.Xml;
 
 namespace EtherShip
 {
@@ -36,13 +38,38 @@ namespace EtherShip
             }
         }
 
+        public bool BetweenRounds
+        {
+            get
+            {
+                return betweenRounds;
+            }
+
+            set
+            {
+                betweenRounds = value;
+            }
+        }
+
+        public bool BuildMode
+        {
+            get
+            {
+                return buildMode;
+            }
+
+            set
+            {
+                buildMode = value;
+            }
+        }
+
         private GameWorld()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
 
-       
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic
@@ -79,7 +106,7 @@ namespace EtherShip
             //gameObjectPool.CreateEnemy();
 
             //testing waves
-            wave = new Wave(0, 10, Map);
+            wave = new Wave(0, 100, Map);
             wave.Start();
 
             gameObjectPool.AddToActive();
@@ -97,7 +124,6 @@ namespace EtherShip
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Map.LoadContent(Content);
-
             // TODO: use this.Content to load your game content here
         }
 
@@ -128,32 +154,41 @@ namespace EtherShip
             KeyboardState keystate = Keyboard.GetState();
 
           
-             if(betweenRounds == true)
+            if(betweenRounds == true)
                 {
+                if (keystate.IsKeyDown(Keys.B))
                     buildMode = true;
-                    this.IsMouseVisible = true;
+                else if(keystate.IsKeyDown(Keys.N))
+                    buildMode = false;
 
+                this.IsMouseVisible = true;
+                if(!buildMode)
+                    gameObjectPool.Update(gameTime); //Updates all gameObjects
 
-                }
+            }
                 
             
-                  if (keystate.IsKeyDown(Keys.P) )
-                  {
+            if (keystate.IsKeyDown(Keys.P) )
+                {
                      betweenRounds = false;
                      buildMode = false;
                      this.IsMouseVisible = false;
-                  }
+                }
 
             //Updates mouse state
             InputManager.Update();
 
-            if (!buildMode)
+            if (!betweenRounds)
             {
                 gameObjectPool.Update(gameTime); //Updates all gameObjects
                 wave.Update(gameTime);
             }
-            else
+            else if (buildMode)
+            {
                 build.Update(gameTime); //Build mode
+             
+            }
+                
             
             //Adds and removes GameObjects from the game
             gameObjectPool.RemoveFromActive();
@@ -179,7 +214,7 @@ namespace EtherShip
             //Draws all gameObjects
             gameObjectPool.Draw(spriteBatch);
 
-            wave.Update(gameTime);
+         
             spriteBatch.End();
 
             base.Draw(gameTime);
