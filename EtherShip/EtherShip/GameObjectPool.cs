@@ -34,7 +34,7 @@ namespace EtherShip
         private List<GameObject> ActiveClutterList;
         private List<GameObject> InactiveClutterList;
         //Whale
-        private List<GameObject> ActiveWhaleList;
+        public List<GameObject> ActiveWhaleList;
         private List<GameObject> InactiveWhaleList;
 
         public GameObject player;
