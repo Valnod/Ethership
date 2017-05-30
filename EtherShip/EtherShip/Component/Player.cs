@@ -27,6 +27,7 @@ namespace EtherShip
         private bool cdTimer; //Cooldown of the anti-gravity ability
         float timer = 0; //Timer for both anti-gravity effect and the anti gravity ability
         private Vector2 translation;
+        private SFX soundTest;
 
         public Player(GameObject obj, Vector2 direction, int health, bool antiGravity) : base(obj)
         {
@@ -39,6 +40,7 @@ namespace EtherShip
             maxSpeed = 10;
             spriteRenderer = obj.GetComponent<SpriteRenderer>();
             animator = obj.GetComponent<Animator>();
+            soundTest = new SFX();
         }
 
         /// <summary>
@@ -145,6 +147,7 @@ namespace EtherShip
             }
             if (keystate.IsKeyDown(Keys.Q))
             {
+                //soundTest.soundEffects[0].CreateInstance().Play();
                 AntiGravity(gameTime); //Activate anti-gravity ability
             }
         }
