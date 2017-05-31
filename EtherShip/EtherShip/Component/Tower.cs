@@ -60,6 +60,15 @@ namespace EtherShip
                     target = GameWorld.Instance.gameObjectPool.ActiveEnemyList[x];
                 }
             }
+            for (int x = 0; x < GameWorld.Instance.gameObjectPool.ActiveWhaleList.Count; x++)
+            {
+                if (IsInRange(GameWorld.Instance.gameObjectPool.ActiveWhaleList[x].position) &&
+                    ((this.obj.position - GameWorld.Instance.gameObjectPool.ActiveWhaleList[x].position).Length() < length))
+                {
+                    length = (this.obj.position - GameWorld.Instance.gameObjectPool.ActiveWhaleList[x].position).Length();
+                    target = GameWorld.Instance.gameObjectPool.ActiveWhaleList[x];
+                }
+            }
             if (target != null)
             {
                 GameWorld.Instance.gameObjectPool.CreateProjectile(obj.position, target);
