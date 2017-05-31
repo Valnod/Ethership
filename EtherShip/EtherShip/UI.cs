@@ -12,7 +12,7 @@ namespace EtherShip
 {
     class UI
     {
-        private Texture2D backGround;
+        private Texture2D backgroundTexture;
         private Rectangle backGRectangle;
         private Texture2D uiTexture;
         private Rectangle uiRectangle;
@@ -35,9 +35,13 @@ namespace EtherShip
         public void LoadContent(ContentManager content)
         {
             uiTexture = content.Load<Texture2D>(TextureName);
-            backGRectangle = new Rectangle(0, 600, GameWorld.Instance.Window.ClientBounds.Width, backGround.Height / 2);
-            uiRectangle = new Rectangle(0, 600, uiTexture.Width / 2, uiTexture.Height / 2 );
-             
+            backgroundTexture = content.Load<Texture2D>(textureName);
+
+
+            backGRectangle = new Rectangle(0, 600, GameWorld.Instance.Window.ClientBounds.Width, backgroundTexture.Height / 2);
+            uiRectangle = new Rectangle(0, 600, uiTexture.Width , uiTexture.Height / 2 );
+           
+
         }
         public void Update()
         {
@@ -49,11 +53,13 @@ namespace EtherShip
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(uiTexture, uiRectangle, Color.White);
+            spriteBatch.Draw(backgroundTexture, backGRectangle, Color.White);
         }
-        public void MoveElement(int x, int y)
+        public void MoveElement(int x, int y, int width, int height)
         {
-
             uiRectangle = new Rectangle(uiRectangle.X += x, uiRectangle.Y += y, uiRectangle.Width, uiRectangle.Height);
+            backGRectangle = new Rectangle(uiRectangle.X += x, uiRectangle.Y += y, uiRectangle.Width, uiRectangle.Height);
+
         }
 
     }

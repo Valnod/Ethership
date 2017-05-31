@@ -92,7 +92,7 @@ namespace EtherShip
             else if (spawningEnemies)
             {
                 spawnTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if(spawnTimer > 2)
+                if(spawnTimer > 1)
                 {
                     AddEnemy();
                     spawnTimer = 0;

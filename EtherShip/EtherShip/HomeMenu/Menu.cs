@@ -46,9 +46,10 @@ namespace EtherShip
             {
                 element.LoadContent(content);
             }
-            
-            main.Find(x => x.TextureName == "Exit").MoveElement(50, 0);
-            main.Find(x => x.TextureName == "play").MoveElement(0, 0);
+
+            main.Find(x => x.TextureName == "gui").MoveElement(0, 0, GameWorld.Instance.Window.ClientBounds.Width, 0);
+            main.Find(x => x.TextureName == "Exit").MoveElement(50,0,0, 0);
+            main.Find(x => x.TextureName == "play").MoveElement(0, 0,0,0);
         }
         public void Upddate()
         {
