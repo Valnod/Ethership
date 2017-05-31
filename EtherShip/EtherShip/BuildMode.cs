@@ -65,7 +65,7 @@ namespace EtherShip
                 if (ms.X > GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Width 
                     && ms.Y > GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Height)
                 {
-                    //Don't do anything if you try to place a building outside the grid (don't crash)
+                    //Don't do anything if you try to place a building outside the grid
                 }
                 else if (ms.X >= 0 && ms.X < GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Width
                 && ms.Y >= 0 && ms.Y < GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Height)
