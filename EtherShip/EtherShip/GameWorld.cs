@@ -106,7 +106,7 @@ namespace EtherShip
             //gameObjectPool.CreateEnemy();
 
             //testing waves
-            wave = new Wave(0, 100, Map);
+            wave = new Wave(0, 1, Map);
             wave.Start();
 
             gameObjectPool.AddToActive();
