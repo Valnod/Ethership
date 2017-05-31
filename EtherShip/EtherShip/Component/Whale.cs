@@ -19,7 +19,7 @@ namespace EtherShip
         private int ySpawn;
         private Random rnd;
 
-          public int Health { get; set; }
+        public int Health { get; set; }
 
         //AI
 
@@ -33,10 +33,8 @@ namespace EtherShip
         private float timer;
         private float cooldown = 1000;
 
-
         List<GridPoint> NewRoute = null;
         List<GridPoint> CurrentRoute = null;
-
 
         public Whale(GameObject obj, Vector2 target, Vector2 direction, int value, int health, float speed) : base(obj)
         {
@@ -55,7 +53,6 @@ namespace EtherShip
 
         public void Move(GameTime gameTime)
         {
-
             {
                 timer += gameTime.ElapsedGameTime.Milliseconds;
 
@@ -90,7 +87,6 @@ namespace EtherShip
                     }
                 }
             }
-
         }
 
         ///<summary>

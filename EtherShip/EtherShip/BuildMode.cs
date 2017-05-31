@@ -54,30 +54,48 @@ namespace EtherShip
         /// <param name="pos"></param>
         public void PlaceBuilding(Vector2 posVec)
         {
-            //Gets the position on the mapgrid closest to the mouseposition
-            posVec = GameWorld.Instance.Map[posVec].Pos;
+            MouseState ms = Mouse.GetState();
 
-            //Builds the building
-            if (placingTower)
+            if (GameWorld.Instance.IsActive == false)
             {
-                if (GameWorld.Instance.Map[posVec].Occupant == null) //If there's no object on the spot
-                {
-                    GameWorld.Instance.gameObjectPool.CreateTower(posVec);
-                }
-                else //If there's an object on the spot
-                {
-                    //Do nothing
-                }
+                //If the game is not active, don't place a building
             }
-            else if(placingWall)
+            else
             {
-                if (GameWorld.Instance.Map[posVec].Occupant == null) //Same as above
+                if (ms.X > GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Width 
+                    && ms.Y > GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Height)
                 {
-                    GameWorld.Instance.gameObjectPool.CreateWall(posVec);
+                    //Don't do anything if you try to place a building outside the grid (don't crash)
                 }
-                else //Same as above
+                else if (ms.X >= 0 && ms.X < GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Width
+                && ms.Y >= 0 && ms.Y < GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Height)
                 {
-                    //Do nothing
+                    //Gets the position on the mapgrid closest to the mouseposition
+                    posVec = GameWorld.Instance.Map[posVec].Pos;
+
+                    //Builds the building
+                    if (placingTower)
+                    {
+                        if (GameWorld.Instance.Map[posVec].Occupant == null) //If there's no object on the spot
+                        {
+                            GameWorld.Instance.gameObjectPool.CreateTower(posVec);
+                        }
+                        else //If there's an object on the spot
+                        {
+                            //Do nothing
+                        }
+                    }
+                    else if (placingWall)
+                    {
+                        if (GameWorld.Instance.Map[posVec].Occupant == null) //Same as above
+                        {
+                            GameWorld.Instance.gameObjectPool.CreateWall(posVec);
+                        }
+                        else //Same as above
+                        {
+                            //Do nothing
+                        }
+                    }
                 }
             }
         }
