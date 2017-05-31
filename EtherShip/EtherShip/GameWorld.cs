@@ -193,7 +193,7 @@ namespace EtherShip
             
             //Adds and removes GameObjects from the game
             gameObjectPool.RemoveFromActive();
-            gameObjectPool.AddToActive();
+            gameObjectPool.AddToActive();        
 
             base.Update(gameTime);
         }
