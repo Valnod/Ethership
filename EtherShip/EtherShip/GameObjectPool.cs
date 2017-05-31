@@ -34,7 +34,7 @@ namespace EtherShip
         private List<GameObject> ActiveClutterList;
         private List<GameObject> InactiveClutterList;
         //Whale
-        private List<GameObject> ActiveWhaleList;
+        public List<GameObject> ActiveWhaleList;
         private List<GameObject> InactiveWhaleList;
 
         public GameObject player;
@@ -174,7 +174,7 @@ namespace EtherShip
             {
                 GameObject obj = new GameObject(projectileStartPos);
                 obj.AddComponnent(new Projectile(obj, 70, 1, target));
-                obj.AddComponnent(new SpriteRenderer(obj, "circle", 1f, 0f, 1f));
+                obj.AddComponnent(new SpriteRenderer(obj, "circle", 0.2f, 0f, 1f));
                 obj.LoadContent(GameWorld.Instance.Content);
                 obj.AddComponnent(new CollisionCircle(obj));
                 obj.GetComponent<CollisionCircle>().LoadContent(GameWorld.Instance.Content);

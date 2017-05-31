@@ -63,12 +63,11 @@ namespace EtherShip
             
             enemiesSpawned++;
             //defines the changes from wave to wave, should one round be stronger etc etc.
-            //if(waveNumber == 5)
-            //{
-            //    int health = 200;
-
-            //    //GameWorld.Instance.gameObjectPool.CreateEnemy();
-            //}
+            if(waveNumber == 3)
+            {
+                GameWorld.Instance.gameObjectPool.CreateWhale();
+                spawningEnemies = false;
+           }
         }
         public void Start()
         {
@@ -76,19 +75,26 @@ namespace EtherShip
         }
         public void WaveOver()
         {
-            GameWorld.Instance.BetweenRounds = true;
-            waveNumber++;
-            spawningEnemies = true;
+            if (GameWorld.Instance.gameObjectPool.ActiveWhaleList.Count > 0)
+            {
+                spawningEnemies = false;
+            }
+            else
+            {
+                GameWorld.Instance.BetweenRounds = true;
+                waveNumber++;
+                spawningEnemies = true;
+            }
         }
        
        public void Update(GameTime gameTime)
         {
             //first we check if we have the desired number of enemies otherwise we spawn our enemies 
-            if(enemiesSpawned >= (numberOfEnemies + waveNumber))
+            if (enemiesSpawned >= (numberOfEnemies + waveNumber))
             {
                 spawningEnemies = false; 
             }
-            if (spawningEnemies )
+            else if (spawningEnemies)
             {
                 spawnTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if(spawnTimer > 2)
