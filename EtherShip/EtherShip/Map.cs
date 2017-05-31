@@ -58,7 +58,7 @@ namespace EtherShip
         private void GenerateMapGrid()
         {
             int xGridAmount = GameWorld.Instance.Window.ClientBounds.Width / GridPointSize;
-            int yGridAmount = GameWorld.Instance.Window.ClientBounds.Height / GridPointSize;
+            int yGridAmount = (GameWorld.Instance.Window.ClientBounds.Height - 100 )/ GridPointSize;
 
             MapGrid = new GridPoint[xGridAmount, yGridAmount];
 
