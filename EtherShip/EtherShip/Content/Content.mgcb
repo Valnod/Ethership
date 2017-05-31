@@ -49,3 +49,15 @@
 /processorParam:TextureFormat=Color
 /build:playerS.png
 
+#begin buildingError.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:buildingError.spritefont
+
+#begin hitSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:hitSound.wav
+

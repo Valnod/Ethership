@@ -15,14 +15,16 @@ namespace EtherShip
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
         private static GameWorld instance;
+        private bool betweenRounds;
         private bool buildMode;
         private BuildMode build;
 
         public Map Map { get; set; }
         public GameObjectPool gameObjectPool;
         public Random rnd;
+
+        Wave wave;
 
         public static GameWorld Instance
         {
@@ -36,13 +38,38 @@ namespace EtherShip
             }
         }
 
+        public bool BetweenRounds
+        {
+            get
+            {
+                return betweenRounds;
+            }
+
+            set
+            {
+                betweenRounds = value;
+            }
+        }
+
+        public bool BuildMode
+        {
+            get
+            {
+                return buildMode;
+            }
+
+            set
+            {
+                buildMode = value;
+            }
+        }
+
         private GameWorld()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
 
-       
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic
@@ -63,6 +90,7 @@ namespace EtherShip
             graphics.ApplyChanges();
             this.Window.AllowUserResizing = true;
 
+            betweenRounds = true;
             buildMode = false;
             build = new BuildMode("circle", "rectangle");
 
@@ -74,7 +102,12 @@ namespace EtherShip
 
             //Adds some gameObjects for testing
             gameObjectPool.CreatePlayer();
-            gameObjectPool.CreateEnemy();
+            //enemy is out for testing
+            //gameObjectPool.CreateEnemy();
+
+            //testing waves
+            wave = new Wave(0, 100, Map);
+            wave.Start();
 
             gameObjectPool.AddToActive();
 
@@ -91,7 +124,6 @@ namespace EtherShip
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Map.LoadContent(Content);
-
             // TODO: use this.Content to load your game content here
         }
 
@@ -111,6 +143,8 @@ namespace EtherShip
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+           
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
@@ -119,25 +153,43 @@ namespace EtherShip
             //Get the keyboard state
             KeyboardState keystate = Keyboard.GetState();
 
-            if (keystate.IsKeyDown(Keys.B)) //now places towers
-            {
-                buildMode = true;
+          
+            if(betweenRounds == true)
+                {
+                if (keystate.IsKeyDown(Keys.B))
+                    buildMode = true;
+                else if(keystate.IsKeyDown(Keys.N))
+                    buildMode = false;
+
                 this.IsMouseVisible = true;
+                if(!buildMode)
+                    gameObjectPool.Update(gameTime); //Updates all gameObjects
+
             }
-            else if (keystate.IsKeyDown(Keys.N))
-            {
-                buildMode = false;
-                this.IsMouseVisible = false;
-            }
+                
+            
+            if (keystate.IsKeyDown(Keys.P) )
+                {
+                     betweenRounds = false;
+                     buildMode = false;
+                     this.IsMouseVisible = false;
+                }
 
             //Updates mouse state
             InputManager.Update();
 
-            if (!buildMode)
+            if (!betweenRounds)
+            {
                 gameObjectPool.Update(gameTime); //Updates all gameObjects
-            else
+                wave.Update(gameTime);
+            }
+            else if (buildMode)
+            {
                 build.Update(gameTime); //Build mode
-
+             
+            }
+                
+            
             //Adds and removes GameObjects from the game
             gameObjectPool.RemoveFromActive();
             gameObjectPool.AddToActive();        
@@ -162,6 +214,7 @@ namespace EtherShip
             //Draws all gameObjects
             gameObjectPool.Draw(spriteBatch);
 
+         
             spriteBatch.End();
 
             base.Draw(gameTime);

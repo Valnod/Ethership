@@ -11,18 +11,11 @@ namespace EtherShip
 {
     class BuildMode
     {
-        public string spriteNameTower;
-        public string spriteNameWall;
-        public Texture2D spriteTower;
-        public Texture2D spriteWall;
-
         private bool placingTower;
         private bool placingWall;
 
         public BuildMode(string spriteNameTower, string spriteNameWall)
         {
-            spriteNameTower = this.spriteNameTower;
-            spriteNameWall = this.spriteNameWall;
             placingTower = true;
             placingWall = false;
         }
@@ -61,17 +54,31 @@ namespace EtherShip
         /// <param name="pos"></param>
         public void PlaceBuilding(Vector2 posVec)
         {
-            //gets the position on the mapgrid closest to the mouseposition
+            //Gets the position on the mapgrid closest to the mouseposition
             posVec = GameWorld.Instance.Map[posVec].Pos;
 
-            //builds the building
+            //Builds the building
             if (placingTower)
             {
-                GameWorld.Instance.gameObjectPool.CreateTower(posVec);
+                if (GameWorld.Instance.Map[posVec].Occupant == null) //If there's no object on the spot
+                {
+                    GameWorld.Instance.gameObjectPool.CreateTower(posVec);
+                }
+                else //If there's an object on the spot
+                {
+                    //Do nothing
+                }
             }
             else if(placingWall)
             {
-                GameWorld.Instance.gameObjectPool.CreateWall(posVec);
+                if (GameWorld.Instance.Map[posVec].Occupant == null) //Same as above
+                {
+                    GameWorld.Instance.gameObjectPool.CreateWall(posVec);
+                }
+                else //Same as above
+                {
+                    //Do nothing
+                }
             }
         }
 
@@ -81,7 +88,14 @@ namespace EtherShip
         /// <param name="pos"></param>
         public void RemoveBuilding(Vector2 posVec)
         {
-            GameWorld.Instance.Map.RemoveOccupant(GameWorld.Instance.Map[posVec]);
+            if (GameWorld.Instance.Map[posVec].Occupant == null) //If there's no object on the spot
+            {
+                //Do nothing
+            }
+            else //If there is an object on the spot; remove it
+            {
+                GameWorld.Instance.Map.RemoveOccupant(GameWorld.Instance.Map[posVec]);
+            }
         }
 
         public void LoadContent()
