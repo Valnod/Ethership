@@ -388,5 +388,24 @@ namespace EtherShip
                                     .ToList();
             return allObjects;
         }
+
+        /// <summary>
+        /// Makes all active gameobjects inactive.
+        /// </summary>
+        public void ClearLists()
+        {
+            foreach (GameObject go in ActiveEnemyList)
+                RemoveActive.Add(go);
+            foreach (GameObject go in ActiveProjectileList)
+                RemoveActive.Add(go);
+            foreach (GameObject go in ActiveTowerList)
+                RemoveActive.Add(go);
+            foreach (GameObject go in ActiveWallList)
+                RemoveActive.Add(go);
+            foreach (GameObject go in ActiveWhaleList)
+                RemoveActive.Add(go);
+            foreach (GameObject go in ActiveClutterList)
+                RemoveActive.Add(go);
+        }
     }
 }

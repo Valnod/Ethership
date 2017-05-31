@@ -22,12 +22,17 @@ namespace EtherShip
         private float minSpeed;
         private Vector2 g; //Gravity vector
         private Vector2 push; //Push vector for when colliding with solid objects
+        private bool invincible; //When true your invincible and can't collide with enemies 
+        private float invincibleTime = 1000; //Indicates the amount of time your invincible
+        private float invincibleTimer; //Indicates the amount of time you have been invincible
 
         public bool antiGravity; //Anti-gravity effect
         private bool cdTimer; //Cooldown of the anti-gravity ability
-        float timer = 0; //Timer for both anti-gravity effect and the anti gravity ability
+        private float timer = 0; //Timer for both anti-gravity effect and the anti gravity ability
         private Vector2 translation;
         private SFX soundTest;
+
+        public int Score { get; set; }
 
         public Player(GameObject obj, Vector2 direction, int health, bool antiGravity) : base(obj)
         {
@@ -41,6 +46,7 @@ namespace EtherShip
             spriteRenderer = obj.GetComponent<SpriteRenderer>();
             animator = obj.GetComponent<Animator>();
             soundTest = new SFX();
+            this.invincible = false;
         }
 
         /// <summary>
@@ -56,6 +62,24 @@ namespace EtherShip
         
         public void Update(GameTime gameTime)
         {
+            //Invincible timer
+            if (invincible)
+            {
+                invincibleTimer += gameTime.ElapsedGameTime.Milliseconds;
+                if(invincibleTimer >= invincibleTime)
+                {
+                    invincible = false;
+                    invincibleTimer = 0;
+                }
+            }
+            else
+            {
+                if(health <= 0)
+                {
+                    GameWorld.Instance.GameOver = true;
+                }
+            }
+
             if (antiGravity == true || cdTimer == true)
             {
                 obj.GetComponent<SpriteRenderer>().Color = Color.DarkGreen;
@@ -139,7 +163,7 @@ namespace EtherShip
                 translation = (g + translation * speed) / (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
                 //Checks collision and changes the push vector accordingly
-                OBJCollisionV2();
+                OBJCollision();
 
                 //Changes the position
                 this.obj.position += push + translation;
@@ -165,7 +189,7 @@ namespace EtherShip
         /// <summary>
         /// Checks for collision and acts if there is a collision.
         /// </summary>
-        public void OBJCollisionV2()
+        public void OBJCollision()
         {
             push = Vector2.Zero;
             //Checks if this collides with another gameobject.
@@ -176,7 +200,8 @@ namespace EtherShip
                 {
                     //The collision checks are done with the upcoming location in mind. The division is just a adjustment, so the objects can come closer before colliding. 
                     if (go.GetComponent<Enemy>() != null)
-                        push += CollisionCheck.CheckV2(obj.GetComponent<CollisionCircle>().edges, obj.position + translation, go.GetComponent<CollisionCircle>().edges, go.position);
+                        if(!invincible)
+                            push += CollisionCheck.CheckV2(obj.GetComponent<CollisionCircle>().edges, obj.position + translation, go.GetComponent<CollisionCircle>().edges, go.position);
                     else if (go.GetComponent<Whale>() != null)
                         push += CollisionCheck.CheckV2(obj.GetComponent<CollisionCircle>().edges, obj.position + translation, go.GetComponent<CollisionCircle>().edges, go.position);
                     else if (go.GetComponent<Tower>() != null)
@@ -184,20 +209,28 @@ namespace EtherShip
                     else if (go.GetComponent<Wall>() != null)
                         push += CollisionCheck.CheckV2(obj.GetComponent<CollisionCircle>().edges, obj.position + translation, go.GetComponent<CollisionRectangle>().edges, go.position);                    
                     
-                    //If push's length is greater than 0 a collisions happens, and depending on what is hit different things can happen
+                    //If push's length is greater than 0 a collisions happens, and acts differently depending on what is hit
                     if(push.Length() > 0)
                     {
                         if (go.GetComponent<Enemy>() != null)
                         {
+#if DEBUG
                             obj.GetComponent<SpriteRenderer>().Color = Color.Red;
-                            health -= 1;
+#endif
+                            if (!invincible)
+                            {
+                                health -= 1;
+                                invincible = true;
+                            }
                         }
+#if DEBUG
                         else if (go.GetComponent<Whale>() != null)
                             obj.GetComponent<SpriteRenderer>().Color = Color.Blue;
                         else if (go.GetComponent<Tower>() != null)
                             obj.GetComponent<SpriteRenderer>().Color = Color.RoyalBlue;
                         else if (go.GetComponent<Wall>() != null)
                             obj.GetComponent<SpriteRenderer>().Color = Color.Black;
+#endif
                     }
 
                     //Ensures that the push vector can't be greater than the translation vector.
