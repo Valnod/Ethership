@@ -19,7 +19,7 @@ namespace EtherShip
         private int ySpawn;
         private Random rnd;
 
-          public int Health { get; set; }
+        public int Health { get; set; }
 
         //AI
 
@@ -33,10 +33,8 @@ namespace EtherShip
         private float timer;
         private float cooldown = 1000;
 
-
         List<GridPoint> NewRoute = null;
         List<GridPoint> CurrentRoute = null;
-
 
         public Whale(GameObject obj, Vector2 target, Vector2 direction, int value, int health, float speed) : base(obj)
         {
@@ -55,7 +53,6 @@ namespace EtherShip
 
         public void Move(GameTime gameTime)
         {
-
             {
                 timer += gameTime.ElapsedGameTime.Milliseconds;
 
@@ -63,7 +60,7 @@ namespace EtherShip
                 {
                     int width = GameWorld.Instance.Window.ClientBounds.Width,
                          height = GameWorld.Instance.Window.ClientBounds.Height;
-                    new System.Threading.Thread(() => NewRoute = AI.Pathfind(GameWorld.Instance.Map[obj.position], GameWorld.Instance.Map[new Vector2(GameWorld.Instance.Map.MapGrid.GetLength(0) , GameWorld.Instance.Map.MapGrid.GetLength(1)  / 2)],
+                    new System.Threading.Thread(() => NewRoute = AI.Pathfind(GameWorld.Instance.Map[obj.position], GameWorld.Instance.Map[new Vector2(GameWorld.Instance.Map.MapGrid.GetLength(0) / (GameWorld.Instance.Map.GridPointSize * 12), (GameWorld.Instance.Map.MapGrid.GetLength(1)  / 2) * (GameWorld.Instance.Map.GridPointSize))],
                         width, height)).Start();
                     Generating = true;
                     timer = 0;
@@ -90,8 +87,9 @@ namespace EtherShip
                     }
                 }
             }
-
         }
+
+
 
         ///<summary>
         /// Checks if health is below 0, and if so move the object to inactive.

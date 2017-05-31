@@ -28,7 +28,7 @@ namespace EtherShip
             GenerateMapGrid();
         }
 
-        //returns the gridpoint that is closest to the position
+        //Returns the gridpoint that is closest to the position
         public GridPoint this[Vector2 position]
         {
             get
@@ -42,7 +42,7 @@ namespace EtherShip
         /// <param name="spriteBatch"></param> 
         public void DrawBackground(SpriteBatch spriteBatch)
         {
-            //spriteBatch.Draw(sprite, Vector2.Zero, sourceRect, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
+          //spriteBatch.Draw(sprite, Vector2.Zero, sourceRect, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
 
 #if DEBUG //draws the points which makes up the grid
             foreach(GridPoint gp in MapGrid)
@@ -58,7 +58,7 @@ namespace EtherShip
         private void GenerateMapGrid()
         {
             int xGridAmount = GameWorld.Instance.Window.ClientBounds.Width / GridPointSize;
-            int yGridAmount = GameWorld.Instance.Window.ClientBounds.Height / GridPointSize;
+            int yGridAmount = (GameWorld.Instance.Window.ClientBounds.Height)/ GridPointSize;
 
             MapGrid = new GridPoint[xGridAmount, yGridAmount];
 

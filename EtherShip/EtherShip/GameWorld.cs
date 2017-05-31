@@ -13,6 +13,7 @@ namespace EtherShip
     /// </summary>
     class GameWorld : Game
     {
+        Menu menu = new Menu();
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private static GameWorld instance;
@@ -108,8 +109,8 @@ namespace EtherShip
             gameObjectPool.CreatePlayer();
 
             //testing waves
-            Wave = new Wave(0, 100, Map);
-            Wave.Start();
+            wave = new Wave(0, 1, Map);
+            wave.Start();
 
             gameObjectPool.AddToActive();
 
@@ -124,7 +125,7 @@ namespace EtherShip
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            menu.LoadContent(Content);
             Map.LoadContent(Content);
             endGame.LoadContent(Content);
             // TODO: use this.Content to load your game content here
@@ -145,10 +146,12 @@ namespace EtherShip
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
-        {          
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+        {
 
+
+            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            //    Exit();
+            
             // TODO: Add your update logic here
 
             //Updates mouse state
@@ -209,6 +212,8 @@ namespace EtherShip
 
             //Draws the map
             Map.DrawBackground(spriteBatch);
+            //draws the menu
+            menu.Draw(spriteBatch);
 
             //Draws all gameObjects
             gameObjectPool.Draw(spriteBatch);
