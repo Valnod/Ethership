@@ -23,7 +23,7 @@ namespace EtherShip
         public Color Color { get; set; }
         public Rectangle spriteRectangleForCollision
         {
-            get { return new Rectangle(0, 0, sprite.Width, sprite.Height); }
+            get { return new Rectangle(0, 0, (int)(sprite.Width * scaleFactor), (int)(sprite.Height * scaleFactor)); }
         }
 
         public SpriteRenderer(GameObject obj, string spriteName, float scaleFactor, float rotation, float layerDepth) : base(obj)

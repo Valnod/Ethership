@@ -127,6 +127,5 @@ namespace EtherShip
         {
             return new Vector2(currentMouseState.X, currentMouseState.Y);
         }
-
     }
 }
