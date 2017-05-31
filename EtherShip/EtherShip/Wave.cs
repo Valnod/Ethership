@@ -84,7 +84,7 @@ namespace EtherShip
        
        public void Update(GameTime gameTime)
         {
-            //first we check if we have the desired number of enemies otherwise we spawn our enemies 
+            //first we check if we have the desired number of enemies otherwise we spawn our enemiesf
             if (enemiesSpawned >= (numberOfEnemies + waveNumber))
             {
                 spawningEnemies = false; 
