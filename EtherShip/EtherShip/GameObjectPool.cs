@@ -34,7 +34,7 @@ namespace EtherShip
         private List<GameObject> ActiveClutterList;
         private List<GameObject> InactiveClutterList;
         //Whale
-        private List<GameObject> ActiveWhaleList;
+        public List<GameObject> ActiveWhaleList;
         private List<GameObject> InactiveWhaleList;
 
         public GameObject player;
@@ -174,7 +174,7 @@ namespace EtherShip
             {
                 GameObject obj = new GameObject(projectileStartPos);
                 obj.AddComponnent(new Projectile(obj, 70, 1, target));
-                obj.AddComponnent(new SpriteRenderer(obj, "circle", 1f, 0f, 1f));
+                obj.AddComponnent(new SpriteRenderer(obj, "circle", 0.2f, 0f, 1f));
                 obj.LoadContent(GameWorld.Instance.Content);
                 obj.AddComponnent(new CollisionCircle(obj));
                 obj.GetComponent<CollisionCircle>().LoadContent(GameWorld.Instance.Content);
@@ -198,7 +198,7 @@ namespace EtherShip
             {
                 GameObject obj = new GameObject(new Vector2(400, 400));
                 obj.AddComponnent(new Whale(obj, new Vector2(1, 0), new Vector2(1, 0), 10, 5, 1f));
-                obj.AddComponnent(new SpriteRenderer(obj, "ShipP", 1f, 0f, 0.5f));
+                obj.AddComponnent(new SpriteRenderer(obj, "Whale", 1f, 0f, 0.5f));
                 obj.LoadContent(GameWorld.Instance.Content);
                 obj.AddComponnent(new CollisionCircle(obj));
                 obj.GetComponent<CollisionCircle>().LoadContent(GameWorld.Instance.Content);
@@ -219,7 +219,7 @@ namespace EtherShip
         {
             GameObject obj = new GameObject(new Vector2(100, 100));
             obj.AddComponnent(new Player(obj, new Vector2(1, 0), 3, false));
-            obj.AddComponnent(new SpriteRenderer(obj, "ShipP", 1f, 0f, 1f));
+            obj.AddComponnent(new SpriteRenderer(obj, "space whaler ship", 0.2f, 0f, 1f));
             obj.LoadContent(GameWorld.Instance.Content);
             obj.AddComponnent(new CollisionCircle(obj));
             obj.GetComponent<CollisionCircle>().LoadContent(GameWorld.Instance.Content);

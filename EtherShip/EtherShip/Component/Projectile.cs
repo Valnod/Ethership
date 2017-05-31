@@ -31,6 +31,7 @@ namespace EtherShip
 
         public void Move(GameTime gameTime)
         {
+            obj.GetComponent<SpriteRenderer>().Color = Color.IndianRed;
             translation = Vector2.Normalize(target.position - obj.position) * speed / (float)gameTime.ElapsedGameTime.Milliseconds;
             obj.position += translation;
         }
@@ -45,7 +46,12 @@ namespace EtherShip
             {
                 if (CollisionCheck.Check(obj.GetComponent<CollisionCircle>().edges, obj.position + (translation / 2), target.GetComponent<CollisionCircle>().edges, target.position))
                 {
-                    target.GetComponent<Enemy>().Health -= Damage;
+                    if(target.GetComponent<Enemy>() != null)
+                        target.GetComponent<Enemy>().Health -= Damage;
+                    if(target.GetComponent<Whale>() != null)
+                        target.GetComponent<Whale>().Health -= Damage;
+
+
                     GameWorld.Instance.gameObjectPool.RemoveActive.Add(obj);
                 }
             }
