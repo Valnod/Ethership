@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EtherShip", "EtherShip\EtherShip.csproj", "{CB2A5A40-25D8-4312-8C26-B09B528ADE4A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "w", "EtherShip\w.csproj", "{CB2A5A40-25D8-4312-8C26-B09B528ADE4A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestEtherShip", "TestEtherShip\TestEtherShip.csproj", "{932D3E4D-AC2D-4BDC-A42D-C0B98AA41C41}"
 EndProject

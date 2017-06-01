@@ -200,7 +200,7 @@ namespace EtherShip
             }
             else
                 endGame.Update(gameTime);
-
+            menu.Update();
             base.Update(gameTime);
         }
 

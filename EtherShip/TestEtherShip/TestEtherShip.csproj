@@ -55,9 +55,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EtherShip\EtherShip.csproj">
+    <ProjectReference Include="..\EtherShip\w.csproj">
       <Project>{cb2a5a40-25d8-4312-8c26-b09b528ade4a}</Project>
-      <Name>EtherShip</Name>
+      <Name>w</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
