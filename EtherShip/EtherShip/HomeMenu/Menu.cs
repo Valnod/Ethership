@@ -11,6 +11,7 @@ namespace EtherShip
 {
     class Menu
     {
+        //kommentar på vej
         enum GameState { mainMenuen, play, quit }
         GameState gameState;
 
