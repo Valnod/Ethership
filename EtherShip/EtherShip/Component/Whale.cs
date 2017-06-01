@@ -43,6 +43,8 @@ namespace EtherShip
             this.value = value;
             this.Health = health;
             this.speed = speed;
+
+            target = new Vector2(GameWorld.Instance.Map.MapGrid.GetLength(0) / (GameWorld.Instance.Map.GridPointSize * 2), (GameWorld.Instance.Map.MapGrid.GetLength(1) / 2) * (GameWorld.Instance.Map.GridPointSize));
         }
 
         public void Update(GameTime gameTime)
@@ -92,7 +94,7 @@ namespace EtherShip
 
         public void RouteDone()
         {
-            if (GameWorld.Instance.Map.MapGrid.GetLength(1) > 1 )
+            if ((GameWorld.Instance.Map[obj.position].Pos - target).Length() < 263 )
             {
                 GameWorld.Instance.gameObjectPool.RemoveActive.Add(obj);
             }
