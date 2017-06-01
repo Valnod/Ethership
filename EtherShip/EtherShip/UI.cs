@@ -14,7 +14,7 @@ namespace EtherShip
     {
         
         private Texture2D uiTexture;
-        private Rectangle uiRectangle;
+        public Rectangle uiRectangle;
         private string textureName;
 
         public delegate void ElementClicked(string element);
@@ -58,6 +58,5 @@ namespace EtherShip
             uiRectangle = new Rectangle(uiRectangle.X += x, uiRectangle.Y += y, uiRectangle.Width, uiRectangle.Height);
            
         }
-
     }
 }

@@ -15,7 +15,7 @@ namespace EtherShip
 
         public GameObject obj;
         private int numberOfEnemies;        // number of enemies to spawn
-        private int waveNumber;             // wich wave it is
+        public int WaveNumber { get; set; } // wich wave it is        
         private float spawnTimer = 0;       //when should we spawn an enemy
         private int enemiesSpawned = 0;     //how many enemies have spawned
 
@@ -34,13 +34,6 @@ namespace EtherShip
         //    }
         //    set { RoundOver = value; }
         //}
-        public int RoundNumber
-        {
-            get
-            {
-                return waveNumber;
-            }
-        }
         public bool EnemyAtEnd
         {
             get
@@ -52,7 +45,7 @@ namespace EtherShip
        
         public Wave(int waveNumber, int numberOfEnemies, Map map)
         {
-            this.waveNumber = waveNumber;
+            this.WaveNumber = waveNumber;
             this.map = map;
             this.numberOfEnemies = numberOfEnemies;
 
@@ -63,7 +56,7 @@ namespace EtherShip
             
             enemiesSpawned++;
             //defines the changes from wave to wave, should one round be stronger etc etc.
-            if(waveNumber == 5)
+            if(WaveNumber == 5)
             {
                 GameWorld.Instance.gameObjectPool.CreateWhale();
                 spawningEnemies = false;
@@ -71,7 +64,7 @@ namespace EtherShip
         }
         public void Start()
         {
-            if (waveNumber == 5)
+            if (WaveNumber == 5)
             {
                 spawningEnemies = false;
             }
@@ -89,7 +82,7 @@ namespace EtherShip
 
 
                 GameWorld.Instance.BetweenRounds = true;
-                waveNumber++;
+                WaveNumber++;
                 spawningEnemies = true;
             }
             
@@ -98,7 +91,7 @@ namespace EtherShip
        public void Update(GameTime gameTime)
         {
             //first we check if we have the desired number of enemies otherwise we spawn our enemiesf
-            if (enemiesSpawned >= (numberOfEnemies + waveNumber))
+            if (enemiesSpawned >= (numberOfEnemies + WaveNumber))
             {
                 spawningEnemies = false; 
             }
