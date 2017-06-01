@@ -114,7 +114,7 @@ namespace EtherShip
             gameObjectPool.CreatePlayer();
 
             //testing waves
-            Wave = new Wave(0, 10, Map);
+            Wave = new Wave(0, 1, Map);
             Wave.Start();
 
             gameObjectPool.AddToActive();
