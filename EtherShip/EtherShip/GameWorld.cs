@@ -20,7 +20,7 @@ namespace EtherShip
         public bool betweenRounds;
         private bool buildMode;
         public bool GameOver { get; set; }
-        private EndGame endGame;
+        //private EndGame endGame;
         private BuildMode build;
 
         public Map Map { get; set; }
@@ -96,7 +96,7 @@ namespace EtherShip
             GameOver = false;
             buildMode = false;
             build = new BuildMode("circle", "rectangle");
-            endGame = new EndGame("rectangle", Window.ClientBounds.Width / 2, Window.ClientBounds.Height / 2, 5f);
+            //endGame = new EndGame("rectangle", Window.ClientBounds.Width / 2, Window.ClientBounds.Height / 2, 5f);
 
             //Initializes the map
             Map = new Map("Background");
@@ -126,7 +126,7 @@ namespace EtherShip
             spriteBatch = new SpriteBatch(GraphicsDevice);
             menu.LoadContent(Content);
             Map.LoadContent(Content);
-            endGame.LoadContent(Content);
+            //endGame.LoadContent(Content);
             // TODO: use this.Content to load your game content here
         }
 
@@ -191,7 +191,7 @@ namespace EtherShip
                 gameObjectPool.AddToActive();
             }
             else
-                endGame.Update(gameTime);
+                //endGame.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -217,18 +217,11 @@ namespace EtherShip
 
             //Draws the end game screen
             if (GameOver)
-                endGame.Draw(spriteBatch);
+                //endGame.Draw(spriteBatch);
          
             spriteBatch.End();
 
             base.Draw(gameTime);
-        }
-
-        public void AddWall()
-        {
-            gameObjectPool.CreateWall(new Vector2(posti.X, posti.Y));
-            posti.X += 31;
-            uiWall[0] += 1;
         }
     }
 }
