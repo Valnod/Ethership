@@ -29,11 +29,12 @@ namespace EtherShip
             mainWindow.Add(new UI("gui"));
             mainWindow.Add(new UI("menu"));
 
-            menu.Add(new UI("Exit"));
+            
             menu.Add(new UI("mainMenu"));
             menu.Add(new UI("play"));
             menu.Add(new UI("gui"));
             menu.Add(new UI("highscore"));
+            menu.Add(new UI("Exit"));
         }
 
         public void SaveGame()
@@ -75,10 +76,10 @@ namespace EtherShip
 
             //function to move the different ui pictures on the screen 
             menu.Find(x => x.TextureName == "gui").MoveElement(0, 0);
-            menu.Find(x => x.TextureName == "mainMenu").MoveElement(200, -600);
-            menu.Find(x => x.TextureName == "Exit").MoveElement(200, -300);
-            menu.Find(x => x.TextureName == "play").MoveElement(200, -500);
-            menu.Find(x => x.TextureName == "highscore").MoveElement(200, -400);
+            menu.Find(x => x.TextureName == "mainMenu").MoveElement(500, -600);
+            menu.Find(x => x.TextureName == "play").MoveElement(550, -590);
+            menu.Find(x => x.TextureName == "highscore").MoveElement(550, -540);
+            menu.Find(x => x.TextureName == "Exit").MoveElement(550, -490);
 
 
 
@@ -104,6 +105,13 @@ namespace EtherShip
                     {
                         element.Update();
                         
+                    }
+                    break;
+                case GameState.highscore:
+                    foreach (UI element in menu)
+                    {
+                        element.Update();
+
                     }
                     break;
                 default:

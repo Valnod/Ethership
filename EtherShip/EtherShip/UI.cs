@@ -12,7 +12,7 @@ namespace EtherShip
 {
     class UI
     {
-
+        SpriteFont font; //font size 100
         private Texture2D uiTexture;
         public Rectangle uiRectangle;
         private string textureName;
@@ -33,11 +33,14 @@ namespace EtherShip
         {
             this.TextureName = textureName;
         }
+
         public void LoadContent(ContentManager content)
         {
             uiTexture = content.Load<Texture2D>(textureName);
 
             uiRectangle = new Rectangle(0, 600, uiTexture.Width, uiTexture.Height / 2);
+
+            font = content.Load<SpriteFont>("font");
 
 
         }
@@ -51,7 +54,9 @@ namespace EtherShip
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(uiTexture, uiRectangle, Color.White);
-
+            spriteBatch.DrawString(font, "$ xxxx", new Vector2(100, 650), Color.Black);
+            spriteBatch.DrawString(font, "Wave xxx", new Vector2(1100, 650), Color.Black);
+            spriteBatch.DrawString(font, "HighScore!!!", new Vector2(600, 650), Color.Black);
         }
         public void MoveElement(int x, int y)
         {
