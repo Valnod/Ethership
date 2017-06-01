@@ -187,7 +187,7 @@ namespace EtherShip
             }
             else if (buildMode)
             {
-                build.Update(gameTime); //Build mode
+                build.Update(gameTime); //Build mode2
              
             }
                 
