@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="AI.cs" />
     <Compile Include="Animation.cs" />
+    <Compile Include="EndGame.cs" />
     <Compile Include="EnumLists.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="Clutter.cs" />
@@ -97,9 +98,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Exit.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\gui.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\highscore.png">

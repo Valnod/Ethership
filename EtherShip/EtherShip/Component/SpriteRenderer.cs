@@ -12,6 +12,7 @@ namespace EtherShip
 {
     class SpriteRenderer : Component, IDrawable, IUpdateable, Iloadable
     {
+        private Wall wall;
         public Texture2D sprite { get; set; }
         public string spriteName { get; set; }
         public float scaleFactor;

@@ -17,15 +17,17 @@ namespace EtherShip
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private static GameWorld instance;
-        private bool betweenRounds;
+        public bool betweenRounds;
         private bool buildMode;
+        public bool GameOver { get; set; }
+        private EndGame endGame;
         private BuildMode build;
 
         public Map Map { get; set; }
         public GameObjectPool gameObjectPool;
         public Random rnd;
 
-        Wave wave;
+        public Wave Wave { get; set; }
 
         public static GameWorld Instance
         {
@@ -45,7 +47,6 @@ namespace EtherShip
             {
                 return betweenRounds;
             }
-
             set
             {
                 betweenRounds = value;
@@ -92,8 +93,10 @@ namespace EtherShip
             this.Window.AllowUserResizing = true;
 
             betweenRounds = true;
+            GameOver = false;
             buildMode = false;
             build = new BuildMode("circle", "rectangle");
+            endGame = new EndGame("rectangle", Window.ClientBounds.Width / 2, Window.ClientBounds.Height / 2, 5f);
 
             //Initializes the map
             Map = new Map("Background");
@@ -103,12 +106,10 @@ namespace EtherShip
 
             //Adds some gameObjects for testing
             gameObjectPool.CreatePlayer();
-            //enemy is out for testing
-            //gameObjectPool.CreateEnemy();
 
             //testing waves
-            wave = new Wave(0, 1, Map);
-            wave.Start();
+            Wave = new Wave(0, 1, Map);
+            Wave.Start();
 
             gameObjectPool.AddToActive();
 
@@ -125,6 +126,7 @@ namespace EtherShip
             spriteBatch = new SpriteBatch(GraphicsDevice);
             menu.LoadContent(Content);
             Map.LoadContent(Content);
+            endGame.LoadContent(Content);
             // TODO: use this.Content to load your game content here
         }
 
@@ -144,58 +146,61 @@ namespace EtherShip
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
-
             //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            //    Exit();
-            
+            //Exit();
+
             // TODO: Add your update logic here
-
-            //Get the keyboard state
-            KeyboardState keystate = Keyboard.GetState();
-
-          
-            if(betweenRounds == true)
-                {
-                if (keystate.IsKeyDown(Keys.B))
-                    buildMode = true;
-                else if(keystate.IsKeyDown(Keys.N))
-                    buildMode = false;
-
-                this.IsMouseVisible = true;
-                if(!buildMode)
-                    gameObjectPool.Update(gameTime); //Updates all gameObjects
-
-            }
-                
-            
-            if (keystate.IsKeyDown(Keys.P) )
-                {
-                     betweenRounds = false;
-                     buildMode = false;
-                     this.IsMouseVisible = false;
-                }
 
             //Updates mouse state
             InputManager.Update();
 
-            if (!betweenRounds)
+            if (!GameOver)
             {
-                gameObjectPool.Update(gameTime); //Updates all gameObjects
-                wave.Update(gameTime);
-            }
-            else if (buildMode)
-            {
-                build.Update(gameTime); //Build mode2
-             
-            }
-                
-            
-            //Adds and removes GameObjects from the game
-            gameObjectPool.RemoveFromActive();
-            gameObjectPool.AddToActive();        
+                //Get the keyboard state
+                KeyboardState keystate = Keyboard.GetState();
 
-            base.Update(gameTime);
+                if (betweenRounds == true)
+                {
+                    if (keystate.IsKeyDown(Keys.B))
+                        buildMode = true;
+                    else if (keystate.IsKeyDown(Keys.N))
+                        buildMode = false;
+
+                    this.IsMouseVisible = true;
+                    if (!buildMode)
+                        gameObjectPool.Update(gameTime); //Updates all gameObjects
+                }
+
+                if (keystate.IsKeyDown(Keys.P))
+                {
+                    betweenRounds = false;
+                    buildMode = false;
+                    this.IsMouseVisible = false;
+                }
+
+                //Updates mouse state
+                InputManager.Update();
+
+                if (!betweenRounds)
+                {
+                    gameObjectPool.Update(gameTime); //Updates all gameObjects
+                    Wave.Update(gameTime);
+                }
+                else if (buildMode)
+                {
+                    build.Update(gameTime); //Build mode2
+
+                }
+                
+
+                //Adds and removes GameObjects from the game
+                gameObjectPool.RemoveFromActive();
+                gameObjectPool.AddToActive();
+
+                menu.Update();
+
+                base.Update(gameTime);
+            }
         }
 
         /// <summary>
@@ -211,12 +216,16 @@ namespace EtherShip
 
             //Draws the map
             Map.DrawBackground(spriteBatch);
-            //draws the menu
+
+            // draws the menu
             menu.Draw(spriteBatch);
 
             //Draws all gameObjects
             gameObjectPool.Draw(spriteBatch);
 
+            //Draws the end game screen
+            if (GameOver)
+                endGame.Draw(spriteBatch);
          
             spriteBatch.End();
 
