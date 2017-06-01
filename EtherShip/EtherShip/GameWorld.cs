@@ -125,6 +125,7 @@ namespace EtherShip
             spriteBatch = new SpriteBatch(GraphicsDevice);
             menu.LoadContent(Content);
             Map.LoadContent(Content);
+            
             // TODO: use this.Content to load your game content here
         }
 
@@ -147,7 +148,7 @@ namespace EtherShip
 
 
             //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            //    Exit();
+             //Exit();
             
             // TODO: Add your update logic here
 
@@ -193,8 +194,10 @@ namespace EtherShip
             
             //Adds and removes GameObjects from the game
             gameObjectPool.RemoveFromActive();
-            gameObjectPool.AddToActive();        
+            gameObjectPool.AddToActive();
 
+            menu.Update();
+          
             base.Update(gameTime);
         }
 
@@ -211,12 +214,11 @@ namespace EtherShip
 
             //Draws the map
             Map.DrawBackground(spriteBatch);
-            //draws the menu
-            menu.Draw(spriteBatch);
+           
 
             //Draws all gameObjects
             gameObjectPool.Draw(spriteBatch);
-
+            menu.Draw(spriteBatch);
          
             spriteBatch.End();
 

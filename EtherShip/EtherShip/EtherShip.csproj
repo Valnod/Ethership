@@ -99,9 +99,6 @@
     <Content Include="Content\Exit.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\gui.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\highscore.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

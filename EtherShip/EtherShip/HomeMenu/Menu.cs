@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +11,24 @@ namespace EtherShip
 {
     class Menu
     {
+        enum GameState { mainMenuen, play, quit }
+        GameState gameState;
+
         public bool controls;
         public bool viewHighscore;
+
         List<UI> main = new List<UI>();
+        List<UI> menu = new List<UI>();
+
+
         public Menu()
         {
             main.Add(new UI("gui"));
-            main.Add(new UI("play"));
-            main.Add(new UI("Exit"));
+            main.Add(new UI("menu"));
+
+
+            menu.Add(new UI("Exit"));
+            menu.Add(new UI("mainMenu"));
         }
 
         public void SaveGame()
@@ -45,26 +56,67 @@ namespace EtherShip
             foreach (UI element in main)
             {
                 element.LoadContent(content);
+                element.clickEvent += OnClick;
+            }
+            foreach (UI element in menu)
+            {
+                element.LoadContent(content);
+                element.clickEvent += OnClick;
             }
 
-            main.Find(x => x.TextureName == "gui").MoveElement(0, 0, GameWorld.Instance.Window.ClientBounds.Width, 0);
-            main.Find(x => x.TextureName == "Exit").MoveElement(50,0,0, 0);
-            main.Find(x => x.TextureName == "play").MoveElement(0, 0,0,0);
-        }
-        public void Upddate()
-        {
+            main.Find(x => x.TextureName == "gui").MoveElement(0, 0);
+            main.Find(x => x.TextureName == "menu").MoveElement(0, 0);
+            menu.Find(x => x.TextureName == "mainMenu").MoveElement(0, 0);
+            menu.Find(x => x.TextureName == "Exit").MoveElement(1180, 40);
 
         }
-        public void Quit()
+        public void Update()
         {
-
+            switch (gameState)
+            {
+                case GameState.mainMenuen:
+                    foreach (UI element in menu)
+            {
+                element.Update();
+            }
+                    break;
+                default:
+                    break;
+            }
+            
         }
+       
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach(UI element in main)
+            switch (gameState)
+            {
+                case GameState.mainMenuen:
+                    foreach (UI element in menu)
+                    {
+                        element.Draw(spriteBatch);
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            foreach (UI element in main)
             {
                 element.Draw(spriteBatch);
             }
+        }
+        public void OnClick(string button)
+        {
+          
+            if (button == "menu" || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+               gameState = GameState.mainMenuen; 
+            }
+            if (button == "exit")
+            {
+                GameWorld.Instance.Exit();
+            }
+            
         }
     }
 }
