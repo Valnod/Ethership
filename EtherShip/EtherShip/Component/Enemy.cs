@@ -21,7 +21,7 @@ namespace EtherShip
         private Vector2 translation;
         private int value;
         private float timer;
-        private float cooldown = 300;
+        private float cooldown = 500;
 
         public int Health { get; set; }
         private int maxHealth;

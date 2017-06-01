@@ -123,7 +123,7 @@ namespace EtherShip
                 UnCheckedGridPoints.Remove(currentASN);
                 CheckedGridPoints.Add(currentASN);
                 //FARVE BLÅ!!!!!!!!!!
-                //Thread.Sleep(1000);
+                
                 currentASN.currentGP.Color = Color.Blue;
             }
             foreach (AStarNode asn in UnCheckedGridPoints)
