@@ -53,6 +53,7 @@ namespace EtherShip
 
             for (int x = 0; x < GameWorld.Instance.gameObjectPool.ActiveEnemyList.Count; x++)
             {
+                //her kom en fejl med enemy out of range, et tårn havde skudt men fjenden forsvandt så dens afstand var uden for boundary
                 if (IsInRange(GameWorld.Instance.gameObjectPool.ActiveEnemyList[x].position) &&
                     ((this.obj.position - GameWorld.Instance.gameObjectPool.ActiveEnemyList[x].position).Length() < length))
                 {
