@@ -242,10 +242,10 @@ namespace EtherShip
 
         public void MapCollision()
         {
-            int minX = obj.GetComponent<SpriteRenderer>().sprite.Width / 2;
-            int maxX = GameWorld.Instance.GraphicsDevice.Viewport.Width - obj.GetComponent<SpriteRenderer>().sprite.Width / 2;
-            int minY = obj.GetComponent<SpriteRenderer>().sprite.Height / 2;
-            int maxY = GameWorld.Instance.GraphicsDevice.Viewport.Height - obj.GetComponent<SpriteRenderer>().sprite.Height / 2;
+            int minX = (obj.GetComponent<SpriteRenderer>().sprite.Width * (int)obj.GetComponent<SpriteRenderer>().scaleFactor) / 2;
+            int maxX = GameWorld.Instance.GraphicsDevice.Viewport.Width - (obj.GetComponent<SpriteRenderer>().sprite.Width * (int)obj.GetComponent<SpriteRenderer>().scaleFactor) / 2;
+            int minY = (obj.GetComponent<SpriteRenderer>().sprite.Height * (int)obj.GetComponent<SpriteRenderer>().scaleFactor) / 2;
+            int maxY = GameWorld.Instance.GraphicsDevice.Viewport.Height - (obj.GetComponent<SpriteRenderer>().sprite.Height * (int)obj.GetComponent<SpriteRenderer>().scaleFactor) / 2;
 
             if (GameWorld.Instance.Window != null) //Prevents the program from crashing, when the window is closed
             {

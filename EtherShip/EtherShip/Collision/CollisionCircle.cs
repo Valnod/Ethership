@@ -11,7 +11,7 @@ namespace EtherShip
 {
     class CollisionCircle : Component, Iloadable, IDrawable
     {
-        public float Radius { get; }
+        public float Radius { get; set; }
         //One coloum is the edges ([i,0]), where the second ([i,1]) is a translocation used to indicated the vectors true placement around the position.
         public Vector2[,] edges;
         public List<float> lengthOfEdges;
@@ -25,7 +25,7 @@ namespace EtherShip
 
         public CollisionCircle(GameObject obj) : base(obj)
         {
-            this.Radius = obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Width/2;
+            this.Radius = (obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Width)/2;
             edges = new Vector2[numberOfEdges, 2];
             lengthOfEdges = new List<float>();
             GenerateSides();

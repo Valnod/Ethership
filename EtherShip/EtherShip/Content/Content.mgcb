@@ -151,3 +151,9 @@
 /processorParam:TextureFormat=Color
 /build:space whaler ship.png
 
+#begin Font
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Font
+
