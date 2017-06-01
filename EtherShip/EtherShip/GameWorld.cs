@@ -25,6 +25,9 @@ namespace EtherShip
         public GameObjectPool gameObjectPool;
         public Random rnd;
 
+        private Vector2 posti = new Vector2(0, 610);
+        public int[] uiWall = new int[42];
+
         Wave wave;
 
         public static GameWorld Instance
@@ -45,7 +48,6 @@ namespace EtherShip
             {
                 return betweenRounds;
             }
-
             set
             {
                 betweenRounds = value;
@@ -105,6 +107,10 @@ namespace EtherShip
             gameObjectPool.CreatePlayer();
             //enemy is out for testing
             //gameObjectPool.CreateEnemy();
+            /*foreach (int wall in uiWall)
+            {
+                AddWall();
+            }*/           
 
             //testing waves
             wave = new Wave(0, 100, Map);
@@ -144,8 +150,6 @@ namespace EtherShip
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
-
             //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             //    Exit();
             
@@ -186,10 +190,8 @@ namespace EtherShip
             }
             else if (buildMode)
             {
-                build.Update(gameTime); //Build mode
-             
+                build.Update(gameTime); //Build mode             
             }
-                
             
             //Adds and removes GameObjects from the game
             gameObjectPool.RemoveFromActive();
@@ -221,6 +223,13 @@ namespace EtherShip
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        public void AddWall()
+        {
+            gameObjectPool.CreateWall(new Vector2(posti.X, posti.Y));
+            posti.X += 31;
+            uiWall[0] += 1;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace EtherShip
     {
         public bool controls;
         public bool viewHighscore;
-        List<UI> main = new List<UI>();
+        public List<UI> main = new List<UI>();
         public Menu()
         {
             main.Add(new UI("gui"));
@@ -48,8 +48,8 @@ namespace EtherShip
             }
 
             main.Find(x => x.TextureName == "gui").MoveElement(0, 0, GameWorld.Instance.Window.ClientBounds.Width, 0);
-            main.Find(x => x.TextureName == "Exit").MoveElement(50,0,0, 0);
-            main.Find(x => x.TextureName == "play").MoveElement(0, 0,0,0);
+            main.Find(x => x.TextureName == "Exit").MoveElement(50, 0, 0, 0);
+            main.Find(x => x.TextureName == "play").MoveElement(0, 0, 0, 0);
         }
         public void Upddate()
         {

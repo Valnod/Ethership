@@ -21,10 +21,15 @@ namespace EtherShip
         private Texture2D pointSprite;
         private Rectangle sourceRectPoint;
 
+        public int xGridAmount;
+        public int yGridAmount;
+
         public Map(string spriteName)
         {
             this.spriteName = spriteName;
             this.GridPointSize = 25;
+            xGridAmount = GameWorld.Instance.Window.ClientBounds.Width / GridPointSize;
+            yGridAmount = (GameWorld.Instance.Window.ClientBounds.Height / 2 + 264) / GridPointSize;
             GenerateMapGrid();
         }
 
@@ -57,9 +62,6 @@ namespace EtherShip
         /// </summary>
         private void GenerateMapGrid()
         {
-            int xGridAmount = GameWorld.Instance.Window.ClientBounds.Width / GridPointSize;
-            int yGridAmount = (GameWorld.Instance.Window.ClientBounds.Height - 100 )/ GridPointSize;
-
             MapGrid = new GridPoint[xGridAmount, yGridAmount];
 
             for (int x = 0; x < xGridAmount; x++)

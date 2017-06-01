@@ -28,6 +28,7 @@ namespace EtherShip
         float timer = 0; //Timer for both anti-gravity effect and the anti gravity ability
         private Vector2 translation;
         private SFX soundTest;
+        private Menu menu;
 
         public Player(GameObject obj, Vector2 direction, int health, bool antiGravity) : base(obj)
         {
@@ -41,6 +42,7 @@ namespace EtherShip
             spriteRenderer = obj.GetComponent<SpriteRenderer>();
             animator = obj.GetComponent<Animator>();
             soundTest = new SFX();
+            menu = new Menu();
         }
 
         /// <summary>
@@ -182,7 +184,7 @@ namespace EtherShip
                     else if (go.GetComponent<Tower>() != null)
                         push += CollisionCheck.CheckV2(obj.GetComponent<CollisionCircle>().edges, obj.position + translation, go.GetComponent<CollisionCircle>().edges, go.position);
                     else if (go.GetComponent<Wall>() != null)
-                        push += CollisionCheck.CheckV2(obj.GetComponent<CollisionCircle>().edges, obj.position + translation, go.GetComponent<CollisionRectangle>().edges, go.position);                    
+                        push += CollisionCheck.CheckV2(obj.GetComponent<CollisionCircle>().edges, obj.position + translation, go.GetComponent<CollisionRectangle>().edges, go.position);
                     
                     //If push's length is greater than 0 a collisions happens, and depending on what is hit different things can happen
                     if(push.Length() > 0)
@@ -231,9 +233,9 @@ namespace EtherShip
                 }
                 if (!float.IsNaN(GameWorld.Instance.GraphicsDevice.DisplayMode.Height))
                 {
-                    if (obj.position.Y > maxY) //Bottom GameWindow collsion
+                    if (obj.position.Y > maxY - 120) //Bottom GameWindow collsion
                     {
-                        obj.position.Y = maxY;
+                        obj.position.Y = maxY - 120;
                         obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
                     }
                     else if (obj.position.Y < minY) //Top GameWindow collision

@@ -15,7 +15,7 @@ namespace EtherShip
         private Texture2D backgroundTexture;
         private Rectangle backGRectangle;
         private Texture2D uiTexture;
-        private Rectangle uiRectangle;
+        public Rectangle uiRectangle;
         private string textureName;
 
         public string TextureName
@@ -37,11 +37,8 @@ namespace EtherShip
             uiTexture = content.Load<Texture2D>(TextureName);
             backgroundTexture = content.Load<Texture2D>(textureName);
 
-
             backGRectangle = new Rectangle(0, 600, GameWorld.Instance.Window.ClientBounds.Width, backgroundTexture.Height / 2);
-            uiRectangle = new Rectangle(0, 600, uiTexture.Width , uiTexture.Height / 2 );
-           
-
+            uiRectangle = new Rectangle(0, 600, uiTexture.Width, uiTexture.Height /*/ 2*/);           
         }
         public void Update()
         {
@@ -59,8 +56,6 @@ namespace EtherShip
         {
             uiRectangle = new Rectangle(uiRectangle.X += x, uiRectangle.Y += y, uiRectangle.Width, uiRectangle.Height);
             backGRectangle = new Rectangle(uiRectangle.X += x, uiRectangle.Y += y, uiRectangle.Width, uiRectangle.Height);
-
         }
-
     }
 }
