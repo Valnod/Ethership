@@ -223,12 +223,5 @@ namespace EtherShip
 
             base.Draw(gameTime);
         }
-
-        public void AddWall()
-        {
-            gameObjectPool.CreateWall(new Vector2(posti.X, posti.Y));
-            posti.X += 31;
-            uiWall[0] += 1;
-        }
     }
 }
