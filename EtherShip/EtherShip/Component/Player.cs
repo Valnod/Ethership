@@ -202,11 +202,11 @@ namespace EtherShip
                     if (go.GetComponent<Enemy>() != null)
                         if(!invincible)
                             push += CollisionCheck.CheckV2(obj.GetComponent<CollisionCircle>().edges, obj.position + translation, go.GetComponent<CollisionCircle>().edges, go.position);
-                    else if (go.GetComponent<Whale>() != null)
+                    if (go.GetComponent<Whale>() != null)
                         push += CollisionCheck.CheckV2(obj.GetComponent<CollisionCircle>().edges, obj.position + translation, go.GetComponent<CollisionCircle>().edges, go.position);
-                    else if (go.GetComponent<Tower>() != null)
+                    if (go.GetComponent<Tower>() != null)
                         push += CollisionCheck.CheckV2(obj.GetComponent<CollisionCircle>().edges, obj.position + translation, go.GetComponent<CollisionCircle>().edges, go.position);
-                    else if (go.GetComponent<Wall>() != null)
+                    if (go.GetComponent<Wall>() != null)
                         push += CollisionCheck.CheckV2(obj.GetComponent<CollisionCircle>().edges, obj.position + translation, go.GetComponent<CollisionRectangle>().edges, go.position);                    
                     
                     //If push's length is greater than 0 a collisions happens, and acts differently depending on what is hit
@@ -242,10 +242,10 @@ namespace EtherShip
 
         public void MapCollision()
         {
-            int minX = (obj.GetComponent<SpriteRenderer>().sprite.Width * (int)obj.GetComponent<SpriteRenderer>().scaleFactor) / 2;
-            int maxX = GameWorld.Instance.GraphicsDevice.Viewport.Width - (obj.GetComponent<SpriteRenderer>().sprite.Width * (int)obj.GetComponent<SpriteRenderer>().scaleFactor) / 2;
-            int minY = (obj.GetComponent<SpriteRenderer>().sprite.Height * (int)obj.GetComponent<SpriteRenderer>().scaleFactor) / 2;
-            int maxY = GameWorld.Instance.GraphicsDevice.Viewport.Height - (obj.GetComponent<SpriteRenderer>().sprite.Height * (int)obj.GetComponent<SpriteRenderer>().scaleFactor) / 2;
+            int minX = (obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Width) / 2;
+            int maxX = GameWorld.Instance.GraphicsDevice.Viewport.Width - (obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Width) / 2;
+            int minY = (obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Height) / 2;
+            int maxY = GameWorld.Instance.GraphicsDevice.Viewport.Height - (obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Height) / 2;
 
             if (GameWorld.Instance.Window != null) //Prevents the program from crashing, when the window is closed
             {

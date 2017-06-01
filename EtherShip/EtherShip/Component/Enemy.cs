@@ -11,7 +11,7 @@ namespace EtherShip
     public class Enemy : Component, IUpdateable
     {
         public bool Generating = false;
-
+        private Vector2 push;
         private float acceleration;
         private float speedElement;
         private int currentWayPoint = 0;
@@ -35,7 +35,7 @@ namespace EtherShip
             this.speed = speed;
             this.direction = direction;
             this.value = value;
-
+            this.push = Vector2.Zero;
             ResetHealth();
         }
 
@@ -54,8 +54,8 @@ namespace EtherShip
 
             if (NewRoute == null || (!Generating && timer >= cooldown))
             {
-               int width = GameWorld.Instance.Window.ClientBounds.Width,
-                    height = GameWorld.Instance.Window.ClientBounds.Height;
+               int width = GameWorld.Instance.WindowWidth,
+                    height = GameWorld.Instance.WindowHeigth;
                new System.Threading.Thread(() => NewRoute = AI.Pathfind(GameWorld.Instance.Map[obj.position], GameWorld.Instance.Map[GameWorld.Instance.gameObjectPool.player.position],
                    width, height)).Start();
                 Generating = true;
@@ -70,7 +70,10 @@ namespace EtherShip
                     Generating = false;
                     Vector2 routeDirection = CurrentRoute[currentWayPoint].Pos - obj.position;
                     translation = Vector2.Normalize(routeDirection) * speed;
-                    Vector2 newPosition = obj.position + translation;
+
+                    OBJCollision();
+                    Vector2 newPosition = (obj.position + translation) + push;
+                    push = Vector2.Zero;
 
                     if ((CurrentRoute[currentWayPoint].Pos - newPosition).Length() > (CurrentRoute[currentWayPoint].Pos - obj.position).Length())
                         currentWayPoint++;
@@ -84,8 +87,6 @@ namespace EtherShip
             }
         }
 
-        
-
         /// <summary>
         /// Checks if health is below 0, and if so move the object to inactive.
         /// </summary>
@@ -94,6 +95,47 @@ namespace EtherShip
             if (Health < 0)
                 GameWorld.Instance.gameObjectPool.RemoveActive.Add(obj);
         }
-      
+
+
+        /// <summary>
+        /// Checks for collision and acts if there is a collision.
+        /// </summary>
+        public void OBJCollision()
+        {
+            push = Vector2.Zero;
+            //Checks if this collides with another gameobject.
+            foreach (GameObject go in GameWorld.Instance.gameObjectPool.CollisionListForEnemy())
+            {
+                //Checks the distance to the objects, and only cheecks for collision if the given object is close enough for a check to be meaningfull.
+                if (go != this.obj && ((obj.position - go.position).Length() < 200))
+                {
+                    //The collision checks are done with the upcoming location in mind. The division is just a adjustment, so the objects can come closer before colliding. 
+                    if (go.GetComponent<Enemy>() != null)
+                        push += CollisionCheck.CheckV2(obj.GetComponent<CollisionCircle>().edges, obj.position + translation, go.GetComponent<CollisionCircle>().edges, go.position);
+                    if (go.GetComponent<Tower>() != null)
+                        push += CollisionCheck.CheckV2(obj.GetComponent<CollisionCircle>().edges, obj.position + translation, go.GetComponent<CollisionCircle>().edges, go.position);
+                    if (go.GetComponent<Wall>() != null)
+                        push += CollisionCheck.CheckV2(obj.GetComponent<CollisionCircle>().edges, obj.position + translation, go.GetComponent<CollisionRectangle>().edges, go.position);
+
+#if DEBUG
+                    //If push's length is greater than 0 a collisions happens, and acts differently depending on what is hit
+                    if (push.Length() > 0)
+                    {
+                        if (go.GetComponent<Enemy>() != null)
+                            obj.GetComponent<SpriteRenderer>().Color = Color.Red;
+                        else if (go.GetComponent<Tower>() != null)
+                            obj.GetComponent<SpriteRenderer>().Color = Color.RoyalBlue;
+                        else if (go.GetComponent<Wall>() != null)
+                            obj.GetComponent<SpriteRenderer>().Color = Color.Black;
+                    }
+#endif
+
+                    //Ensures that the push vector can't be greater than the translation vector.
+                    if (push.Length() > translation.Length())
+                        push = Vector2.Normalize(push) * translation.Length();
+                }
+            }
+        }
+
     }
 }

@@ -13,6 +13,9 @@ namespace EtherShip
     /// </summary>
     class GameWorld : Game
     {
+        public int WindowWidth { get; set; }
+        public int WindowHeigth { get; set; }
+
         Menu menu = new Menu();
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -82,14 +85,16 @@ namespace EtherShip
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-        
+
             ////set the GraphicsDeviceManager's fullscreen property
             //graphics.ToggleFullScreen();
             ////Makes the window borderless
             //Window.IsBorderless = true;
             //Changes the windw resolution
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 720;
+            WindowWidth = 1280;
+            WindowHeigth = 720;
+            graphics.PreferredBackBufferWidth = WindowWidth;
+            graphics.PreferredBackBufferHeight = WindowHeigth;
             graphics.ApplyChanges();
             this.Window.AllowUserResizing = true;
 
@@ -109,7 +114,7 @@ namespace EtherShip
             gameObjectPool.CreatePlayer();
 
             //testing waves
-            Wave = new Wave(0, 1, Map);
+            Wave = new Wave(0, 10, Map);
             Wave.Start();
 
             gameObjectPool.AddToActive();

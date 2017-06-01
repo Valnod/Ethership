@@ -6,14 +6,17 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
-
+using System.Threading;
 
 namespace EtherShip
 {
     class GameObjectPool
     {
         public GameObject gameObject;
+
+        private bool generateThread;
+        private bool runThread;
+        private bool[] done;
        
         public List<GameObject> AddActive { get; set; }
         public List<GameObject> RemoveActive { get; set; }
@@ -57,6 +60,12 @@ namespace EtherShip
 
             AddActive = new List<GameObject>();
             RemoveActive = new List<GameObject>();
+
+            generateThread = true;
+            runThread = true;
+            done = new bool[3];
+            for (int i = 0; i < done.Count(); i++)
+                done[i] = true;
         }
 
         public void CreateEnemy()
@@ -232,20 +241,83 @@ namespace EtherShip
         /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
         {
-            player.Update(gameTime);
+            //player.Update(gameTime);
 
-            foreach (GameObject go in ActiveTowerList)
-                go.Update(gameTime);
-            foreach (GameObject go in ActiveEnemyList)
-                go.Update(gameTime);
-            foreach (GameObject go in ActiveWallList)
-                go.Update(gameTime);
-            foreach (GameObject go in ActiveWhaleList)
-                go.Update(gameTime);
-            foreach (GameObject go in ActiveClutterList)
-                go.Update(gameTime);
-            foreach (GameObject go in ActiveProjectileList)
-                go.Update(gameTime);
+            //for (int i = 0; i < ActiveTowerList.Count(); i++)
+            //    ActiveTowerList[i].Update(gameTime);
+            //for (int i = 0; i < ActiveEnemyList.Count(); i++)
+            //    ActiveEnemyList[i].Update(gameTime);
+            //for (int i = 0; i < ActiveWallList.Count(); i++)
+            //    ActiveWallList[i].Update(gameTime);
+            //for (int i = 0; i < ActiveWhaleList.Count(); i++)
+            //    ActiveWhaleList[i].Update(gameTime);
+            //for (int i = 0; i < ActiveClutterList.Count(); i++)
+            //    ActiveClutterList[i].Update(gameTime);
+            //for (int i = 0; i < ActiveProjectileList.Count(); i++)
+            //    ActiveProjectileList[i].Update(gameTime);
+
+            if (generateThread)
+            {
+                StartThreads(gameTime);
+                generateThread = false;
+            }
+
+            if (!done[2])
+            {
+                player.Update(gameTime);
+                done[2] = true;
+            }
+
+            if(done.All(x => x))
+            {
+                for (int i = 0; i < done.Count(); i++)
+                    done[i] = false;
+            }
+        }
+
+        private void StartThreads(GameTime gameTime)
+        {
+            //done 0
+            //Towers, walls and clutter
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                while (runThread)
+                {
+                    if (!done[0])
+                    {
+                        for (int i = 0; i < ActiveTowerList.Count(); i++)
+                            ActiveTowerList[i].Update(gameTime);
+                        for (int i = 0; i < ActiveWallList.Count(); i++)
+                            ActiveWallList[i].Update(gameTime);
+                        for (int i = 0; i < ActiveClutterList.Count(); i++)
+                            ActiveClutterList[i].Update(gameTime);
+                        done[0] = true;
+                    }
+                }
+            }).Start();
+
+            //done 1
+            //Enemy, whale and projectile
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                while (runThread)
+                {
+                    if (!done[1])
+                    {
+                        for (int i = 0; i < ActiveEnemyList.Count(); i++)
+                            ActiveEnemyList[i].Update(gameTime);
+                        for (int i = 0; i < ActiveWhaleList.Count(); i++)
+                            ActiveWhaleList[i].Update(gameTime);
+                        for (int i = 0; i < ActiveProjectileList.Count(); i++)
+                            ActiveProjectileList[i].Update(gameTime);
+                        done[1] = true;
+                    }
+                }
+            }).Start();
+
+
         }
 
         /// <summary>
@@ -256,18 +328,18 @@ namespace EtherShip
         {
             player.Draw(spriteBatch);
 
-            foreach (GameObject go in ActiveTowerList)
-                go.Draw(spriteBatch);
-            foreach (GameObject go in ActiveEnemyList)
-                go.Draw(spriteBatch);
-            foreach (GameObject go in ActiveWallList)
-                go.Draw(spriteBatch);
-            foreach (GameObject go in ActiveWhaleList)
-                go.Draw(spriteBatch);
-            foreach (GameObject go in ActiveClutterList)
-                go.Draw(spriteBatch);
-            foreach (GameObject go in ActiveProjectileList)
-                go.Draw(spriteBatch);
+            for (int i = 0; i < ActiveTowerList.Count(); i++)
+                ActiveTowerList[i].Draw(spriteBatch);
+            for (int i = 0; i < ActiveEnemyList.Count(); i++)
+                ActiveEnemyList[i].Draw(spriteBatch);
+            for (int i = 0; i < ActiveWallList.Count(); i++)
+                ActiveWallList[i].Draw(spriteBatch);
+            for (int i = 0; i < ActiveWhaleList.Count(); i++)
+                ActiveWhaleList[i].Draw(spriteBatch);
+            for (int i = 0; i < ActiveClutterList.Count(); i++)
+                ActiveClutterList[i].Draw(spriteBatch);
+            for (int i = 0; i < ActiveProjectileList.Count(); i++)
+                ActiveProjectileList[i].Draw(spriteBatch);
         }
 
         /// <summary>
@@ -275,8 +347,10 @@ namespace EtherShip
         /// </summary>
         public void AddToActive()
         {
-            foreach(GameObject go in AddActive)
+            for(int i = 0; i < AddActive.Count(); i++)
             {
+                GameObject go = AddActive[i];
+
                 if (go.GetComponent<Tower>() != null)
                 {
                     ActiveTowerList.Add(go);
@@ -322,8 +396,10 @@ namespace EtherShip
         /// </summary>
         public void RemoveFromActive()
         {
-            foreach (GameObject go in RemoveActive)
+            for(int i = 0; i < RemoveActive.Count(); i++)
             {
+                GameObject go = RemoveActive[i]; 
+
                 if (go.GetComponent<Tower>() != null)
                 {
                     InactiveTowerList.Add(go);
@@ -394,18 +470,18 @@ namespace EtherShip
         /// </summary>
         public void ClearLists()
         {
-            foreach (GameObject go in ActiveEnemyList)
-                RemoveActive.Add(go);
-            foreach (GameObject go in ActiveProjectileList)
-                RemoveActive.Add(go);
-            foreach (GameObject go in ActiveTowerList)
-                RemoveActive.Add(go);
-            foreach (GameObject go in ActiveWallList)
-                RemoveActive.Add(go);
-            foreach (GameObject go in ActiveWhaleList)
-                RemoveActive.Add(go);
-            foreach (GameObject go in ActiveClutterList)
-                RemoveActive.Add(go);
+            for(int i = 0; i < ActiveEnemyList.Count(); i++)
+                RemoveActive.Add(ActiveEnemyList[i]);
+            for (int i = 0; i < ActiveProjectileList.Count(); i++)
+                RemoveActive.Add(ActiveProjectileList[i]);
+            for (int i = 0; i < ActiveTowerList.Count(); i++)
+                RemoveActive.Add(ActiveTowerList[i]);
+            for (int i = 0; i < ActiveWallList.Count(); i++)
+                RemoveActive.Add(ActiveWallList[i]);
+            for (int i = 0; i < ActiveWhaleList.Count(); i++)
+                RemoveActive.Add(ActiveWhaleList[i]);
+            for (int i = 0; i < ActiveClutterList.Count(); i++)
+                RemoveActive.Add(ActiveClutterList[i]);
         }
     }
 }
