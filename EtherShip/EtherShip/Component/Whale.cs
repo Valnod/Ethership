@@ -49,6 +49,7 @@ namespace EtherShip
         {
             Move(gameTime);
             CheckAmIDeadwhale();
+            RouteDone();
         }
 
         public void Move(GameTime gameTime)
@@ -60,7 +61,7 @@ namespace EtherShip
                 {
                     int width = GameWorld.Instance.Window.ClientBounds.Width,
                          height = GameWorld.Instance.Window.ClientBounds.Height;
-                    new System.Threading.Thread(() => NewRoute = AI.Pathfind(GameWorld.Instance.Map[obj.position], GameWorld.Instance.Map[new Vector2(GameWorld.Instance.Map.MapGrid.GetLength(0) / (GameWorld.Instance.Map.GridPointSize * 12), (GameWorld.Instance.Map.MapGrid.GetLength(1)  / 2) * (GameWorld.Instance.Map.GridPointSize))],
+                    new System.Threading.Thread(() => NewRoute = AI.Pathfind(GameWorld.Instance.Map[obj.position], GameWorld.Instance.Map[new Vector2(GameWorld.Instance.Map.MapGrid.GetLength(0) / (GameWorld.Instance.Map.GridPointSize * 2), (GameWorld.Instance.Map.MapGrid.GetLength(1)  / 2) * (GameWorld.Instance.Map.GridPointSize))],
                         width, height)).Start();
                     Generating = true;
                     timer = 0;
@@ -89,7 +90,13 @@ namespace EtherShip
             }
         }
 
-
+        public void RouteDone()
+        {
+            if (GameWorld.Instance.Map.MapGrid.GetLength(1) > 1 )
+            {
+                GameWorld.Instance.gameObjectPool.RemoveActive.Add(obj);
+            }
+        }
 
         ///<summary>
         /// Checks if health is below 0, and if so move the object to inactive.
