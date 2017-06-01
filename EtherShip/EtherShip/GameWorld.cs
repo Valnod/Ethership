@@ -147,8 +147,8 @@ namespace EtherShip
         protected override void Update(GameTime gameTime)
         {
             //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-             //Exit();
-            
+            //Exit();
+
             // TODO: Add your update logic here
 
             //Updates mouse state
@@ -178,28 +178,29 @@ namespace EtherShip
                     this.IsMouseVisible = false;
                 }
 
-            //Updates mouse state
-            InputManager.Update();
+                //Updates mouse state
+                InputManager.Update();
 
-            if (!betweenRounds)
-            {
-                gameObjectPool.Update(gameTime); //Updates all gameObjects
-                wave.Update(gameTime);
-            }
-            else if (buildMode)
-            {
-                build.Update(gameTime); //Build mode2
-             
-            }
+                if (!betweenRounds)
+                {
+                    gameObjectPool.Update(gameTime); //Updates all gameObjects
+                    Wave.Update(gameTime);
+                }
+                else if (buildMode)
+                {
+                    build.Update(gameTime); //Build mode2
+
+                }
                 
-            
-            //Adds and removes GameObjects from the game
-            gameObjectPool.RemoveFromActive();
-            gameObjectPool.AddToActive();
 
-            menu.Update();
-          
-            base.Update(gameTime);
+                //Adds and removes GameObjects from the game
+                gameObjectPool.RemoveFromActive();
+                gameObjectPool.AddToActive();
+
+                menu.Update();
+
+                base.Update(gameTime);
+            }
         }
 
         /// <summary>
@@ -215,7 +216,9 @@ namespace EtherShip
 
             //Draws the map
             Map.DrawBackground(spriteBatch);
-           
+
+            // draws the menu
+            menu.Draw(spriteBatch);
 
             //Draws all gameObjects
             gameObjectPool.Draw(spriteBatch);
