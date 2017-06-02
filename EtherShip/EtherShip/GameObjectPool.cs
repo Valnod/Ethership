@@ -217,7 +217,7 @@ namespace EtherShip
         {
             GameObject obj = new GameObject(new Vector2(100, 100));
             obj.AddComponnent(new Player(obj, new Vector2(1, 0), 3, false));
-            obj.AddComponnent(new SpriteRenderer(obj, "space whaler ship", 0.2f, 0f, 1f));
+            obj.AddComponnent(new SpriteRenderer(obj, "space whaler ship", 1f, 0f, 1f));
             obj.LoadContent(GameWorld.Instance.Content);
             obj.AddComponnent(new CollisionCircle(obj));
             obj.GetComponent<CollisionCircle>().LoadContent(GameWorld.Instance.Content);

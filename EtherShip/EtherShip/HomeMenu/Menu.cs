@@ -11,6 +11,7 @@ namespace EtherShip
 {
     class Menu
     {
+        //kommentar på vej
         enum GameState { mainMenuen, play, quit }
         GameState gameState;
 
@@ -65,24 +66,34 @@ namespace EtherShip
             }
 
             main.Find(x => x.TextureName == "gui").MoveElement(0, 0);
-            main.Find(x => x.TextureName == "menu").MoveElement(0, 0);
-            menu.Find(x => x.TextureName == "mainMenu").MoveElement(0, 0);
-            menu.Find(x => x.TextureName == "Exit").MoveElement(1180, 40);
+            main.Find(x => x.TextureName == "menu").MoveElement(100, 0);
 
+            menu.Find(x => x.TextureName == "mainMenu").MoveElement(200, 0);
+            menu.Find(x => x.TextureName == "Exit").MoveElement(300, 0);
+
+           
+         
         }
         public void Update()
         {
             switch (gameState)
             {
                 case GameState.mainMenuen:
-                    foreach (UI element in menu)
-            {
-                element.Update();
-            }
+                    foreach (UI element in main)
+                    {
+                         element.Update();
+                    }
+                    break;
+                case GameState.quit:
+                    foreach(UI element in menu)
+                    {
+                        element.Update();
+                    }
                     break;
                 default:
                     break;
             }
+          
             
         }
        
@@ -91,6 +102,12 @@ namespace EtherShip
             switch (gameState)
             {
                 case GameState.mainMenuen:
+                    foreach (UI element in main)
+                    {
+                        element.Draw(spriteBatch);
+                    }
+                    break;
+                case GameState.quit:
                     foreach (UI element in menu)
                     {
                         element.Draw(spriteBatch);
@@ -108,13 +125,14 @@ namespace EtherShip
         public void OnClick(string button)
         {
           
-            if (button == "menu" || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            {
-               gameState = GameState.mainMenuen; 
-            }
-            if (button == "exit")
+            if (button == "exit" || Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 GameWorld.Instance.Exit();
+                
+            }
+            if (button == "menu")
+            {
+                gameState = GameState.mainMenuen;
             }
             
         }

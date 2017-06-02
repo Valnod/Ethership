@@ -215,6 +215,7 @@ namespace EtherShip
 
             //Draws the map
             Map.DrawBackground(spriteBatch);
+           
 
             //Draws all gameObjects
             gameObjectPool.Draw(spriteBatch);
