@@ -36,7 +36,7 @@ namespace EtherShip
                 placingWall = true;
             }
 
-            //Checks if building shall be placed or removed and acts.
+            //Checks if building shall be placed or removed and acts
             if (InputManager.GetIsMouseButtonPressed(MouseButton.Left))
                 PlaceBuilding(InputManager.GetMousePositionVec());
             else if (InputManager.GetIsMouseButtonPressed(MouseButton.Right))
