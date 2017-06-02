@@ -18,6 +18,7 @@ namespace EtherShip
         {
             placingTower = true;
             placingWall = false;
+
         }
 
         public void Update(GameTime gametime)
