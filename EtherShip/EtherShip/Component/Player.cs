@@ -265,9 +265,9 @@ namespace EtherShip
                 }
                 if (!float.IsNaN(GameWorld.Instance.GraphicsDevice.DisplayMode.Height))
                 {
-                    if (obj.position.Y > maxY - 120) //Bottom GameWindow collsion
+                    if (obj.position.Y > maxY - 150) //Bottom GameWindow collsion
                     {
-                        obj.position.Y = maxY - 120;
+                        obj.position.Y = maxY - 150;
                         obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
                     }
                     else if (obj.position.Y < minY) //Top GameWindow collision

@@ -37,9 +37,9 @@ namespace EtherShip
             }
 
             //Checks if building shall be placed or removed and acts.
-            if (InputManager.GetHasMouseButtonBeenReleased(MouseButton.Left))
+            if (InputManager.GetIsMouseButtonPressed(MouseButton.Left))
                 PlaceBuilding(InputManager.GetMousePositionVec());
-            else if (InputManager.GetHasMouseButtonBeenReleased(MouseButton.Right))
+            else if (InputManager.GetIsMouseButtonPressed(MouseButton.Right))
                 RemoveBuilding(InputManager.GetMousePositionVec());
         }
 

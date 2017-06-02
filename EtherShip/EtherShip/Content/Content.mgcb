@@ -187,3 +187,9 @@
 /processorParam:TextureFormat=Color
 /build:mainMenu.png
 
+#begin Font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Font.spritefont
+
