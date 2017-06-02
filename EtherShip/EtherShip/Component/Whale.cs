@@ -94,7 +94,8 @@ namespace EtherShip
 
         public void RouteDone()
         {
-            if ((GameWorld.Instance.Map[obj.position].Pos - target).Length() < 263 )
+            if ((GameWorld.Instance.Map[obj.position].Pos - target).Length() < 264
+                )
             {
                 GameWorld.Instance.gameObjectPool.RemoveActive.Add(obj);
             }

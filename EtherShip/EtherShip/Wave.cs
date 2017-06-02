@@ -65,7 +65,7 @@ namespace EtherShip
             //defines the changes from wave to wave, should one round be stronger etc etc.
             if(waveNumber == 1)
             {
-                GameWorld.Instance.gameObjectPool.CreateWhale();
+                //GameWorld.Instance.gameObjectPool.CreateWhale();
                 spawningEnemies = false;
            }
         }
