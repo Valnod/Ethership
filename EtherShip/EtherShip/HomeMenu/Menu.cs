@@ -199,7 +199,7 @@ namespace EtherShip
                 gameState = GameState.playWindow;
 
             }
-            //virker ikke!!!!!
+            //virker ikke!!!!!!
             if (button == "exit" )
             {
                 GameWorld.Instance.Exit();
