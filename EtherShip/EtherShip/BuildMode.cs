@@ -18,6 +18,7 @@ namespace EtherShip
         {
             placingTower = true;
             placingWall = false;
+
         }
 
         public void Update(GameTime gametime)
@@ -36,7 +37,7 @@ namespace EtherShip
                 placingWall = true;
             }
 
-            //Checks if building shall be placed or removed and acts.h
+            //Checks if building shall be placed or removed and acts.
             if (InputManager.GetHasMouseButtonBeenReleased(MouseButton.Left))
                 PlaceBuilding(InputManager.GetMousePositionVec());
             else if (InputManager.GetHasMouseButtonBeenReleased(MouseButton.Right))
