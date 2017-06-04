@@ -84,6 +84,11 @@ namespace EtherShip
                     }
                     obj.position = newPosition;
                 }
+                else if (currentWayPoint >= CurrentRoute.Count)
+                {
+                    currentWayPoint = 0;
+                    CurrentRoute = null;
+                }
             }
         }
 
