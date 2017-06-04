@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -23,7 +24,6 @@ namespace EtherShip
         List<UI> mainWindow = new List<UI>();
         List<UI> menu = new List<UI>();
 
-
         public Menu()
         {
             mainWindow.Add(new UI("gui"));
@@ -35,6 +35,16 @@ namespace EtherShip
             menu.Add(new UI("gui"));
             menu.Add(new UI("highscore"));
             menu.Add(new UI("Exit"));
+        }
+
+        public Rectangle GetUI()
+        {
+            return mainWindow[0].uiRectangle;
+        }
+
+        public int GetUIHeight()
+        {
+            return (mainWindow[0].uiRectangle.Height / 3) * 2;
         }
 
         public void SaveGame()

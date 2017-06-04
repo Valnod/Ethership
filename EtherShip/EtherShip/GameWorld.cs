@@ -16,7 +16,7 @@ namespace EtherShip
         public int WindowWidth { get; set; }
         public int WindowHeigth { get; set; }
 
-        Menu menu = new Menu();
+        public Menu Menu { get; set; }
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private static GameWorld instance;
@@ -107,6 +107,9 @@ namespace EtherShip
             //Initializes the map
             Map = new Map("Background");
 
+            //Menu
+            Menu = new Menu();
+
             //Initializes the gameObjectPool
             gameObjectPool = new GameObjectPool();
 
@@ -130,7 +133,7 @@ namespace EtherShip
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            menu.LoadContent(Content);
+            Menu.LoadContent(Content);
             Map.LoadContent(Content);
             endGame.LoadContent(Content);
             // TODO: use this.Content to load your game content here
@@ -200,7 +203,7 @@ namespace EtherShip
             }
             else
                 endGame.Update(gameTime);
-            menu.Update();
+            Menu.Update();
             base.Update(gameTime);
         }
 
@@ -218,7 +221,7 @@ namespace EtherShip
             //Draws the map
             Map.DrawBackground(spriteBatch);
             //draws the menu
-            menu.Draw(spriteBatch);
+            Menu.Draw(spriteBatch);
 
             //Draws all gameObjects
             gameObjectPool.Draw(spriteBatch);

@@ -16,8 +16,8 @@ namespace EtherShip
             int endX = (int)(end.Pos.X / GameWorld.Instance.Map.GridPointSize);
             int endY = (int)(end.Pos.Y / GameWorld.Instance.Map.GridPointSize);
             //finds the amount of gridpoint on the x and y axis
-            int xGridAmount = windowWidth / GameWorld.Instance.Map.GridPointSize;
-            int yGridAmount = windowHeight / GameWorld.Instance.Map.GridPointSize;
+            int xGridAmount = GameWorld.Instance.Map.XGridAmount;
+            int yGridAmount = GameWorld.Instance.Map.YGridAmount;
 
             //GridPoints that have been checked and put in closed list
             var CheckedGridPoints = new List<AStarNode>();
