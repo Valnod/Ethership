@@ -56,7 +56,7 @@ namespace EtherShip
             spriteBatch.Draw(uiTexture, uiRectangle, Color.White);
             spriteBatch.DrawString(font, "$ xxxx", new Vector2(100, 650), Color.Black);
             spriteBatch.DrawString(font, "Wave xxx", new Vector2(1100, 650), Color.Black);
-            spriteBatch.DrawString(font, "HighScore!!!", new Vector2(600, 650), Color.Black);
+            spriteBatch.DrawString(font, "HighScore!!!" , new Vector2(600, 650), Color.Black);
         }
         public void MoveElement(int x, int y)
         {

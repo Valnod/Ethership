@@ -75,6 +75,7 @@ namespace EtherShip
             if (GameWorld.Instance.gameObjectPool.ActiveWhaleList.Count > 0)
             {
                 spawningEnemies = false;
+                
             }
 
             else

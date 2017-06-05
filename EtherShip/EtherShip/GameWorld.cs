@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace EtherShip
 {
@@ -13,6 +15,12 @@ namespace EtherShip
     /// </summary>
     class GameWorld : Game
     {
+
+        //##################################################################
+        Song song;
+
+    ////####kan ikke lige kommme på hvordan pokker det fúngere fra en anden klasse :s
+
         public int WindowWidth { get; set; }
         public int WindowHeigth { get; set; }
 
@@ -25,6 +33,7 @@ namespace EtherShip
         public bool GameOver { get; set; }
         private EndGame endGame;
         private BuildMode build;
+        private Texture2D background;
 
         public Map Map { get; set; }
         public GameObjectPool gameObjectPool;
@@ -98,6 +107,7 @@ namespace EtherShip
             graphics.ApplyChanges();
             this.Window.AllowUserResizing = true;
 
+
             betweenRounds = true;
             GameOver = false;
             buildMode = false;
@@ -134,6 +144,14 @@ namespace EtherShip
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Menu.LoadContent(Content);
+            
+            //MUSIC bad location FIX FIX FIX #########################################
+            song = Content.Load<Song>("ebAndFlow");
+            MediaPlayer.Play(song);
+            MediaPlayer.IsRepeating = true;
+
+
+
             Map.LoadContent(Content);
             endGame.LoadContent(Content);
             // TODO: use this.Content to load your game content here
