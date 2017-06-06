@@ -315,7 +315,7 @@
 
 #begin enAndFlowMenu.wav
 /importer:WavImporter
-/processor:SoundEffectProcessor
+/processor:SongProcessor
 /processorParam:Quality=Best
 /build:enAndFlowMenu.wav
 

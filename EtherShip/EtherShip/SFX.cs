@@ -15,21 +15,21 @@ namespace EtherShip
     {
         
         public Song song;
-        public SoundEffect effect;
-        public string effectName;
+        public SoundEffect hitEffect;
+        public SoundEffect leftKnirtEffect;
+        public SoundEffect rightKnirkEffect;
+        public SoundEffect stopKnirkEffect;
+        public SoundEffect towerShootEffect;
 
-        public string EffectName
-        {
-            get { return effectName; }
-            set { effectName = value; }
-        }
+
+
 
 
         public List<SoundEffect> soundEffects = new List<SoundEffect>();
 
-        public SFX(string effectName)
+        public SFX()
         {
-            this.EffectName = effectName;
+         
         }
 
         public void MediaPlayer()
@@ -42,14 +42,15 @@ namespace EtherShip
 
             song = Content.Load<Song>("ebAndFlow");
 
-            effect = Content.Load<SoundEffect>("hitSound");
-            effect = Content.Load<SoundEffect>("knirk 01");
-            effect = Content.Load<SoundEffect>("knirk 02");
-            effect = Content.Load<SoundEffect>("knirk 03");
-            effect = Content.Load<SoundEffect>("knirk 04");
-            soundEffects.Add(Content.Load<SoundEffect>("knirk 05"));
-            soundEffects.Add(Content.Load<SoundEffect>("Tower_Attack"));
-            soundEffects.Add(Content.Load<SoundEffect>("Tower_Destroyd"));
+            hitEffect = Content.Load<SoundEffect>("hitSound");
+            leftKnirtEffect = Content.Load<SoundEffect>("knirk 01");
+            rightKnirkEffect = Content.Load<SoundEffect>("knirk 02");
+            stopKnirkEffect = Content.Load<SoundEffect>("knirk 03");
+            towerShootEffect = Content.Load<SoundEffect>("Tower_Attack");
+
+            //soundEffects.Add(Content.Load<SoundEffect>("knirk 05"));
+            //soundEffects.Add(Content.Load<SoundEffect>("Tower_Attack"));
+            //soundEffects.Add(Content.Load<SoundEffect>("Tower_Destroyd"));
 
             //soundEffects[0].Play(); //Plays the first soundeffect
 
