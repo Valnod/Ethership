@@ -23,22 +23,35 @@ namespace EtherShip
         private float timer;
         private float cooldown = 500;
 
+        private Player player;
+
         public int Health { get; set; }
         private int maxHealth;
 
         List<GridPoint> NewRoute = null;
         List<GridPoint> CurrentRoute = null;
-    
-        public Enemy(GameObject obj, int maxHealth, float speed, int value, Vector2 direction) : base(obj)
+
+        protected int bountyGiven;
+        protected int scoreGiven;
+
+        public Enemy(GameObject obj, int maxHealth, float speed, int value, Vector2 direction, int bountyGiven, int scoreGiven) : base(obj)
         {
             this.maxHealth = maxHealth;
             this.speed = speed;
             this.direction = direction;
             this.value = value;
             this.push = Vector2.Zero;
+            this.bountyGiven = bountyGiven;
+            this.scoreGiven = scoreGiven;
+            this.player = player;
+
             ResetHealth();
         }
 
+        public int BountyGiven
+        {
+            get { return bountyGiven; }
+        }
         public void Update(GameTime gameTime)
         {
             Move(gameTime);
@@ -93,7 +106,18 @@ namespace EtherShip
         public void CheckAmIDead()
         {
             if (Health < 0)
-                GameWorld.Instance.gameObjectPool.RemoveActive.Add(obj);
+            {
+           GameWorld.Instance.gameObjectPool.RemoveActive.Add(obj);
+
+            GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit += BountyGiven;
+            GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Score += scoreGiven;
+            }
+
+            
+
+ 
+          
+            
         }
 
 

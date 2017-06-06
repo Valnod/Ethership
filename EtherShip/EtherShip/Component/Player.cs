@@ -33,6 +33,7 @@ namespace EtherShip
         private SFX soundTest;
 
         public int Score { get; set; }
+        public int Credit { get; set; }
 
         public Player(GameObject obj, Vector2 direction, int health, bool antiGravity) : base(obj)
         {
