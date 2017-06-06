@@ -49,7 +49,7 @@ namespace EtherShip
 
         }
 
-        /// <summary>
+        /// <summary>/
         /// Places a building at the given location.
         /// </summary>
         /// <param name="pos"></param>
