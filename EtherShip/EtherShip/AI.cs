@@ -25,7 +25,7 @@ namespace EtherShip
             //GridPoints next to other points who have been checked
             var UnCheckedGridPoints = new List<AStarNode>();
 
-            //initiates a new AstarNode
+            //Initiates a new AstarNode
             AStarNode startASN = new AStarNode();
 
             AStarNode currentASN = null;
