@@ -24,7 +24,7 @@ namespace EtherShip
         private string text2 = "Enter your name:";
         private int charSize;
         private float scaleFactor;
-        private float textSizeScaleFactor = 0.1f;
+        private float textSizeScaleFactor = 1f;
 
         public MouseState mouseInput;
         public int ButtonX { get; }

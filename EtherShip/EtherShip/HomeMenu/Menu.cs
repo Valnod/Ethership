@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -14,7 +15,7 @@ namespace EtherShip
         //kommentar på vej
         
         GameState gameState;
-        
+
         SpriteFont font; //font size 100
 
         public bool controls;
@@ -22,7 +23,7 @@ namespace EtherShip
 
         List<UI> mainWindow = new List<UI>();
         List<UI> menu = new List<UI>();
-
+        List<UI> highscore = new List<UI>();
 
         public Menu()
         {
@@ -31,10 +32,27 @@ namespace EtherShip
 
             
             menu.Add(new UI("mainMenu"));
-            menu.Add(new UI("play"));
+            menu.Add(new UI("resume"));
             menu.Add(new UI("gui"));
             menu.Add(new UI("highscore"));
             menu.Add(new UI("Exit"));
+
+
+            highscore.Add(new UI("highscoremenu"));
+            highscore.Add(new UI("resume"));
+
+
+
+        }
+
+        public Rectangle GetUI()
+        {
+            return mainWindow[0].uiRectangle;
+        }
+
+        public int GetUIHeight()
+        {
+            return (mainWindow[0].uiRectangle.Height / 3) * 2;
         }
 
         public void SaveGame()
@@ -70,18 +88,28 @@ namespace EtherShip
                 element.LoadContent(content);
                 element.clickEvent += OnClick;
             }
+            foreach (UI element in highscore)
+            {
+                element.LoadContent(content);
+                element.clickEvent += OnClick;
+            }
 
             mainWindow.Find(x => x.TextureName == "gui").MoveElement(0, 0);
-            mainWindow.Find(x => x.TextureName == "menu").MoveElement(100, 0);
+            mainWindow.Find(x => x.TextureName == "menu").MoveElement(70, 30);
 
             //function to move the different ui pictures on the screen 
             menu.Find(x => x.TextureName == "gui").MoveElement(0, 0);
             menu.Find(x => x.TextureName == "mainMenu").MoveElement(500, -600);
-            menu.Find(x => x.TextureName == "play").MoveElement(550, -590);
+            menu.Find(x => x.TextureName == "resume").MoveElement(550, -590);
             menu.Find(x => x.TextureName == "highscore").MoveElement(550, -540);
             menu.Find(x => x.TextureName == "Exit").MoveElement(550, -490);
 
 
+            highscore.Find(x => x.TextureName == "highscoremenu").MoveElement(500, -600);
+            highscore.Find(x => x.TextureName == "resume").MoveElement(500, -400);
+
+
+            font = content.Load<SpriteFont>("font");
 
         }
         public void Update()
@@ -108,7 +136,7 @@ namespace EtherShip
                     }
                     break;
                 case GameState.highscore:
-                    foreach (UI element in menu)
+                    foreach (UI element in highscore)
                     {
                         element.Update();
 
@@ -145,11 +173,28 @@ namespace EtherShip
                     }
                     break;
                 case GameState.highscore:
-                    foreach (UI element in menu)
+                    List<HighScoreUnit> scores = HighScore.Instance.Scores;
+                    int length = scores.Count;
+                    if (length > 10 )
+                    {
+                        length = 10;
+                    }
+
+                    foreach (UI element in highscore)
                     {
                         element.Draw(spriteBatch);
+
+                        if (element == highscore[0])
+                        {
+                            for (int i = 0; i < length; i++)
+                            {
+                                Vector2 pos = new Vector2(element.uiRectangle.X + 100, (element.uiRectangle.Y + 20) + i * 20);
+                                spriteBatch.DrawString(font, scores[i].Name + " - " + scores[i].Score, pos, Color.Black);
+                            }
+                        }
                     }
                     break;
+
                 default:
                     break;
             }
@@ -158,12 +203,12 @@ namespace EtherShip
         }
         public void OnClick(string button)
         {
-            if (button == "play")
+            if (button == "resume")
             {
                 gameState = GameState.playWindow;
 
             }
-            //virker ikke!!!!!
+            //virker ikke!!!!!!
             if (button == "exit" )
             {
                 GameWorld.Instance.Exit();
@@ -173,7 +218,7 @@ namespace EtherShip
             {
                 gameState = GameState.menu;
             }
-            if (button == "highscore" || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (button == "highscore" )
             {
                 gameState = GameState.highscore;
             }

@@ -18,6 +18,7 @@ namespace EtherShip
         {
             placingTower = true;
             placingWall = false;
+
         }
 
         public void Update(GameTime gametime)
@@ -36,7 +37,7 @@ namespace EtherShip
                 placingWall = true;
             }
 
-            //Checks if building shall be placed or removed and acts.h
+            //Checks if building shall be placed or removed and acts.
             if (InputManager.GetHasMouseButtonBeenReleased(MouseButton.Left))
                 PlaceBuilding(InputManager.GetMousePositionVec());
             else if (InputManager.GetHasMouseButtonBeenReleased(MouseButton.Right))
@@ -63,12 +64,12 @@ namespace EtherShip
             else
             {
                 if (ms.X > GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Width 
-                    && ms.Y > GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Height)
+                    && (ms.Y > (GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Height)))
                 {
                     //Don't do anything if you try to place a building outside the grid
                 }
                 else if (ms.X >= 0 && ms.X < GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Width
-                && ms.Y >= 0 && ms.Y < GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Height)
+                && ms.Y >= 0 && ms.Y < GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Height - GameWorld.Instance.Menu.GetUIHeight() - GameWorld.Instance.Map.GridPointSize)
                 {
                     //Gets the position on the mapgrid closest to the mouseposition
                     posVec = GameWorld.Instance.Map[posVec].Pos;
