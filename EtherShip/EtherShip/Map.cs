@@ -43,7 +43,7 @@ namespace EtherShip
         /// <param name="spriteBatch"></param> 
         public void DrawBackground(SpriteBatch spriteBatch)
         {
-          //spriteBatch.Draw(sprite, Vector2.Zero, sourceRect, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
+          spriteBatch.Draw(sprite, Vector2.Zero, sourceRect, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
 
 #if DEBUG //draws the points which makes up the grid
             foreach(GridPoint gp in MapGrid)
@@ -86,7 +86,7 @@ namespace EtherShip
 #endif
             GenerateMapGrid();
             //Draws the background
-            //sprite = content.Load<Texture2D>("Background");
+            sprite = content.Load<Texture2D>("starBackground");
             //sourceRect = new Rectangle(0, 0, sprite.Width, sprite.Height);
         }
 
