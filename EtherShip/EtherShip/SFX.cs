@@ -42,11 +42,11 @@ namespace EtherShip
 
             song = Content.Load<Song>("ebAndFlow");
 
-            hitEffect = Content.Load<SoundEffect>("hitSound");
-            leftKnirtEffect = Content.Load<SoundEffect>("knirk 01");
-            rightKnirkEffect = Content.Load<SoundEffect>("knirk 02");
-            stopKnirkEffect = Content.Load<SoundEffect>("knirk 03");
-            towerShootEffect = Content.Load<SoundEffect>("Tower_Attack");
+            //hitEffect = Content.Load<SoundEffect>("hitSound");
+            //leftKnirtEffect = Content.Load<SoundEffect>("knirk01");
+            //rightKnirkEffect = Content.Load<SoundEffect>("knirk 02");
+            //stopKnirkEffect = Content.Load<SoundEffect>("knirk 03");
+            //towerShootEffect = Content.Load<SoundEffect>("Tower_Attack");
 
             //soundEffects.Add(Content.Load<SoundEffect>("knirk 05"));
             //soundEffects.Add(Content.Load<SoundEffect>("Tower_Attack"));
