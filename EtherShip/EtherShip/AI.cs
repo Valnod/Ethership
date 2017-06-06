@@ -12,10 +12,10 @@ namespace EtherShip
     {
         static public List<GridPoint> Pathfind(GridPoint start, GridPoint end, int windowWidth, int windowHeight)
         {
-            //end position ind map coordinate (x,y)
+            //End position ind map coordinate (x,y)
             int endX = (int)(end.Pos.X / GameWorld.Instance.Map.GridPointSize);
             int endY = (int)(end.Pos.Y / GameWorld.Instance.Map.GridPointSize);
-            //finds the amount of gridpoint on the x and y axis
+            //Finds the amount of gridpoint on the x and y axis
             int xGridAmount = GameWorld.Instance.Map.XGridAmount;
             int yGridAmount = GameWorld.Instance.Map.YGridAmount;
 
