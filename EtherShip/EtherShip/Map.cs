@@ -87,7 +87,7 @@ namespace EtherShip
             GenerateMapGrid();
             //Draws the background
             sprite = content.Load<Texture2D>("starBackground");
-            //sourceRect = new Rectangle(0, 0, sprite.Width, sprite.Height);
+            sourceRect = new Rectangle(0, 0, sprite.Width, sprite.Height);
         }
 
         public void RemoveOccupant(GridPoint gridPoint)

@@ -23,6 +23,7 @@ namespace EtherShip
 
         public int WindowWidth { get; set; }
         public int WindowHeigth { get; set; }
+        public SFX SFX { get; set; }
 
         public Menu Menu { get; set; }
         GraphicsDeviceManager graphics;
@@ -107,7 +108,7 @@ namespace EtherShip
             graphics.ApplyChanges();
             this.Window.AllowUserResizing = true;
 
-
+            SFX = new SFX();
             betweenRounds = true;
             GameOver = false;
             buildMode = false;
@@ -151,7 +152,7 @@ namespace EtherShip
             MediaPlayer.IsRepeating = true;
 
 
-
+            SFX.LoadContent(Content);
             Map.LoadContent(Content);
             endGame.LoadContent(Content);
             // TODO: use this.Content to load your game content here
