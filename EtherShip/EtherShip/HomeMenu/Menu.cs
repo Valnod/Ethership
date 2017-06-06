@@ -95,7 +95,7 @@ namespace EtherShip
             }
 
             mainWindow.Find(x => x.TextureName == "gui").MoveElement(0, 0);
-            mainWindow.Find(x => x.TextureName == "menu").MoveElement(70, 30);
+            mainWindow.Find(x => x.TextureName == "menu").MoveElement(70, 10);
 
             //function to move the different ui pictures on the screen 
             menu.Find(x => x.TextureName == "gui").MoveElement(0, 0);

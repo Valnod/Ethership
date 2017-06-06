@@ -64,27 +64,28 @@ namespace EtherShip
         }
         public void Start()
         {
-            if (WaveNumber == 5)
-            {
-                spawningEnemies = false;
-            }
-            spawningEnemies = true;
+            //if (WaveNumber == 5)
+            //{
+            //    spawningEnemies = false;
+            //}
+            //spawningEnemies = true;
         }
         public void WaveOver()
         {
-            if (GameWorld.Instance.gameObjectPool.ActiveWhaleList.Count > 0)
-            {
-                spawningEnemies = false;
-            }
+            //if (GameWorld.Instance.gameObjectPool.ActiveWhaleList.Count > 0)
+            //{
+            //    spawningEnemies = false;
 
-            else
-            {
+            //}
 
+            //else
+            //{
 
+            enemiesSpawned = 0;
                 GameWorld.Instance.BetweenRounds = true;
                 WaveNumber++;
                 spawningEnemies = true;
-            }
+            //}
             
         }
        
