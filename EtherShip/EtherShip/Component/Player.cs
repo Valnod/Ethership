@@ -8,11 +8,14 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Timers;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace EtherShip
 {
     public class Player : Component, IUpdateable//, ICollidable
     {
+        private SFX sfx;
         private Vector2 direction;
         private SpriteRenderer spriteRenderer;
         private Animator animator;
@@ -30,9 +33,10 @@ namespace EtherShip
         private bool cdTimer; //Cooldown of the anti-gravity ability
         private float timer = 0; //Timer for both anti-gravity effect and the anti gravity ability
         private Vector2 translation;
-        private SFX soundTest;
+        
 
         public int Score { get; set; }
+        public int Credit { get; set; }
 
         public Player(GameObject obj, Vector2 direction, int health, bool antiGravity) : base(obj)
         {
@@ -45,7 +49,6 @@ namespace EtherShip
             maxSpeed = 10;
             spriteRenderer = obj.GetComponent<SpriteRenderer>();
             animator = obj.GetComponent<Animator>();
-            soundTest = new SFX();
             this.invincible = false;
         }
 
@@ -136,12 +139,12 @@ namespace EtherShip
             {
                 obj.GetComponent<SpriteRenderer>().Rotation -= elapsed;
                 obj.GetComponent<SpriteRenderer>().Rotation = obj.GetComponent<SpriteRenderer>().Rotation % circle;
-                obj.GetComponent<SpriteRenderer>().Rotation -= 0.05f; // Rotate the sprite (clockwise left)
+                obj.GetComponent<SpriteRenderer>().Rotation -= 0.05f; // Rotate the sprite (clockwise left)                
             }
-            if (keystate.IsKeyDown(Keys.S))
-            {
-                //Down (unnecessary?)
-            }
+            //if (keystate.IsKeyDown(Keys.S))
+            //{
+            //    //Down (unnecessary?)
+            //}
             if (keystate.IsKeyDown(Keys.D))
             {
                 obj.GetComponent<SpriteRenderer>().Rotation += elapsed;
