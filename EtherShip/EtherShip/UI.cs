@@ -12,7 +12,7 @@ namespace EtherShip
 {
     class UI
     {
-        SpriteFont font; //font size 100
+        SpriteFont font; ////font size 100
         private Texture2D uiTexture;
         public Rectangle uiRectangle;
         private string textureName;
