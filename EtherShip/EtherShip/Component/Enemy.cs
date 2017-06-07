@@ -112,10 +112,12 @@ namespace EtherShip
         {
             if (Health < 0)
             {
-           GameWorld.Instance.gameObjectPool.RemoveActive.Add(obj);
+           
 
             GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit += BountyGiven;
             GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Score += scoreGiven;
+
+                GameWorld.Instance.gameObjectPool.RemoveActive.Add(obj);
             }
 
             
