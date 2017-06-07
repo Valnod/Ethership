@@ -36,6 +36,7 @@ namespace EtherShip
         
 
         public int Score { get; set; }
+        public int Credit { get; set; }
 
         public Player(GameObject obj, Vector2 direction, int health, bool antiGravity) : base(obj)
         {
@@ -139,12 +140,13 @@ namespace EtherShip
                 obj.GetComponent<SpriteRenderer>().Rotation -= elapsed;
                 obj.GetComponent<SpriteRenderer>().Rotation = obj.GetComponent<SpriteRenderer>().Rotation % circle;
                 obj.GetComponent<SpriteRenderer>().Rotation -= 0.05f; // Rotate the sprite (clockwise left)
+               
                 
             }
-            if (keystate.IsKeyDown(Keys.S))
-            {
-                //Down (unnecessary?)
-            }
+            //if (keystate.IsKeyDown(Keys.S))
+            //{
+            //    //Down (unnecessary?)
+            //}
             if (keystate.IsKeyDown(Keys.D))
             {
                 obj.GetComponent<SpriteRenderer>().Rotation += elapsed;
