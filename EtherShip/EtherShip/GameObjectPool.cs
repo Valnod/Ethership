@@ -80,7 +80,7 @@ namespace EtherShip
             {
                 GameObject obj = new GameObject(new Vector2(GameWorld.Instance.Window.ClientBounds.Width / 2, 40));
                 obj.AddComponnent(new Enemy(obj, 10, 3f, 1, new Vector2(), 10, 35));
-                obj.AddComponnent(new SpriteRenderer(obj, "circle", 1f, 0f, 0.5f));
+                obj.AddComponnent(new SpriteRenderer(obj, "EnemyShip_00000", 0.2f, 0f, 0.5f));
                 obj.LoadContent(GameWorld.Instance.Content);
                 obj.AddComponnent(new CollisionCircle(obj));
                 obj.GetComponent<CollisionCircle>().LoadContent(GameWorld.Instance.Content);
@@ -110,7 +110,7 @@ namespace EtherShip
             {
                 GameObject obj = new GameObject(position);
                 obj.AddComponnent(new Wall(obj));
-                obj.AddComponnent(new SpriteRenderer(obj, "rectangle", 1f, 0f, 0.5f));
+                obj.AddComponnent(new SpriteRenderer(obj, "Wall_00030", 0.2f, 0f, 0.5f));
                 obj.LoadContent(GameWorld.Instance.Content);
                 obj.AddComponnent(new CollisionRectangle(obj));
                 obj.GetComponent<CollisionRectangle>().LoadContent(GameWorld.Instance.Content);
@@ -152,7 +152,8 @@ namespace EtherShip
             {
                 GameObject obj = new GameObject(towerPos);
                 obj.AddComponnent(new Tower(obj, 500000, 300));
-                obj.AddComponnent(new SpriteRenderer(obj, "circle", 1f, 0f, 1f));
+                obj.AddComponnent(new SpriteRenderer(obj, "TowerRemove_00000", 0.2f, 0f, 1f));
+                obj.AddComponnent(new SpriteRenderer(obj, "turret with harpoon", 0.2f, 0f, 1f));
                 obj.LoadContent(GameWorld.Instance.Content);
                 obj.AddComponnent(new CollisionCircle(obj));
                 obj.GetComponent<CollisionCircle>().LoadContent(GameWorld.Instance.Content);
@@ -183,7 +184,7 @@ namespace EtherShip
             {
                 GameObject obj = new GameObject(projectileStartPos);
                 obj.AddComponnent(new Projectile(obj, 70, 1, target));
-                obj.AddComponnent(new SpriteRenderer(obj, "circle", 0.2f, 0f, 1f));
+                obj.AddComponnent(new SpriteRenderer(obj, "harpoon", 0.2f, 0f, 1f));
                 obj.LoadContent(GameWorld.Instance.Content);
                 obj.AddComponnent(new CollisionCircle(obj));
                 obj.GetComponent<CollisionCircle>().LoadContent(GameWorld.Instance.Content);
@@ -207,7 +208,7 @@ namespace EtherShip
             {
                 GameObject obj = new GameObject(new Vector2(400, 400));
                 obj.AddComponnent(new Whale(obj, new Vector2(1, 0), new Vector2(1, 0), 10, 5, 1f));
-                obj.AddComponnent(new SpriteRenderer(obj, "Whale", 1f, 0f, 0.5f));
+                obj.AddComponnent(new SpriteRenderer(obj, "Whale", 0.2f, 0f, 0.5f));
                 obj.LoadContent(GameWorld.Instance.Content);
                 obj.AddComponnent(new CollisionCircle(obj));
                 obj.GetComponent<CollisionCircle>().LoadContent(GameWorld.Instance.Content);
