@@ -19,35 +19,66 @@ namespace EtherShip
         private float speed;
         private Vector2 direction;
         private Vector2 translation;
+        private Vector2 g;
+        private float gravityEfftectiveness = 0.55f;
         private int value;
         private float timer;
         private float cooldown = 500;
+
+        private Player player;
 
         public int Health { get; set; }
         private int maxHealth;
 
         List<GridPoint> NewRoute = null;
         List<GridPoint> CurrentRoute = null;
-    
-        public Enemy(GameObject obj, int maxHealth, float speed, int value, Vector2 direction) : base(obj)
+
+        protected int bountyGiven;
+        protected int scoreGiven;
+
+        public Enemy(GameObject obj, int maxHealth, float speed, int value, Vector2 direction, int bountyGiven, int scoreGiven) : base(obj)
         {
             this.maxHealth = maxHealth;
             this.speed = speed;
             this.direction = direction;
             this.value = value;
             this.push = Vector2.Zero;
+            this.bountyGiven = bountyGiven;
+            this.scoreGiven = scoreGiven;
+            this.player = player;
+
             ResetHealth();
         }
 
+        public int BountyGiven
+        {
+            get { return bountyGiven; }
+        }
         public void Update(GameTime gameTime)
         {
             Move(gameTime);
             CheckAmIDead();
         }
+
         public void ResetHealth()
         {
             Health = maxHealth;
         }
+
+        /// <summary>
+        /// Calculates the gravitational pull from all the towers.
+        /// </summary>
+        /// <returns></returns>
+        private Vector2 GravityPull()
+        {
+            Vector2 totalGravPull = Vector2.Zero;
+            foreach (GameObject tower in GameWorld.Instance.gameObjectPool.ActiveTowerList)
+            {
+                totalGravPull += tower.GetComponent<Tower>().Gravity(this.obj.position, speed);
+            }
+            return totalGravPull;
+        }
+
         public void Move(GameTime gameTime)
         {
             timer += gameTime.ElapsedGameTime.Milliseconds;
@@ -71,7 +102,18 @@ namespace EtherShip
                     Vector2 routeDirection = CurrentRoute[currentWayPoint].Pos - obj.position;
                     translation = Vector2.Normalize(routeDirection) * speed;
 
+                    //calculates gravity pull
+                    g = GravityPull();
+                    //Ensures that the gravity pull can't be greater than the tranlation vector, ensuring you can't be trapped by gravity
+                    if (g.Length() > translation.Length())
+                        g = Vector2.Normalize(g) * speed * gravityEfftectiveness;
+                    //Adds gravity pull
+                    translation += g;
+
+                    //Looks at collision
                     OBJCollision();
+
+                    //New position
                     Vector2 newPosition = (obj.position + translation) + push;
                     push = Vector2.Zero;
 
@@ -93,12 +135,23 @@ namespace EtherShip
         }
 
         /// <summary>
-        /// Checks if health is below 0, and if so move the object to inactive.
+        /// Checks if health is below 0, and if so move the object to inactive..
         /// </summary>
         public void CheckAmIDead()
         {
             if (Health < 0)
-                GameWorld.Instance.gameObjectPool.RemoveActive.Add(obj);
+            {
+           GameWorld.Instance.gameObjectPool.RemoveActive.Add(obj);
+
+            GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit += BountyGiven;
+            GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Score += scoreGiven;
+            }
+
+            
+
+ 
+          
+            
         }
 
 
