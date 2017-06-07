@@ -176,6 +176,10 @@ namespace EtherShip
             }
         }
 
+        /// <summary>
+        /// Calculates the gravitational pull from all the towers.
+        /// </summary>
+        /// <returns></returns>
         private Vector2 GravityPull()
         {
             Vector2 totalGravPull = Vector2.Zero;
