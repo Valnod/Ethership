@@ -69,10 +69,17 @@ namespace EtherShip
                     //Don't do anything if you try to place a building outside the grid
                 }
                 else if (ms.X >= 0 && ms.X < GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Width
-                && ms.Y >= 0 && ms.Y < GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Height - GameWorld.Instance.Menu.GetUIHeight() - GameWorld.Instance.Map.GridPointSize)
+                && ms.Y >= 0 && ms.Y < GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Height - GameWorld.Instance.Menu.GetUIHeight() - GameWorld.Instance.Map.GridPointSize 
+                && ((GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit >= 50 && placingTower) || (GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit >= 5 && placingWall)))
                 {
                     //Gets the position on the mapgrid closest to the mouseposition
                     posVec = GameWorld.Instance.Map[posVec].Pos;
+
+                    //Removes credits 
+                    if (placingTower)
+                        GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit -= 50;
+                    else if (placingWall)
+                        GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit -= 5;
 
                     //Builds the building
                     if (placingTower)

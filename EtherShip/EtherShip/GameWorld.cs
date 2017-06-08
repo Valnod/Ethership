@@ -191,9 +191,9 @@ namespace EtherShip
 
                 if (betweenRounds == true)
                 {
-                    if (keystate.IsKeyDown(Keys.B))
+                    if (keystate.IsKeyDown(Keys.B) && !BuildMode)
                         buildMode = true;
-                    else if (keystate.IsKeyDown(Keys.N))
+                    else if (keystate.IsKeyDown(Keys.B) && BuildMode)
                         buildMode = false;
 
                     this.IsMouseVisible = true;
