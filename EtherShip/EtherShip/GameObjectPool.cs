@@ -119,7 +119,7 @@ namespace EtherShip
                 GameWorld.Instance.Map[position].Occupant = obj;
             }
         }
-
+        
         public void DeleteWall(GameObject wall)
         {
 
@@ -152,7 +152,7 @@ namespace EtherShip
             {
                 GameObject obj = new GameObject(towerPos);
                 obj.AddComponnent(new Tower(obj, 500000, 300));
-                obj.AddComponnent(new SpriteRenderer(obj, "TowerRemove_00000", 0.065f, 0f, 1f));
+                obj.AddComponnent(new SpriteRenderer(obj, "TowerRemove_00009", 0.065f, 0f, 1f));
                 obj.AddComponnent(new SpriteRenderer(obj, "turret with harpoon", 0.065f, 0f, 1f));
                 obj.LoadContent(GameWorld.Instance.Content);
                 obj.AddComponnent(new CollisionCircle(obj));
