@@ -106,7 +106,7 @@ namespace EtherShip
             graphics.PreferredBackBufferWidth = WindowWidth;
             graphics.PreferredBackBufferHeight = WindowHeight;
             graphics.ApplyChanges();
-            this.Window.AllowUserResizing = true;
+            this.Window.AllowUserResizing = false;
 
             SFX = new SFX();
             betweenRounds = true;
@@ -191,9 +191,9 @@ namespace EtherShip
 
                 if (betweenRounds == true)
                 {
-                    if (keystate.IsKeyDown(Keys.B))
+                    if (keystate.IsKeyDown(Keys.B) && !BuildMode)
                         buildMode = true;
-                    else if (keystate.IsKeyDown(Keys.N))
+                    else if (keystate.IsKeyDown(Keys.B) && BuildMode)
                         buildMode = false;
 
                     this.IsMouseVisible = true;

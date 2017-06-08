@@ -12,7 +12,7 @@ namespace EtherShip
 {
     class UI
     {
-        SpriteFont font; ////font size 100
+        SpriteFont font; ///font size 100
         private Texture2D uiTexture;
         public Rectangle uiRectangle;
         private string textureName;
@@ -52,7 +52,9 @@ namespace EtherShip
         {
             spriteBatch.Draw(uiTexture, uiRectangle, Color.White);
             spriteBatch.DrawString(font, "$" + GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit, new Vector2(100, 670), Color.Black);
+            spriteBatch.DrawString(font, "Life: " + GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Health, new Vector2(100, 700), Color.Black);
             spriteBatch.DrawString(font, "Wave " + GameWorld.Instance.Wave.WaveNumber, new Vector2(1100, 670), Color.Black);
+            spriteBatch.DrawString(font, "Alpha version 1.0.0", new Vector2(1100, 700), Color.Black);
             spriteBatch.DrawString(font,"" + GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Score, new Vector2(600, 670), Color.Black);
         }
         public void MoveElement(int x, int y)
