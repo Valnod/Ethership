@@ -106,7 +106,7 @@ namespace EtherShip
             graphics.PreferredBackBufferWidth = WindowWidth;
             graphics.PreferredBackBufferHeight = WindowHeight;
             graphics.ApplyChanges();
-            this.Window.AllowUserResizing = true;
+            this.Window.AllowUserResizing = false;
 
             SFX = new SFX();
             betweenRounds = true;

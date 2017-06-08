@@ -104,13 +104,13 @@ namespace EtherShip
                 InactiveWallList[0].position = position;
                 AddActive.Add(InactiveWallList[0]);
 
-                GameWorld.Instance.Map[position].Occupant = InactiveTowerList[0];
+                GameWorld.Instance.Map[position].Occupant = InactiveWallList[0];
             }
             else
             {
                 GameObject obj = new GameObject(position);
                 obj.AddComponnent(new Wall(obj));
-                obj.AddComponnent(new SpriteRenderer(obj, "Wall_00030", 0.065f, 0f, 0.5f));
+                obj.AddComponnent(new SpriteRenderer(obj, "Wall_00030", 0.128f, 0f, 0.5f));
                 obj.LoadContent(GameWorld.Instance.Content);
                 obj.AddComponnent(new CollisionRectangle(obj));
                 obj.GetComponent<CollisionRectangle>().LoadContent(GameWorld.Instance.Content);
@@ -119,7 +119,7 @@ namespace EtherShip
                 GameWorld.Instance.Map[position].Occupant = obj;
             }
         }
-
+        
         public void DeleteWall(GameObject wall)
         {
 
@@ -152,8 +152,8 @@ namespace EtherShip
             {
                 GameObject obj = new GameObject(towerPos);
                 obj.AddComponnent(new Tower(obj, 500000, 300));
-                obj.AddComponnent(new SpriteRenderer(obj, "TowerRemove_00000", 0.065f, 0f, 1f));
-                obj.AddComponnent(new SpriteRenderer(obj, "turret with harpoon", 0.065f, 0f, 1f));
+                obj.AddComponnent(new SpriteRenderer(obj, "TowerRemove_00000", 0.128f, 0f, 1f));
+                obj.AddComponnent(new SpriteRenderer(obj, "turret with harpoon", 0.128f, 0f, 1f));
                 obj.LoadContent(GameWorld.Instance.Content);
                 obj.AddComponnent(new CollisionCircle(obj));
                 obj.GetComponent<CollisionCircle>().LoadContent(GameWorld.Instance.Content);
