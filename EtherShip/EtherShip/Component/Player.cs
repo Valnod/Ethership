@@ -19,7 +19,7 @@ namespace EtherShip
         private Vector2 direction;
         private SpriteRenderer spriteRenderer;
         private Animator animator;
-        private int health;
+        public int Health { get; set; }
         private float speed;
         private float maxSpeed;
         private float minSpeed;
@@ -41,7 +41,7 @@ namespace EtherShip
         public Player(GameObject obj, Vector2 direction, int health, bool antiGravity) : base(obj)
         {
             this.direction = direction;
-            this.health = health;
+            this.Health = health;
             this.antiGravity = false;
             this.cdTimer = false;
             speed = 0;
@@ -78,7 +78,7 @@ namespace EtherShip
             }
             else
             {
-                if(health <= 0)
+                if(Health <= 0)
                 {
                     GameWorld.Instance.GameOver = true;
                 }
@@ -228,7 +228,7 @@ namespace EtherShip
 #endif
                             if (!invincible)
                             {
-                                health -= 1;
+                                Health -= 1;
                                 invincible = true;
                             }
                         }

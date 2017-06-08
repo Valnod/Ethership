@@ -26,7 +26,7 @@ namespace EtherShip
         public Map(string spriteName)
         {
             this.spriteName = spriteName;
-            this.GridPointSize = 25;
+            this.GridPointSize = 50;
         }
 
         //Returns the gridpoint that is closest to the position
