@@ -7,6 +7,7 @@ using System.IO;
 using System.Xml;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
+using System.Threading;
 
 namespace EtherShip
 {
@@ -145,14 +146,30 @@ namespace EtherShip
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Menu.LoadContent(Content);
-            
+
             //MUSIC bad location FIX FIX FIX #########################################
-            song = Content.Load<Song>("ebAndFlow");
-            MediaPlayer.Play(song);
-            MediaPlayer.IsRepeating = true;
+            
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+               
+                    
+                        song = Content.Load<Song>("ebAndFlow");
+                        MediaPlayer.Play(song);
+                        MediaPlayer.IsRepeating = true;
+                        SFX.LoadContent(Content);
+                    
+                
+            }).Start();
 
 
-            SFX.LoadContent(Content);
+
+            
+                
+            
+
+
+           
             Map.LoadContent(Content);
             endGame.LoadContent(Content);
             // TODO: use this.Content to load your game content here
