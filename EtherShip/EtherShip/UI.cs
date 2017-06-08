@@ -27,8 +27,6 @@ namespace EtherShip
             set { textureName = value; }
         }
 
-
-
         public UI(string textureName)
         {
             this.TextureName = textureName;
@@ -41,9 +39,8 @@ namespace EtherShip
             uiRectangle = new Rectangle(0, 600, uiTexture.Width, uiTexture.Height / 2);
 
             font = content.Load<SpriteFont>("font");
-
-
         }
+
         public void Update()
         {
             if (uiRectangle.Contains(new Point(Mouse.GetState().X, Mouse.GetState().Y)) && Mouse.GetState().LeftButton == ButtonState.Pressed)
@@ -61,7 +58,6 @@ namespace EtherShip
         public void MoveElement(int x, int y)
         {
             uiRectangle = new Rectangle(uiRectangle.X += x, uiRectangle.Y += y, uiRectangle.Width, uiRectangle.Height);
-
         }
     }
 }

@@ -22,7 +22,7 @@ namespace EtherShip
     ////####kan ikke lige kommme på hvordan pokker det fúngere fra en anden klasse :s
 
         public int WindowWidth { get; set; }
-        public int WindowHeigth { get; set; }
+        public int WindowHeight { get; set; }
         public SFX SFX { get; set; }
 
         public Menu Menu { get; set; }
@@ -102,9 +102,9 @@ namespace EtherShip
             //Window.IsBorderless = true;
             //Changes the windw resolution
             WindowWidth = 1280;
-            WindowHeigth = 720;
+            WindowHeight = 720;
             graphics.PreferredBackBufferWidth = WindowWidth;
-            graphics.PreferredBackBufferHeight = WindowHeigth;
+            graphics.PreferredBackBufferHeight = WindowHeight;
             graphics.ApplyChanges();
             this.Window.AllowUserResizing = true;
 

@@ -11,8 +11,6 @@ namespace EtherShip
 {
     interface ICollidable
     {
-
         void OBJCollision();
-       
     }
 }

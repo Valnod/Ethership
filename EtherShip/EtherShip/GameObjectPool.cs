@@ -62,7 +62,7 @@ namespace EtherShip
             RemoveActive = new List<GameObject>();
 
             generateThread = true;
-            runThread = true;
+            runThread = true;   
             done = new bool[3];
             for (int i = 0; i < done.Count(); i++)
                 done[i] = true;
@@ -191,7 +191,7 @@ namespace EtherShip
             }
         }
 
-        public void DeleteProjectile(GameObject projectile)
+        public void DeleteProjectile(GameObject projectile) 
         {
 
         }
@@ -316,8 +316,6 @@ namespace EtherShip
                     }
                 }
             }).Start();
-
-
         }
 
         /// <summary>

@@ -29,7 +29,6 @@ namespace EtherShip
         {
             mainWindow.Add(new UI("gui"));
             mainWindow.Add(new UI("menu"));
-
             
             menu.Add(new UI("mainMenu"));
             menu.Add(new UI("resume"));
@@ -37,12 +36,8 @@ namespace EtherShip
             menu.Add(new UI("highscore"));
             menu.Add(new UI("Exit"));
 
-
             highscore.Add(new UI("highscoremenu"));
             highscore.Add(new UI("resume"));
-
-
-
         }
 
         public Rectangle GetUI()
@@ -75,9 +70,9 @@ namespace EtherShip
         {
 
         }
+
         public void LoadContent(ContentManager content)
         {
-
             foreach (UI element in mainWindow)
             {
                 element.LoadContent(content);
@@ -104,14 +99,12 @@ namespace EtherShip
             menu.Find(x => x.TextureName == "highscore").MoveElement(550, -540);
             menu.Find(x => x.TextureName == "Exit").MoveElement(550, -490);
 
-
             highscore.Find(x => x.TextureName == "highscoremenu").MoveElement(500, -600);
             highscore.Find(x => x.TextureName == "resume").MoveElement(500, -400);
 
-
             font = content.Load<SpriteFont>("font");
-
         }
+
         public void Update()
         {
             switch (gameState)
@@ -145,8 +138,6 @@ namespace EtherShip
                 default:
                     break;
             }
-
-
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -169,7 +160,6 @@ namespace EtherShip
                     foreach (UI element in menu)
                     {
                         element.Draw(spriteBatch);
-
                     }
                     break;
                 case GameState.highscore:
@@ -198,21 +188,17 @@ namespace EtherShip
                 default:
                     break;
             }
-
-           
         }
         public void OnClick(string button)
         {
             if (button == "resume")
             {
                 gameState = GameState.playWindow;
-
             }
             //virker ikke!!!!!!
             if (button == "exit" )
             {
                 GameWorld.Instance.Exit();
-
             }
             if (button == "menu" || Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
@@ -222,7 +208,6 @@ namespace EtherShip
             {
                 gameState = GameState.highscore;
             }
-
         }
     }
 }

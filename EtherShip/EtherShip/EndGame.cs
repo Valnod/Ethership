@@ -77,7 +77,7 @@ namespace EtherShip
 
             //What happens when button is pressed
             if (InputManager.GetHasMouseButtonBeenReleased(MouseButton.Left) && buttonRect.Contains(mousePosition))
-                enterButton();
+                EnterButton();
 
             //Used to write the player name
             currentKeyboardState = Keyboard.GetState();
@@ -96,7 +96,7 @@ namespace EtherShip
         /// Starts the game and adds the players name to the score list.
         /// </summary>
         /// <returns></returns>
-        public void enterButton()
+        public void EnterButton()
         {
             //makes all gameObjects inactive, so the game is ready to start anew.
             GameWorld.Instance.gameObjectPool.ClearLists();
@@ -239,8 +239,5 @@ namespace EtherShip
         {
             return lastKeyboardState.IsKeyDown(theKey) && currentKeyboardState.IsKeyUp(theKey);
         }
-
-
     }
-
 }

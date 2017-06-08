@@ -10,7 +10,7 @@ namespace EtherShip
 {
     public class Enemy : Component, IUpdateable
     {
-        public bool Generating = false;
+        public bool generating = false;
         private Vector2 push;
         private float acceleration;
         private float speedElement;
@@ -65,13 +65,13 @@ namespace EtherShip
         {
             timer += gameTime.ElapsedGameTime.Milliseconds;
 
-            if (NewRoute == null || (!Generating && timer >= cooldown))
+            if (NewRoute == null || (!generating && timer >= cooldown))
             {
                int width = GameWorld.Instance.WindowWidth,
-                    height = GameWorld.Instance.WindowHeigth;
+                    height = GameWorld.Instance.WindowHeight;
                new System.Threading.Thread(() => NewRoute = AI.Pathfind(GameWorld.Instance.Map[obj.position], GameWorld.Instance.Map[GameWorld.Instance.gameObjectPool.player.position],
                    width, height)).Start();
-                Generating = true;
+                generating = true;
                 timer = 0;
             }
             else if (NewRoute != null)
@@ -80,7 +80,7 @@ namespace EtherShip
 
                 if (CurrentRoute.Count > currentWayPoint)
                 {
-                    Generating = false;
+                    generating = false;
                     Vector2 routeDirection = CurrentRoute[currentWayPoint].Pos - obj.position;
                     translation = Vector2.Normalize(routeDirection) * speed;
 
@@ -112,17 +112,11 @@ namespace EtherShip
         {
             if (Health < 0)
             {
-           GameWorld.Instance.gameObjectPool.RemoveActive.Add(obj);
+                GameWorld.Instance.gameObjectPool.RemoveActive.Add(obj);
 
-            GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit += BountyGiven;
-            GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Score += scoreGiven;
-            }
-
-            
-
- 
-          
-            
+                GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit += BountyGiven;
+                GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Score += scoreGiven;
+            }            
         }
 
 
@@ -165,6 +159,5 @@ namespace EtherShip
                 }
             }
         }
-
     }
 }
