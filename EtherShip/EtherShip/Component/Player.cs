@@ -86,7 +86,9 @@ namespace EtherShip
 
             if (antiGravity == true || cdTimer == true)
             {
+#if DEBUG
                 obj.GetComponent<SpriteRenderer>().Color = Color.DarkGreen;
+#endif 
                 timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (timer >= 5) //5 or more sec
                 {
@@ -254,7 +256,7 @@ namespace EtherShip
             int minX = (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Width) / 2;
             int maxX = GameWorld.Instance.GraphicsDevice.Viewport.Width - (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Width) / 2;
             int minY = (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Height) / 2;
-            int maxY = GameWorld.Instance.GraphicsDevice.Viewport.Height - (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Height / 2) - GameWorld.Instance.Menu.GetUIHeight() - GameWorld.Instance.Map.GridPointSize;
+            int maxY = GameWorld.Instance.GraphicsDevice.Viewport.Height - (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Height / 2) - GameWorld.Instance.Menu.GetUIHeight();
 
             if (GameWorld.Instance.Window != null) //Prevents the program from crashing, when the window is closed
             {
@@ -263,27 +265,37 @@ namespace EtherShip
                     if (obj.position.X > maxX) //Right GameWindow collision
                     {
                         obj.position.X = maxX;
+#if DEBUG
                         obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+#endif
                     }
                     else if (obj.position.X < minX) //Left GameWindow collision
                     {
                         obj.position.X = minX;
+#if DEBUG
                         obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+#endif
                     }
-                }
-                if (!float.IsNaN(GameWorld.Instance.GraphicsDevice.DisplayMode.Height))
+                    }
+                    if (!float.IsNaN(GameWorld.Instance.GraphicsDevice.DisplayMode.Height))
                 {
                     if (obj.position.Y > maxY) //Bottom GameWindow collsion
                     {
                         obj.position.Y = maxY;
+#if DEBUG
                         obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+#endif
                     }
                     else if (obj.position.Y < minY) //Top GameWindow collision
                     {
                         obj.position.Y = minY;
+#if DEBUG
                         obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+#endif
                     }
+
                 }
+
             }
         }
     }

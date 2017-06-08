@@ -104,7 +104,7 @@ namespace EtherShip
                 InactiveWallList[0].position = position;
                 AddActive.Add(InactiveWallList[0]);
 
-                GameWorld.Instance.Map[position].Occupant = InactiveTowerList[0];
+                GameWorld.Instance.Map[position].Occupant = InactiveWallList[0];
             }
             else
             {

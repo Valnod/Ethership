@@ -99,6 +99,10 @@ namespace EtherShip
                     if(MapGrid[x, y] == gridPoint)
                     {
                         GameWorld.Instance.gameObjectPool.RemoveActive.Add(MapGrid[x, y].Occupant);
+                        if (MapGrid[x, y].Occupant.GetComponent<Tower>() != null)
+                            GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit += 40;
+                        if (MapGrid[x, y].Occupant.GetComponent<Wall>() != null)
+                            GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit += 4;
                         MapGrid[x, y].Occupant = null;
                     }
                 }
