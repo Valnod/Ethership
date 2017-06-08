@@ -19,6 +19,8 @@ namespace EtherShip
         private float speed;
         private Vector2 direction;
         private Vector2 translation;
+        private Vector2 g;
+        private float gravityEfftectiveness = 0.55f;
         private int value;
         private float timer;
         private float cooldown = 500;
@@ -57,10 +59,26 @@ namespace EtherShip
             Move(gameTime);
             CheckAmIDead();
         }
+
         public void ResetHealth()
         {
             Health = maxHealth;
         }
+
+        /// <summary>
+        /// Calculates the gravitational pull from all the towers.
+        /// </summary>
+        /// <returns></returns>
+        private Vector2 GravityPull()
+        {
+            Vector2 totalGravPull = Vector2.Zero;
+            foreach (GameObject tower in GameWorld.Instance.gameObjectPool.ActiveTowerList)
+            {
+                totalGravPull += tower.GetComponent<Tower>().Gravity(this.obj.position, speed);
+            }
+            return totalGravPull;
+        }
+
         public void Move(GameTime gameTime)
         {
             timer += gameTime.ElapsedGameTime.Milliseconds;
@@ -84,7 +102,18 @@ namespace EtherShip
                     Vector2 routeDirection = CurrentRoute[currentWayPoint].Pos - obj.position;
                     translation = Vector2.Normalize(routeDirection) * speed;
 
+                    //calculates gravity pull
+                    g = GravityPull();
+                    //Ensures that the gravity pull can't be greater than the tranlation vector, ensuring you can't be trapped by gravity
+                    if (g.Length() > translation.Length())
+                        g = Vector2.Normalize(g) * speed * gravityEfftectiveness;
+                    //Adds gravity pull
+                    translation += g;
+
+                    //Looks at collision
                     OBJCollision();
+
+                    //New position
                     Vector2 newPosition = (obj.position + translation) + push;
                     push = Vector2.Zero;
 
