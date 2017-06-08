@@ -147,7 +147,7 @@ namespace EtherShip
             }
             //if (keystate.IsKeyDown(Keys.S))
             //{
-            //    //Down (unnecessary?)
+            //    Down (unnecessary?)
             //}
             if (keystate.IsKeyDown(Keys.D))
             {
