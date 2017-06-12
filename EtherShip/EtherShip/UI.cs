@@ -12,7 +12,7 @@ namespace EtherShip
 {
     class UI
     {
-        SpriteFont font; //font size 100
+        SpriteFont font; ///font size 100
         private Texture2D uiTexture;
         public Rectangle uiRectangle;
         private string textureName;
@@ -27,8 +27,6 @@ namespace EtherShip
             set { textureName = value; }
         }
 
-
-
         public UI(string textureName)
         {
             this.TextureName = textureName;
@@ -41,9 +39,8 @@ namespace EtherShip
             uiRectangle = new Rectangle(0, 600, uiTexture.Width, uiTexture.Height / 2);
 
             font = content.Load<SpriteFont>("font");
-
-
         }
+
         public void Update()
         {
             if (uiRectangle.Contains(new Point(Mouse.GetState().X, Mouse.GetState().Y)) && Mouse.GetState().LeftButton == ButtonState.Pressed)
@@ -54,14 +51,15 @@ namespace EtherShip
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(uiTexture, uiRectangle, Color.White);
-            spriteBatch.DrawString(font, "$" + GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit, new Vector2(100, 650), Color.Black);
-            spriteBatch.DrawString(font, "Wave " + GameWorld.Instance.Wave.WaveNumber, new Vector2(1100, 650), Color.Black);
-            spriteBatch.DrawString(font,"" + GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Score, new Vector2(600, 650), Color.Black);
+            spriteBatch.DrawString(font, "$" + GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit, new Vector2(100, 670), Color.Black);
+            spriteBatch.DrawString(font, "Life: " + GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Health, new Vector2(100, 700), Color.Black);
+            spriteBatch.DrawString(font, "Wave " + GameWorld.Instance.Wave.WaveNumber, new Vector2(1100, 670), Color.Black);
+            spriteBatch.DrawString(font, "Alpha version 1.0.0", new Vector2(1100, 700), Color.Black);
+            spriteBatch.DrawString(font,"" + GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Score, new Vector2(600, 670), Color.Black);
         }
         public void MoveElement(int x, int y)
         {
             uiRectangle = new Rectangle(uiRectangle.X += x, uiRectangle.Y += y, uiRectangle.Width, uiRectangle.Height);
-
         }
     }
 }

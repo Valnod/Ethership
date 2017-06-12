@@ -77,7 +77,7 @@ namespace EtherShip
 
             //What happens when button is pressed
             if (InputManager.GetHasMouseButtonBeenReleased(MouseButton.Left) && buttonRect.Contains(mousePosition))
-                enterButton();
+                EnterButton();
 
             //Used to write the player name
             currentKeyboardState = Keyboard.GetState();
@@ -96,19 +96,19 @@ namespace EtherShip
         /// Starts the game and adds the players name to the score list.
         /// </summary>
         /// <returns></returns>
-        public void enterButton()
+        public void EnterButton()
         {
             //makes all gameObjects inactive, so the game is ready to start anew.
             GameWorld.Instance.gameObjectPool.ClearLists();
-
-            //Adds the player
-            GameWorld.Instance.gameObjectPool.CreatePlayer();
 
             //Resests the wave to the first wave
             GameWorld.Instance.Wave.WaveNumber = 1;
 
             //Names the player acordin to the input
             HighScore.Instance.AddScore(new HighScoreUnit(text, GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Score));
+
+            //Adds the player
+            GameWorld.Instance.gameObjectPool.CreatePlayer();
 
             //Changes the state of the game
             GameWorld.Instance.GameOver = false;
@@ -239,8 +239,5 @@ namespace EtherShip
         {
             return lastKeyboardState.IsKeyDown(theKey) && currentKeyboardState.IsKeyUp(theKey);
         }
-
-
     }
-
 }

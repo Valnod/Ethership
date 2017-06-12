@@ -12,23 +12,23 @@ namespace EtherShip
 {
     class SpriteRenderer : Component, IDrawable, IUpdateable, Iloadable
     {
-        public Texture2D sprite { get; set; }
-        public string spriteName { get; set; }
+        public Texture2D Sprite { get; set; }
+        public string SpriteName { get; set; }
         public float scaleFactor;
         public float Rotation { get; set; }
         public float layerDepth;
-        public Rectangle spriteRectangle { get; set; }
+        public Rectangle SpriteRectangle { get; set; }
         public Vector2 Offset { get; set; }
         private Vector2 origin;
         public Color Color { get; set; }
-        public Rectangle spriteRectangleForCollision
+        public Rectangle SpriteRectangleForCollision
         {
-            get { return new Rectangle(0, 0, (int)(sprite.Width * scaleFactor), (int)(sprite.Height * scaleFactor)); }
+            get { return new Rectangle(0, 0, (int)(Sprite.Width * scaleFactor), (int)(Sprite.Height * scaleFactor)); }
         }
 
         public SpriteRenderer(GameObject obj, string spriteName, float scaleFactor, float rotation, float layerDepth) : base(obj)
         {
-            this.spriteName = spriteName;
+            this.SpriteName = spriteName;
             this.scaleFactor = scaleFactor;
             this.Rotation = rotation;
             this.layerDepth = layerDepth;
@@ -37,10 +37,10 @@ namespace EtherShip
          
         public void LoadContent(ContentManager content)
         {
-            sprite = content.Load<Texture2D>(spriteName);
-            origin.X = sprite.Width / 2;
-            origin.Y = sprite.Height / 2;
-            spriteRectangle = new Rectangle(0, 0, sprite.Width, sprite.Height);
+            Sprite = content.Load<Texture2D>(SpriteName);
+            origin.X = Sprite.Width / 2;
+            origin.Y = Sprite.Height / 2;
+            SpriteRectangle = new Rectangle(0, 0, Sprite.Width, Sprite.Height);
         }
 
         public void Update(GameTime gameTime)
@@ -50,7 +50,7 @@ namespace EtherShip
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(sprite, obj.position, spriteRectangle, Color, Rotation, origin, scaleFactor, SpriteEffects.None, layerDepth);
+            spriteBatch.Draw(Sprite, obj.position, SpriteRectangle, Color, Rotation, origin, scaleFactor, SpriteEffects.None, layerDepth);
         }
     }
 }

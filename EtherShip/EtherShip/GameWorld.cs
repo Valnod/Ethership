@@ -5,6 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
+using System.Threading;
 
 namespace EtherShip
 {
@@ -13,8 +16,15 @@ namespace EtherShip
     /// </summary>
     class GameWorld : Game
     {
+
+        //##################################################################
+        Song song;
+
+    ////####kan ikke lige kommme på hvordan pokker det fúngere fra en anden klasse :s
+
         public int WindowWidth { get; set; }
-        public int WindowHeigth { get; set; }
+        public int WindowHeight { get; set; }
+        public SFX SFX { get; set; }
 
         public Menu Menu { get; set; }
         GraphicsDeviceManager graphics;
@@ -25,6 +35,7 @@ namespace EtherShip
         public bool GameOver { get; set; }
         private EndGame endGame;
         private BuildMode build;
+        private Texture2D background;
 
         public Map Map { get; set; }
         public GameObjectPool gameObjectPool;
@@ -92,12 +103,13 @@ namespace EtherShip
             //Window.IsBorderless = true;
             //Changes the windw resolution
             WindowWidth = 1280;
-            WindowHeigth = 720;
+            WindowHeight = 720;
             graphics.PreferredBackBufferWidth = WindowWidth;
-            graphics.PreferredBackBufferHeight = WindowHeigth;
+            graphics.PreferredBackBufferHeight = WindowHeight;
             graphics.ApplyChanges();
-            this.Window.AllowUserResizing = true;
+            this.Window.AllowUserResizing = false;
 
+            SFX = new SFX();
             betweenRounds = true;
             GameOver = false;
             buildMode = false;
@@ -134,6 +146,30 @@ namespace EtherShip
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Menu.LoadContent(Content);
+
+            //MUSIC bad location FIX FIX FIX #########################################
+            
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+               
+                    
+                        song = Content.Load<Song>("ebAndFlow");
+                        MediaPlayer.Play(song);
+                        MediaPlayer.IsRepeating = true;
+                        SFX.LoadContent(Content);
+                    
+                
+            }).Start();
+
+
+
+            
+                
+            
+
+
+           
             Map.LoadContent(Content);
             endGame.LoadContent(Content);
             // TODO: use this.Content to load your game content here
@@ -172,9 +208,9 @@ namespace EtherShip
 
                 if (betweenRounds == true)
                 {
-                    if (keystate.IsKeyDown(Keys.B))
+                    if (keystate.IsKeyDown(Keys.B) && !BuildMode)
                         buildMode = true;
-                    else if (keystate.IsKeyDown(Keys.N))
+                    else if (keystate.IsKeyDown(Keys.B) && BuildMode)
                         buildMode = false;
 
                     this.IsMouseVisible = true;

@@ -10,7 +10,7 @@ namespace EtherShip
 {
     public class Enemy : Component, IUpdateable
     {
-        public bool Generating = false;
+        public bool generating = false;
         private Vector2 push;
         private float acceleration;
         private float speedElement;
@@ -19,6 +19,8 @@ namespace EtherShip
         private float speed;
         private Vector2 direction;
         private Vector2 translation;
+        private Vector2 g;
+        private float gravityEfftectiveness = 0.55f;
         private int value;
         private float timer;
         private float cooldown = 500;
@@ -57,21 +59,37 @@ namespace EtherShip
             Move(gameTime);
             CheckAmIDead();
         }
+
         public void ResetHealth()
         {
             Health = maxHealth;
         }
+
+        /// <summary>
+        /// Calculates the gravitational pull from all the towers.
+        /// </summary>
+        /// <returns></returns>
+        private Vector2 GravityPull()
+        {
+            Vector2 totalGravPull = Vector2.Zero;
+            foreach (GameObject tower in GameWorld.Instance.gameObjectPool.ActiveTowerList)
+            {
+                totalGravPull += tower.GetComponent<Tower>().Gravity(this.obj.position, speed);
+            }
+            return totalGravPull;
+        }
+
         public void Move(GameTime gameTime)
         {
             timer += gameTime.ElapsedGameTime.Milliseconds;
 
-            if (NewRoute == null || (!Generating && timer >= cooldown))
+            if (NewRoute == null || (!generating && timer >= cooldown))
             {
                int width = GameWorld.Instance.WindowWidth,
-                    height = GameWorld.Instance.WindowHeigth;
+                    height = GameWorld.Instance.WindowHeight;
                new System.Threading.Thread(() => NewRoute = AI.Pathfind(GameWorld.Instance.Map[obj.position], GameWorld.Instance.Map[GameWorld.Instance.gameObjectPool.player.position],
                    width, height)).Start();
-                Generating = true;
+                generating = true;
                 timer = 0;
             }
             else if (NewRoute != null)
@@ -80,11 +98,22 @@ namespace EtherShip
 
                 if (CurrentRoute.Count > currentWayPoint)
                 {
-                    Generating = false;
+                    generating = false;
                     Vector2 routeDirection = CurrentRoute[currentWayPoint].Pos - obj.position;
                     translation = Vector2.Normalize(routeDirection) * speed;
 
+                    //calculates gravity pull
+                    g = GravityPull();
+                    //Ensures that the gravity pull can't be greater than the tranlation vector, ensuring you can't be trapped by gravity
+                    if (g.Length() > translation.Length())
+                        g = Vector2.Normalize(g) * speed * gravityEfftectiveness;
+                    //Adds gravity pull
+                    translation += g;
+
+                    //Looks at collision
                     OBJCollision();
+
+                    //New position
                     Vector2 newPosition = (obj.position + translation) + push;
                     push = Vector2.Zero;
 
@@ -112,17 +141,11 @@ namespace EtherShip
         {
             if (Health < 0)
             {
-           GameWorld.Instance.gameObjectPool.RemoveActive.Add(obj);
+                GameWorld.Instance.gameObjectPool.RemoveActive.Add(obj);
 
-            GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit += BountyGiven;
-            GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Score += scoreGiven;
-            }
-
-            
-
- 
-          
-            
+                GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit += BountyGiven;
+                GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Score += scoreGiven;
+            }            
         }
 
 
@@ -165,6 +188,5 @@ namespace EtherShip
                 }
             }
         }
-
     }
 }

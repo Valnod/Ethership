@@ -11,7 +11,7 @@ namespace EtherShip
 {
     class Animator : Component, IUpdateable
     {
-        public Dictionary<string, Animation> SpriteFrames { get; set; }
+        public Dictionary<string, Animation> spriteFrames { get; set; }
 
         private SpriteRenderer spriteRenderer;
         private int currentIndex;
@@ -27,8 +27,7 @@ namespace EtherShip
             this.spriteRenderer = obj.GetComponent<SpriteRenderer>();
 
             //initialize the dictionary
-            SpriteFrames = new Dictionary<string, Animation>();
-
+            spriteFrames = new Dictionary<string, Animation>();
         }
 
         public void Update(GameTime gameTime)
@@ -42,12 +41,12 @@ namespace EtherShip
                 timeElapsed = 0;
                 currentIndex = 0;
             }
-            spriteRenderer.spriteRectangle = rectangles[currentIndex];
+            spriteRenderer.SpriteRectangle = rectangles[currentIndex];
         }
 
         public void CreateAnimation(Animation animation, string name)
         {
-            SpriteFrames.Add(name, animation);
+            spriteFrames.Add(name, animation);
         }
 
         public void CheckAnimation(string frameName)
@@ -55,15 +54,15 @@ namespace EtherShip
             if(this.frameName != frameName)
             {
                 //checks if it's a new animation
-                this.rectangles = SpriteFrames[frameName].Rectangles;
+                this.rectangles = spriteFrames[frameName].Rectangles;
                 //sets the rectangle
-                this.spriteRenderer.spriteRectangle = rectangles[0];
+                this.spriteRenderer.SpriteRectangle = rectangles[0];
                 //sets the offset
-                this.spriteRenderer.Offset = SpriteFrames[frameName].Offset;
+                this.spriteRenderer.Offset = spriteFrames[frameName].Offset;
                 //sets the animation name
                 this.frameName = frameName;
                 //sets the fps
-                this.fps = SpriteFrames[frameName].Fps;
+                this.fps = spriteFrames[frameName].Fps;
 
                 //resets the animation 
 

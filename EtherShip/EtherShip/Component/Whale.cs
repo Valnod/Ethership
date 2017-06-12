@@ -23,7 +23,7 @@ namespace EtherShip
 
         //AI
 
-        private bool Generating = false;
+        private bool generating = false;
 
         private float acceleration;
         private float speedElement;
@@ -48,7 +48,7 @@ namespace EtherShip
         public void Update(GameTime gameTime)
         {
             Move(gameTime);
-            CheckAmIDeadwhale();
+            CheckAmIDeadWhale();
         }
 
         public void Move(GameTime gameTime)
@@ -56,13 +56,13 @@ namespace EtherShip
             {
                 timer += gameTime.ElapsedGameTime.Milliseconds;
 
-                if (NewRoute == null || !Generating || timer >= cooldown)
+                if (NewRoute == null || !generating || timer >= cooldown)
                 {
                     int width = GameWorld.Instance.Window.ClientBounds.Width,
                          height = GameWorld.Instance.Window.ClientBounds.Height;
                     new System.Threading.Thread(() => NewRoute = AI.Pathfind(GameWorld.Instance.Map[obj.position], GameWorld.Instance.Map[new Vector2(GameWorld.Instance.Map.MapGrid.GetLength(0) / (GameWorld.Instance.Map.GridPointSize * 12), (GameWorld.Instance.Map.MapGrid.GetLength(1)  / 2) * (GameWorld.Instance.Map.GridPointSize))],
                         width, height)).Start();
-                    Generating = true;
+                    generating = true;
                     timer = 0;
                 }
                 else if (NewRoute != null)
@@ -71,7 +71,7 @@ namespace EtherShip
 
                     if (CurrentRoute.Count > currentWayPoint)
                     {
-                        Generating = false;
+                        generating = false;
                         Vector2 routeDirection = CurrentRoute[currentWayPoint].Pos - obj.position;
                         translation = Vector2.Normalize(routeDirection) * speed;
                         Vector2 newPosition = obj.position + translation;
@@ -94,7 +94,7 @@ namespace EtherShip
         ///<summary>
         /// Checks if health is below 0, and if so move the object to inactive.
         /// </summary>
-        public void CheckAmIDeadwhale()
+        public void CheckAmIDeadWhale()
         {
             if (Health < 0)
                 GameWorld.Instance.gameObjectPool.RemoveActive.Add(obj);

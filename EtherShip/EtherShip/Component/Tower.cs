@@ -90,8 +90,8 @@ namespace EtherShip
             //float gravStrength = 10 + gStrength * (float)Math.Exp(distance);
             float gravStrength = gStrength / (distance * distance);
             //Ensures the gravity wont keep the given object indefently
-            if (gravStrength > maxSpeed*3)
-                gravStrength = maxSpeed*3;
+            if (gravStrength > maxSpeed*2)
+                gravStrength = maxSpeed*2;
             if (gravStrength < 0)
                 gravStrength = 0;
             Vector2 positionalGravStrength = gravDirection * gravStrength;

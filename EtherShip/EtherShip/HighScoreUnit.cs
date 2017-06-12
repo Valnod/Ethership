@@ -17,5 +17,4 @@ namespace EtherShip
             this.Score = score;
         }
     }
-    
 }

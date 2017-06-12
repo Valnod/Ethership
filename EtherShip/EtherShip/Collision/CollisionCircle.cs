@@ -25,7 +25,7 @@ namespace EtherShip
 
         public CollisionCircle(GameObject obj) : base(obj)
         {
-            this.Radius = (obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Width)/2;
+            this.Radius = (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Width)/2;
             edges = new Vector2[numberOfEdges, 2];
             lengthOfEdges = new List<float>();
             GenerateSides();

@@ -18,7 +18,7 @@ namespace TestEtherShip
         {
             obj = new GameObject(new Vector2(100, 100));
             p = new Player(obj, new Vector2(1, 0), 3, false);
-            e = new Enemy(obj, 100, 10f, 1, new Vector2());
+            e = new Enemy(obj, 100, 10f, 1, new Vector2(), 1, 1);
         }
 
         [TestMethod]
@@ -30,7 +30,7 @@ namespace TestEtherShip
         [TestMethod]
         public void TestGenerating()
         {
-            Assert.IsFalse(e.Generating); //Test if Generating bool is false
+            Assert.IsFalse(e.generating); //Test if Generating bool is false
         }
 
         [TestMethod]

@@ -30,10 +30,10 @@ namespace EtherShip
             int adjustment = GameWorld.Instance.Map.GridPointSize / 2;
             //The vertixes of the box
             edges[0, 1] = new Vector2(-adjustment, -adjustment);
-            edges[1, 1] = new Vector2(-adjustment, obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Height - adjustment);
-            edges[2, 1] = new Vector2(obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Width - adjustment, 
-                obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Height - adjustment);
-            edges[3, 1] = new Vector2(obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Width - adjustment, -adjustment);
+            edges[1, 1] = new Vector2(-adjustment, obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Height - adjustment);
+            edges[2, 1] = new Vector2(obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Width - adjustment, 
+                obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Height - adjustment);
+            edges[3, 1] = new Vector2(obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Width - adjustment, -adjustment);
 
             //The edges of the box
             edges[0, 0] = edges[1, 1] - edges[0, 1];
