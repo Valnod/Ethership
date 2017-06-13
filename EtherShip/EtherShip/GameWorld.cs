@@ -5,6 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
+using System.Threading;
 
 namespace EtherShip
 {
@@ -13,19 +16,32 @@ namespace EtherShip
     /// </summary>
     class GameWorld : Game
     {
-        Menu menu = new Menu();
+
+        //##################################################################
+        Song song;
+
+    ////####kan ikke lige kommme på hvordan pokker det fúngere fra en anden klasse :s
+
+        public int WindowWidth { get; set; }
+        public int WindowHeight { get; set; }
+        public SFX SFX { get; set; }
+
+        public Menu Menu { get; set; }
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private static GameWorld instance;
-        private bool betweenRounds;
+        public bool betweenRounds;
         private bool buildMode;
+        public bool GameOver { get; set; }
+        private EndGame endGame;
         private BuildMode build;
+        private Texture2D background;
 
         public Map Map { get; set; }
         public GameObjectPool gameObjectPool;
         public Random rnd;
 
-        Wave wave;
+        public Wave Wave { get; set; }
 
         public static GameWorld Instance
         {
@@ -80,35 +96,41 @@ namespace EtherShip
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-        
+
             ////set the GraphicsDeviceManager's fullscreen property
             //graphics.ToggleFullScreen();
             ////Makes the window borderless
             //Window.IsBorderless = true;
             //Changes the windw resolution
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 720;
+            WindowWidth = 1280;
+            WindowHeight = 720;
+            graphics.PreferredBackBufferWidth = WindowWidth;
+            graphics.PreferredBackBufferHeight = WindowHeight;
             graphics.ApplyChanges();
-            this.Window.AllowUserResizing = true;
+            this.Window.AllowUserResizing = false;
 
+            SFX = new SFX();
             betweenRounds = true;
+            GameOver = false;
             buildMode = false;
             build = new BuildMode("circle", "rectangle");
+            endGame = new EndGame("rectangle", Window.ClientBounds.Width / 2, Window.ClientBounds.Height / 2, 5f);
 
             //Initializes the map
             Map = new Map("Background");
+
+            //Menu
+            Menu = new Menu();
 
             //Initializes the gameObjectPool
             gameObjectPool = new GameObjectPool();
 
             //Adds some gameObjects for testing
             gameObjectPool.CreatePlayer();
-            //enemy is out for testing
-            //gameObjectPool.CreateEnemy();
 
             //testing waves
-            wave = new Wave(0, 1, Map);
-            wave.Start();
+            Wave = new Wave(0, 1, Map);
+            Wave.Start();
 
             gameObjectPool.AddToActive();
 
@@ -123,8 +145,33 @@ namespace EtherShip
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            menu.LoadContent(Content);
+            Menu.LoadContent(Content);
+
+            //MUSIC bad location FIX FIX FIX #########################################
+            
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+               
+                    
+                        song = Content.Load<Song>("ebAndFlow");
+                        MediaPlayer.Play(song);
+                        MediaPlayer.IsRepeating = true;
+                        SFX.LoadContent(Content);
+                    
+                
+            }).Start();
+
+
+
+            
+                
+            
+
+
+           
             Map.LoadContent(Content);
+            endGame.LoadContent(Content);
             // TODO: use this.Content to load your game content here
         }
 
@@ -151,50 +198,48 @@ namespace EtherShip
             
             // TODO: Add your update logic here
 
-            //Get the keyboard state
-            KeyboardState keystate = Keyboard.GetState();
-
-          
-            if(betweenRounds == true)
-                {
-                if (keystate.IsKeyDown(Keys.B))
-                    buildMode = true;
-                else if(keystate.IsKeyDown(Keys.N))
-                    buildMode = false;
-
-                this.IsMouseVisible = true;
-                if(!buildMode)
-                    gameObjectPool.Update(gameTime); //Updates all gameObjects
-
-            }
-                
-            
-            if (keystate.IsKeyDown(Keys.P) )
-                {
-                     betweenRounds = false;
-                     buildMode = false;
-                     this.IsMouseVisible = false;
-                }
-
             //Updates mouse state
             InputManager.Update();
 
-            if (!betweenRounds)
+            if (!GameOver)
             {
-                gameObjectPool.Update(gameTime); //Updates all gameObjects
-                wave.Update(gameTime);
-            }
-            else if (buildMode)
-            {
-                build.Update(gameTime); //Build mode
-             
-            }
-                
-            
-            //Adds and removes GameObjects from the game
-            gameObjectPool.RemoveFromActive();
-            gameObjectPool.AddToActive();        
+                //Get the keyboard state
+                KeyboardState keystate = Keyboard.GetState();
 
+                if (betweenRounds == true)
+                {
+                    if (keystate.IsKeyDown(Keys.B) && !BuildMode)
+                        buildMode = true;
+                    else if (keystate.IsKeyDown(Keys.B) && BuildMode)
+                        buildMode = false;
+
+                    this.IsMouseVisible = true;
+                    if (!buildMode)
+                        gameObjectPool.Update(gameTime); //Updates all gameObjects
+                }
+
+                if (keystate.IsKeyDown(Keys.P))
+                {
+                    betweenRounds = false;
+                    buildMode = false;
+                    this.IsMouseVisible = false;
+                }
+
+                if (!betweenRounds)
+                {
+                    gameObjectPool.Update(gameTime); //Updates all gameObjects
+                    Wave.Update(gameTime);
+                }
+                else if (buildMode)
+                    build.Update(gameTime); //Build mode                          
+
+                //Adds and removes GameObjects from the game
+                gameObjectPool.RemoveFromActive();
+                gameObjectPool.AddToActive();
+            }
+            else
+                endGame.Update(gameTime);
+            Menu.Update();
             base.Update(gameTime);
         }
 
@@ -212,11 +257,14 @@ namespace EtherShip
             //Draws the map
             Map.DrawBackground(spriteBatch);
             //draws the menu
-            menu.Draw(spriteBatch);
+            Menu.Draw(spriteBatch);
 
             //Draws all gameObjects
             gameObjectPool.Draw(spriteBatch);
 
+            //Draws the end game screen
+            if (GameOver)
+                endGame.Draw(spriteBatch);
          
             spriteBatch.End();
 

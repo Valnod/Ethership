@@ -9,12 +9,12 @@ namespace EtherShip
 {
     class Frame
     {
-        public Rectangle rect { get; }
+        public Rectangle Rect { get; }
         public Vector2 offset;
 
         public Frame(Rectangle rect, Vector2 offset)
         {
-            this.rect = rect;
+            this.Rect = rect;
             this.offset = offset;
         }
 

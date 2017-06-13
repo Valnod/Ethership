@@ -12,12 +12,12 @@ namespace EtherShip
     {
         static public List<GridPoint> Pathfind(GridPoint start, GridPoint end, int windowWidth, int windowHeight)
         {
-            //end position ind map coordinate (x,y)
+            //End position ind map coordinate (x,y)
             int endX = (int)(end.Pos.X / GameWorld.Instance.Map.GridPointSize);
             int endY = (int)(end.Pos.Y / GameWorld.Instance.Map.GridPointSize);
-            //finds the amount of gridpoint on the x and y axis
-            int xGridAmount = windowWidth / GameWorld.Instance.Map.GridPointSize;
-            int yGridAmount = windowHeight / GameWorld.Instance.Map.GridPointSize;
+            //Finds the amount of gridpoint on the x and y axis
+            int xGridAmount = GameWorld.Instance.Map.XGridAmount;
+            int yGridAmount = GameWorld.Instance.Map.YGridAmount;
 
             //GridPoints that have been checked and put in closed list
             var CheckedGridPoints = new List<AStarNode>();
@@ -25,7 +25,7 @@ namespace EtherShip
             //GridPoints next to other points who have been checked
             var UnCheckedGridPoints = new List<AStarNode>();
 
-            //initiates a new AstarNode
+            //Initiates a new AstarNode
             AStarNode startASN = new AStarNode();
 
             AStarNode currentASN = null;
@@ -123,7 +123,7 @@ namespace EtherShip
                 UnCheckedGridPoints.Remove(currentASN);
                 CheckedGridPoints.Add(currentASN);
                 //FARVE BLÅ!!!!!!!!!!
-                //Thread.Sleep(1000);
+                
                 currentASN.currentGP.Color = Color.Blue;
             }
             foreach (AStarNode asn in UnCheckedGridPoints)

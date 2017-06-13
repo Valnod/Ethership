@@ -13,6 +13,8 @@ namespace EtherShip
     {
         public GridPoint[,] MapGrid { get; set; }
         public int GridPointSize { get; set; }
+        public int XGridAmount { get; set; }
+        public int YGridAmount { get; set; }
 
         private string spriteName;
         private Texture2D sprite;
@@ -24,8 +26,7 @@ namespace EtherShip
         public Map(string spriteName)
         {
             this.spriteName = spriteName;
-            this.GridPointSize = 25;
-            GenerateMapGrid();
+            this.GridPointSize = 50;
         }
 
         //Returns the gridpoint that is closest to the position
@@ -42,7 +43,7 @@ namespace EtherShip
         /// <param name="spriteBatch"></param> 
         public void DrawBackground(SpriteBatch spriteBatch)
         {
-          //spriteBatch.Draw(sprite, Vector2.Zero, sourceRect, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
+          spriteBatch.Draw(sprite, Vector2.Zero, sourceRect, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
 
 #if DEBUG //draws the points which makes up the grid
             foreach(GridPoint gp in MapGrid)
@@ -57,14 +58,16 @@ namespace EtherShip
         /// </summary>
         private void GenerateMapGrid()
         {
-            int xGridAmount = GameWorld.Instance.Window.ClientBounds.Width / GridPointSize;
-            int yGridAmount = (GameWorld.Instance.Window.ClientBounds.Height)/ GridPointSize;
+            XGridAmount = GameWorld.Instance.Window.ClientBounds.Width / GridPointSize;
+            YGridAmount = (GameWorld.Instance.Window.ClientBounds.Height - GameWorld.Instance.Menu.GetUIHeight()) / GridPointSize; //The number 100 is an adjustment so the grid wont go down behind the UI.
 
-            MapGrid = new GridPoint[xGridAmount, yGridAmount];
+            // - GameWorld.Instance.Menu.UIHeight()
 
-            for (int x = 0; x < xGridAmount; x++)
+            MapGrid = new GridPoint[XGridAmount, YGridAmount];
+
+            for (int x = 0; x < XGridAmount; x++)
             {
-                for (int y = 0; y < yGridAmount; y++)
+                for (int y = 0; y < YGridAmount; y++)
                 {
                     MapGrid[x, y] = new GridPoint(new Vector2(x * GridPointSize + (GridPointSize / 2), y * GridPointSize + (GridPointSize / 2)), null);
                 }
@@ -81,9 +84,10 @@ namespace EtherShip
             pointSprite = content.Load<Texture2D>("rectangle");
             sourceRectPoint = new Rectangle(0, 0, 2, 2);
 #endif
+            GenerateMapGrid();
             //Draws the background
-            //sprite = content.Load<Texture2D>("Background");
-            //sourceRect = new Rectangle(0, 0, sprite.Width, sprite.Height);
+            sprite = content.Load<Texture2D>("starBackground");
+            sourceRect = new Rectangle(0, 0, sprite.Width, sprite.Height);
         }
 
         public void RemoveOccupant(GridPoint gridPoint)
@@ -95,6 +99,10 @@ namespace EtherShip
                     if(MapGrid[x, y] == gridPoint)
                     {
                         GameWorld.Instance.gameObjectPool.RemoveActive.Add(MapGrid[x, y].Occupant);
+                        if (MapGrid[x, y].Occupant.GetComponent<Tower>() != null)
+                            GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit += 40;
+                        if (MapGrid[x, y].Occupant.GetComponent<Wall>() != null)
+                            GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit += 4;
                         MapGrid[x, y].Occupant = null;
                     }
                 }

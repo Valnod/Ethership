@@ -18,6 +18,7 @@ namespace EtherShip
         {
             placingTower = true;
             placingWall = false;
+
         }
 
         public void Update(GameTime gametime)
@@ -38,9 +39,9 @@ namespace EtherShip
 
             //Checks if building shall be placed or removed and acts.
             if (InputManager.GetHasMouseButtonBeenReleased(MouseButton.Left))
-                PlaceBuilding(InputManager.GetMousePosition());
+                PlaceBuilding(InputManager.GetMousePositionVec());
             else if (InputManager.GetHasMouseButtonBeenReleased(MouseButton.Right))
-                RemoveBuilding(InputManager.GetMousePosition());
+                RemoveBuilding(InputManager.GetMousePositionVec());
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -48,7 +49,7 @@ namespace EtherShip
 
         }
 
-        /// <summary>
+        /// <summary>/
         /// Places a building at the given location.
         /// </summary>
         /// <param name="pos"></param>
@@ -63,15 +64,22 @@ namespace EtherShip
             else
             {
                 if (ms.X > GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Width 
-                    && ms.Y > GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Height)
+                    && (ms.Y > (GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Height)))
                 {
                     //Don't do anything if you try to place a building outside the grid
                 }
                 else if (ms.X >= 0 && ms.X < GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Width
-                && ms.Y >= 0 && ms.Y < GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Height)
+                && ms.Y >= 0 && ms.Y < GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Height - GameWorld.Instance.Menu.GetUIHeight() - GameWorld.Instance.Map.GridPointSize 
+                && ((GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit >= 50 && placingTower) || (GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit >= 5 && placingWall)))
                 {
                     //Gets the position on the mapgrid closest to the mouseposition
                     posVec = GameWorld.Instance.Map[posVec].Pos;
+
+                    //Removes credits 
+                    if (placingTower)
+                        GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit -= 50;
+                    else if (placingWall)
+                        GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit -= 5;
 
                     //Builds the building
                     if (placingTower)

@@ -8,31 +8,40 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Timers;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace EtherShip
 {
     public class Player : Component, IUpdateable//, ICollidable
     {
+        private SFX sfx;
         private Vector2 direction;
         private SpriteRenderer spriteRenderer;
         private Animator animator;
-        private int health;
+        public int Health { get; set; }
         private float speed;
         private float maxSpeed;
         private float minSpeed;
         private Vector2 g; //Gravity vector
         private Vector2 push; //Push vector for when colliding with solid objects
+        private bool invincible; //When true your invincible and can't collide with enemies 
+        private float invincibleTime = 1000; //Indicates the amount of time your invincible
+        private float invincibleTimer; //Indicates the amount of time you have been invincible
 
         public bool antiGravity; //Anti-gravity effect
         private bool cdTimer; //Cooldown of the anti-gravity ability
-        float timer = 0; //Timer for both anti-gravity effect and the anti gravity ability
+        private float timer = 0; //Timer for both anti-gravity effect and the anti gravity ability
         private Vector2 translation;
-        private SFX soundTest;
+        
+
+        public int Score { get; set; }
+        public int Credit { get; set; }
 
         public Player(GameObject obj, Vector2 direction, int health, bool antiGravity) : base(obj)
         {
             this.direction = direction;
-            this.health = health;
+            this.Health = health;
             this.antiGravity = false;
             this.cdTimer = false;
             speed = 0;
@@ -40,7 +49,8 @@ namespace EtherShip
             maxSpeed = 10;
             spriteRenderer = obj.GetComponent<SpriteRenderer>();
             animator = obj.GetComponent<Animator>();
-            soundTest = new SFX();
+            this.invincible = false;
+            this.Credit = 90;
         }
 
         /// <summary>
@@ -56,9 +66,29 @@ namespace EtherShip
         
         public void Update(GameTime gameTime)
         {
+            //Invincible timer
+            if (invincible)
+            {
+                invincibleTimer += gameTime.ElapsedGameTime.Milliseconds;
+                if(invincibleTimer >= invincibleTime)
+                {
+                    invincible = false;
+                    invincibleTimer = 0;
+                }
+            }
+            else
+            {
+                if(Health <= 0)
+                {
+                    GameWorld.Instance.GameOver = true;
+                }
+            }
+
             if (antiGravity == true || cdTimer == true)
             {
+#if DEBUG
                 obj.GetComponent<SpriteRenderer>().Color = Color.DarkGreen;
+#endif 
                 timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (timer >= 5) //5 or more sec
                 {
@@ -114,10 +144,10 @@ namespace EtherShip
                 obj.GetComponent<SpriteRenderer>().Rotation = obj.GetComponent<SpriteRenderer>().Rotation % circle;
                 obj.GetComponent<SpriteRenderer>().Rotation -= 0.05f; // Rotate the sprite (clockwise left)
             }
-            if (keystate.IsKeyDown(Keys.S))
-            {
-                //Down (unnecessary?)
-            }
+            //if (keystate.IsKeyDown(Keys.S))
+            //{
+            //    Down (unnecessary?)
+            //}
             if (keystate.IsKeyDown(Keys.D))
             {
                 obj.GetComponent<SpriteRenderer>().Rotation += elapsed;
@@ -139,7 +169,7 @@ namespace EtherShip
                 translation = (g + translation * speed) / (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
                 //Checks collision and changes the push vector accordingly
-                OBJCollisionV2();
+                OBJCollision();
 
                 //Changes the position
                 this.obj.position += push + translation;
@@ -152,6 +182,10 @@ namespace EtherShip
             }
         }
 
+        /// <summary>
+        /// Calculates the gravitational pull from all the towers.
+        /// </summary>
+        /// <returns></returns>
         private Vector2 GravityPull()
         {
             Vector2 totalGravPull = Vector2.Zero;
@@ -165,7 +199,7 @@ namespace EtherShip
         /// <summary>
         /// Checks for collision and acts if there is a collision.
         /// </summary>
-        public void OBJCollisionV2()
+        public void OBJCollision()
         {
             push = Vector2.Zero;
             //Checks if this collides with another gameobject.
@@ -176,28 +210,37 @@ namespace EtherShip
                 {
                     //The collision checks are done with the upcoming location in mind. The division is just a adjustment, so the objects can come closer before colliding. 
                     if (go.GetComponent<Enemy>() != null)
+                        if(!invincible)
+                            push += CollisionCheck.CheckV2(obj.GetComponent<CollisionCircle>().edges, obj.position + translation, go.GetComponent<CollisionCircle>().edges, go.position);
+                    if (go.GetComponent<Whale>() != null)
                         push += CollisionCheck.CheckV2(obj.GetComponent<CollisionCircle>().edges, obj.position + translation, go.GetComponent<CollisionCircle>().edges, go.position);
-                    else if (go.GetComponent<Whale>() != null)
+                    if (go.GetComponent<Tower>() != null)
                         push += CollisionCheck.CheckV2(obj.GetComponent<CollisionCircle>().edges, obj.position + translation, go.GetComponent<CollisionCircle>().edges, go.position);
-                    else if (go.GetComponent<Tower>() != null)
-                        push += CollisionCheck.CheckV2(obj.GetComponent<CollisionCircle>().edges, obj.position + translation, go.GetComponent<CollisionCircle>().edges, go.position);
-                    else if (go.GetComponent<Wall>() != null)
+                    if (go.GetComponent<Wall>() != null)
                         push += CollisionCheck.CheckV2(obj.GetComponent<CollisionCircle>().edges, obj.position + translation, go.GetComponent<CollisionRectangle>().edges, go.position);                    
                     
-                    //If push's length is greater than 0 a collisions happens, and depending on what is hit different things can happen
+                    //If push's length is greater than 0 a collisions happens, and acts differently depending on what is hit
                     if(push.Length() > 0)
                     {
                         if (go.GetComponent<Enemy>() != null)
                         {
+#if DEBUG
                             obj.GetComponent<SpriteRenderer>().Color = Color.Red;
-                            health -= 1;
+#endif
+                            if (!invincible)
+                            {
+                                Health -= 1;
+                                invincible = true;
+                            }
                         }
+#if DEBUG
                         else if (go.GetComponent<Whale>() != null)
                             obj.GetComponent<SpriteRenderer>().Color = Color.Blue;
                         else if (go.GetComponent<Tower>() != null)
                             obj.GetComponent<SpriteRenderer>().Color = Color.RoyalBlue;
                         else if (go.GetComponent<Wall>() != null)
                             obj.GetComponent<SpriteRenderer>().Color = Color.Black;
+#endif
                     }
 
                     //Ensures that the push vector can't be greater than the translation vector.
@@ -209,10 +252,10 @@ namespace EtherShip
 
         public void MapCollision()
         {
-            int minX = obj.GetComponent<SpriteRenderer>().sprite.Width / 2;
-            int maxX = GameWorld.Instance.GraphicsDevice.Viewport.Width - obj.GetComponent<SpriteRenderer>().sprite.Width / 2;
-            int minY = obj.GetComponent<SpriteRenderer>().sprite.Height / 2;
-            int maxY = GameWorld.Instance.GraphicsDevice.Viewport.Height - obj.GetComponent<SpriteRenderer>().sprite.Height / 2;
+            int minX = (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Width) / 2;
+            int maxX = GameWorld.Instance.GraphicsDevice.Viewport.Width - (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Width) / 2;
+            int minY = (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Height) / 2;
+            int maxY = GameWorld.Instance.GraphicsDevice.Viewport.Height - (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Height / 2) - GameWorld.Instance.Menu.GetUIHeight();
 
             if (GameWorld.Instance.Window != null) //Prevents the program from crashing, when the window is closed
             {
@@ -221,27 +264,37 @@ namespace EtherShip
                     if (obj.position.X > maxX) //Right GameWindow collision
                     {
                         obj.position.X = maxX;
+#if DEBUG
                         obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+#endif
                     }
                     else if (obj.position.X < minX) //Left GameWindow collision
                     {
                         obj.position.X = minX;
+#if DEBUG
                         obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+#endif
                     }
-                }
-                if (!float.IsNaN(GameWorld.Instance.GraphicsDevice.DisplayMode.Height))
+                    }
+                    if (!float.IsNaN(GameWorld.Instance.GraphicsDevice.DisplayMode.Height))
                 {
                     if (obj.position.Y > maxY) //Bottom GameWindow collsion
                     {
                         obj.position.Y = maxY;
+#if DEBUG
                         obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+#endif
                     }
                     else if (obj.position.Y < minY) //Top GameWindow collision
                     {
                         obj.position.Y = minY;
+#if DEBUG
                         obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+#endif
                     }
+
                 }
+
             }
         }
     }

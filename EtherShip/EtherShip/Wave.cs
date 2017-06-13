@@ -11,20 +11,15 @@ namespace EtherShip
     class Wave
     {
         public int wave;
-
-
         public GameObject obj;
         private int numberOfEnemies;        // number of enemies to spawn
-        private int waveNumber;             // wich wave it is
+        public int WaveNumber { get; set; } // wich wave it is        
         private float spawnTimer = 0;       //when should we spawn an enemy
         private int enemiesSpawned = 0;     //how many enemies have spawned
 
         private bool enemyAtEnd;            //has an enemy reached the player?
         private bool spawningEnemies;       // are we still spawning enemies?
         private Map map;                    // a reference to the map
-
-
-        
 
         //public bool RoundOver
         //{
@@ -34,13 +29,6 @@ namespace EtherShip
         //    }
         //    set { RoundOver = value; }
         //}
-        public int RoundNumber
-        {
-            get
-            {
-                return waveNumber;
-            }
-        }
         public bool EnemyAtEnd
         {
             get
@@ -52,7 +40,7 @@ namespace EtherShip
        
         public Wave(int waveNumber, int numberOfEnemies, Map map)
         {
-            this.waveNumber = waveNumber;
+            this.WaveNumber = waveNumber;
             this.map = map;
             this.numberOfEnemies = numberOfEnemies;
 
@@ -63,7 +51,7 @@ namespace EtherShip
             
             enemiesSpawned++;
             //defines the changes from wave to wave, should one round be stronger etc etc.
-            if(waveNumber == 1)
+            if(WaveNumber == 5)
             {
                 //GameWorld.Instance.gameObjectPool.CreateWhale();
                 spawningEnemies = false;
@@ -71,7 +59,7 @@ namespace EtherShip
         }
         public void Start()
         {
-            if (waveNumber == 1)
+            if (waveNumber == 5)
             {
                 spawningEnemies = false;
             }
@@ -79,26 +67,27 @@ namespace EtherShip
         }
         public void WaveOver()
         {
-            if (GameWorld.Instance.gameObjectPool.ActiveWhaleList.Count > 0)
-            {
-                spawningEnemies = false;
-            }
+            //if (GameWorld.Instance.gameObjectPool.ActiveWhaleList.Count > 0)
+            //{
+            //    spawningEnemies = false;
 
-            else
-            {
+            //}
 
+            //else
+            //{
 
+            enemiesSpawned = 0;
                 GameWorld.Instance.BetweenRounds = true;
-                waveNumber++;
+                WaveNumber++;
                 spawningEnemies = true;
-            }
+            //}
             
         }
        
        public void Update(GameTime gameTime)
         {
             //first we check if we have the desired number of enemies otherwise we spawn our enemiesf
-            if (enemiesSpawned >= (numberOfEnemies + waveNumber))
+            if (enemiesSpawned >= (numberOfEnemies + WaveNumber))
             {
                 spawningEnemies = false; 
             }
@@ -116,7 +105,6 @@ namespace EtherShip
             {
                 WaveOver();
             }
-
         }
     }
 }

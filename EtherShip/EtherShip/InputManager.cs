@@ -123,9 +123,18 @@ namespace EtherShip
         /// Gets the mouse's position as a Vector.
         /// </summary>
         /// <returns></returns>
-        public static Vector2 GetMousePosition()
+        public static Vector2 GetMousePositionVec()
         {
             return new Vector2(currentMouseState.X, currentMouseState.Y);
+        }
+
+        /// <summary>
+        /// Gets the mouse's position as a Point.
+        /// </summary>
+        /// <returns></returns>
+        public static Point GetMousePositionPoint()
+        {
+            return currentMouseState.Position;
         }
     }
 }

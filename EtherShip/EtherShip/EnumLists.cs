@@ -7,4 +7,5 @@ using System.Threading.Tasks;
 namespace EtherShip
 {
     public enum MouseButton { Left, Middle, Right }
+    public enum GameState { playWindow, play, quit, menu, highscore }
 }
