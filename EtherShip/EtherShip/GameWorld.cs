@@ -153,7 +153,7 @@ namespace EtherShip
             }).Start();
            
             Map.LoadContent(Content);
-            //Map.Vectorfield(gameObjectPool.player.position);
+            Map.Vectorfield(gameObjectPool.player.position);
             endGame.LoadContent(Content);
             // TODO: use this.Content to load your game content here
         }

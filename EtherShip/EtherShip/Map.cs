@@ -56,7 +56,7 @@ namespace EtherShip
                 spriteBatch.Draw(pointSprite, gp.Pos, sourceRectPoint, gp.Color, 1f, Vector2.Zero, 1f, SpriteEffects.None, 1);
 
             foreach (GridPoint gp in MapGrid)
-                spriteBatch.DrawString(font, "" + gp.Heat, gp.Pos, Color.Red, 1f, Vector2.Zero, 1f, SpriteEffects.None, 1);
+                spriteBatch.DrawString(font, "" + gp.Heat, gp.Pos, Color.Red, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1);
 #endif
         }
 
@@ -122,27 +122,28 @@ namespace EtherShip
 
         public void Vectorfield(Vector2 pos)
         {
+            foreach (GridPoint gp in MapGrid)
+                gp.Heat = 0;
+
             int x = (int)(pos.X / GridPointSize);
             int y = (int)(pos.Y / GridPointSize);
-            GridPoint gridPos = MapGrid[x, y];
-            gridPos.Heat = 0;
 
-            if (x < MapGrid.GetLength(0) && x > 0 && (y + 1) < MapGrid.GetLength(1) && (y + 1) > 0 && MapGrid[x, y + 1].Occupant == null && MapGrid[x, y + 1].Heat == 0)
+            if (x < MapGrid.GetLength(0) && x >= 0 && (y + 1) < MapGrid.GetLength(1) && (y + 1) >= 0 && MapGrid[x, y + 1].Occupant == null && MapGrid[x, y + 1].Heat == 0)
             {
                 MapGrid[x, y + 1].Heat = 1;
                 gridPoints.Add(MapGrid[x, y + 1]);
             }
-            if (x < MapGrid.GetLength(0) && x > 0 && (y - 1) < MapGrid.GetLength(1) && (y - 1) > 0 && MapGrid[x, y - 1].Occupant == null && MapGrid[x, y - 1].Heat == 0)
+            if (x < MapGrid.GetLength(0) && x >= 0 && (y - 1) < MapGrid.GetLength(1) && (y - 1) >= 0 && MapGrid[x, y - 1].Occupant == null && MapGrid[x, y - 1].Heat == 0)
             {
                 MapGrid[x, y - 1].Heat = 1;
                 gridPoints.Add(MapGrid[x, y - 1]);
             }
-            if ((x + 1) < MapGrid.GetLength(0) && (x + 1) > 0 && y < MapGrid.GetLength(1) && y > 0 && MapGrid[x + 1, y].Occupant == null && MapGrid[x + 1, y].Heat == 0)
+            if ((x + 1) < MapGrid.GetLength(0) && (x + 1) >= 0 && y < MapGrid.GetLength(1) && y >= 0 && MapGrid[x + 1, y].Occupant == null && MapGrid[x + 1, y].Heat == 0)
             {
                 MapGrid[x + 1, y].Heat = 1;
                 gridPoints.Add(MapGrid[x + 1, y]);
             }
-            if ((x - 1) < MapGrid.GetLength(0) && (x - 1) > 0 && y < MapGrid.GetLength(1) && y > 0 && MapGrid[x - 1, y].Occupant == null && MapGrid[x - 1, y].Heat == 0)
+            if ((x - 1) < MapGrid.GetLength(0) && (x - 1) >= 0 && y < MapGrid.GetLength(1) && y >= 0 && MapGrid[x - 1, y].Occupant == null && MapGrid[x - 1, y].Heat == 0)
             {
                 MapGrid[x - 1, y].Heat = 1;
                 gridPoints.Add(MapGrid[x - 1, y]);
@@ -150,6 +151,7 @@ namespace EtherShip
 
 
             VectorfieldSlave(gridPoints, 1);
+            MapGrid[x, y].Heat = 0;
         }
 
         public void VectorfieldSlave(List<GridPoint> gridPoints, int heat)
@@ -157,24 +159,24 @@ namespace EtherShip
             for(int i = 0; i < gridPoints.Count; i++)
             {
                 int x = (int)(gridPoints[i].Pos.X / GridPointSize);
-                int y = (int)(gridPoints[i].Pos.X / GridPointSize);
+                int y = (int)(gridPoints[i].Pos.Y / GridPointSize);
 
-                if (x < MapGrid.GetLength(0) && x > 0 && (y + 1) < MapGrid.GetLength(1) && (y + 1) > 0 && MapGrid[x, y + 1].Occupant == null && MapGrid[x, y + 1].Heat == 0)
+                if (x < MapGrid.GetLength(0) && x >= 0 && (y + 1) < MapGrid.GetLength(1) && (y + 1) >= 0 && MapGrid[x, y + 1].Occupant == null && MapGrid[x, y + 1].Heat == 0)
                 {
                     MapGrid[x, y + 1].Heat = heat + 1;
                     tempGridPoints.Add(MapGrid[x, y + 1]);
                 }
-                if (x < MapGrid.GetLength(0) && x > 0 && (y - 1) < MapGrid.GetLength(1) && (y - 1) > 0 && MapGrid[x, y - 1].Occupant == null && MapGrid[x, y - 1].Heat == 0)
+                if (x < MapGrid.GetLength(0) && x >= 0 && (y - 1) < MapGrid.GetLength(1) && (y - 1) >= 0 && MapGrid[x, y - 1].Occupant == null && MapGrid[x, y - 1].Heat == 0)
                 {
                     MapGrid[x, y - 1].Heat = heat + 1;
                     tempGridPoints.Add(MapGrid[x, y - 1]);
                 }
-                if ((x + 1) < MapGrid.GetLength(0) && (x + 1) > 0 && y < MapGrid.GetLength(1) && y > 0 && MapGrid[x + 1, y].Occupant == null && MapGrid[x + 1, y].Heat == 0)
+                if ((x + 1) < MapGrid.GetLength(0) && (x + 1) >= 0 && y < MapGrid.GetLength(1) && y >= 0 && MapGrid[x + 1, y].Occupant == null && MapGrid[x + 1, y].Heat == 0)
                 {
                     MapGrid[x + 1, y].Heat = heat + 1;
                     tempGridPoints.Add(MapGrid[x + 1, y]);
                 }
-                if ((x - 1) < MapGrid.GetLength(0) && (x - 1) > 0 && y < MapGrid.GetLength(1) && y > 0 && MapGrid[x - 1, y].Occupant == null && MapGrid[x - 1, y].Heat == 0)
+                if ((x - 1) < MapGrid.GetLength(0) && (x - 1) >= 0 && y < MapGrid.GetLength(1) && y >= 0 && MapGrid[x - 1, y].Occupant == null && MapGrid[x - 1, y].Heat == 0)
                 {
                     MapGrid[x - 1, y].Heat = heat + 1;
                     tempGridPoints.Add(MapGrid[x - 1, y]);

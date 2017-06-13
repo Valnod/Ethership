@@ -33,6 +33,7 @@ namespace EtherShip
         private bool cdTimer; //Cooldown of the anti-gravity ability
         private float timer = 0; //Timer for both anti-gravity effect and the anti gravity ability
         private Vector2 translation;
+        private GridPoint playerGridPoint;
         
 
         public int Score { get; set; }
@@ -51,7 +52,6 @@ namespace EtherShip
             animator = obj.GetComponent<Animator>();
             this.invincible = false;
             this.Credit = 90;
-
 
             this.Health = 100;
         }
@@ -182,6 +182,13 @@ namespace EtherShip
             {
                 //soundTest.soundEffects[0].CreateInstance().Play();
                 AntiGravity(gameTime); //Activate anti-gravity ability
+            }
+
+            //Checks if new Vectorfield should be made, and if yes makes it
+            if (GameWorld.Instance.Map[obj.position] != playerGridPoint)
+            {
+                this.playerGridPoint = GameWorld.Instance.Map[obj.position];
+                GameWorld.Instance.Map.Vectorfield(obj.position);
             }
         }
 
