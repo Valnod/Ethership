@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
+
 namespace EtherShip
 {
     public class Enemy : Component, IUpdateable
     {
+        private Animator animator;
         public bool generating = false;
         private Vector2 push;
         private float acceleration;
@@ -75,6 +78,13 @@ namespace EtherShip
                 totalGravPull += tower.GetComponent<Tower>().Gravity(this.obj.position, speed);
             }
             return totalGravPull;
+        }
+
+        public void LoadContent(ContentManager content)
+        {
+            this.animator = obj.GetComponent<Animator>();
+
+            CreateAnimations();
         }
 
         public void Move(GameTime gameTime)
@@ -233,6 +243,21 @@ namespace EtherShip
                 }
 
             }
+        }
+        public void CreateAnimations()
+        {
+
+
+            animator.CreateAnimation(new Animation(6, 300, 0, 107, 100, 6, Vector2.Zero), "WalkRight");
+            animator.CreateAnimation(new Animation(6, 700, 0, 107, 100, 6, Vector2.Zero), "WalkLeft");
+        
+
+
+
+
+            animator.CheckAnimation("IdleLeft");
+
+
         }
     }
 }
