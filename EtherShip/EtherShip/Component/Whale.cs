@@ -102,7 +102,7 @@ namespace EtherShip
         }
 
         ///<summary>
-        /// Checks if health is below 0, and if so move the object to inactive.
+        /// Checks if health is below 0, and if so move the object to inactive..
         /// </summary>
         public void CheckAmIDeadWhale()
         {
