@@ -51,6 +51,9 @@ namespace EtherShip
             animator = obj.GetComponent<Animator>();
             this.invincible = false;
             this.Credit = 90;
+
+
+            this.Health = 100;
         }
 
         /// <summary>
@@ -255,7 +258,7 @@ namespace EtherShip
             int minX = (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Width) / 2;
             int maxX = GameWorld.Instance.GraphicsDevice.Viewport.Width - (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Width) / 2;
             int minY = (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Height) / 2;
-            int maxY = GameWorld.Instance.GraphicsDevice.Viewport.Height - (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Height / 2) - GameWorld.Instance.Menu.GetUIHeight();
+            int maxY = GameWorld.Instance.GraphicsDevice.Viewport.Height - (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Height / 2) - GameWorld.Instance.Menu.GetUIHeight() - 20;
 
             if (GameWorld.Instance.Window != null) //Prevents the program from crashing, when the window is closed
             {
