@@ -50,7 +50,7 @@ namespace EtherShip
         public void Update(GameTime gameTime)
         {
             Move(gameTime);
-            CheckAmIDeadwhale();
+            CheckAmIDeadWhale();
             RouteDone();
         }
 
@@ -66,7 +66,7 @@ namespace EtherShip
                     new System.Threading.Thread(() => NewRoute = AI.Pathfind(GameWorld.Instance.Map[obj.position], GameWorld.Instance.Map[new Vector2(GameWorld.Instance.Map.MapGrid.GetLength(0) / (GameWorld.Instance.Map.GridPointSize * 2), (GameWorld.Instance.Map.MapGrid.GetLength(1)  / 2) * (GameWorld.Instance.Map.GridPointSize))],
                         width, height)).Start();
                     generating = true;
-                    timer = 0;
+                    timer = 1;
                 }
                 else if (NewRoute != null)
                 {

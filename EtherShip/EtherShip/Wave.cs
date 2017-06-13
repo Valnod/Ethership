@@ -51,15 +51,15 @@ namespace EtherShip
             
             enemiesSpawned++;
             //defines the changes from wave to wave, should one round be stronger etc etc.
-            if(WaveNumber == 5)
+            if(WaveNumber == 2)
             {
-                //GameWorld.Instance.gameObjectPool.CreateWhale();
+                GameWorld.Instance.gameObjectPool.CreateWhale();
                 spawningEnemies = false;
            }
         }
         public void Start()
         {
-            if (waveNumber == 5)
+            if (WaveNumber == 5)
             {
                 spawningEnemies = false;
             }
