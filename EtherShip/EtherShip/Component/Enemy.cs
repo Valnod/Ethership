@@ -97,7 +97,7 @@ namespace EtherShip
             obj.GetComponent<SpriteRenderer>().Rotation = (float)Math.Atan2(direction.X, -direction.Y) - 1.5f; 
             translation = (direction * speed) / gameTime.ElapsedGameTime.Milliseconds;
 
-            //calculates gravity pull
+            //Calculates gravity pull
             g = GravityPull();
             //Ensures that the gravity pull can't be greater than the tranlation vector, ensuring you can't be trapped by gravity
             if (g.Length() > translation.Length())
