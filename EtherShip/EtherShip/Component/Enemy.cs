@@ -59,7 +59,6 @@ namespace EtherShip
             //Move(gameTime);
             Move2(gameTime);
             MapCollision();
-            Move(gameTime);
             animator.CheckAnimation("Move");
 
             CheckAmIDead();
