@@ -134,7 +134,7 @@ namespace EtherShip
                     Vector2 routeDirection = CurrentRoute[currentWayPoint].Pos - obj.position;
                     translation = Vector2.Normalize(routeDirection) * speed;
 
-                    //calculates gravity pull
+                    //Calculates gravity pull
                     g = GravityPull();
                     //Ensures that the gravity pull can't be greater than the tranlation vector, ensuring you can't be trapped by gravity
                     if (g.Length() > translation.Length())
