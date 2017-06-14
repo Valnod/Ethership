@@ -77,7 +77,6 @@ namespace EtherShip
                                 //FARVE GRØN!!!!!
                                 asn.currentGP.Color = Color.Green;
 
-
                                 //makes sure that the UncheckGridPoints list is sorted with the lowest number first ([0])
                                 for (int i = 0; i<= UnCheckedGridPoints.Count; i++ )
                                 {
@@ -90,7 +89,7 @@ namespace EtherShip
                                         UnCheckedGridPoints.Insert(i, asn);
                                         break;
                                     }
-                                }   
+                                }
                             }
                             else  
                             {

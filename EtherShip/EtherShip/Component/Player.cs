@@ -33,6 +33,7 @@ namespace EtherShip
         private bool cdTimer; //Cooldown of the anti-gravity ability
         private float timer = 0; //Timer for both anti-gravity effect and the anti gravity ability
         private Vector2 translation;
+        private GridPoint playerGridPoint;
         
 
         public int Score { get; set; }
@@ -51,6 +52,8 @@ namespace EtherShip
             animator = obj.GetComponent<Animator>();
             this.invincible = false;
             this.Credit = 90;
+
+            this.Health = 100;
         }
 
         /// <summary>
@@ -180,6 +183,13 @@ namespace EtherShip
                 //soundTest.soundEffects[0].CreateInstance().Play();
                 AntiGravity(gameTime); //Activate anti-gravity ability
             }
+
+            //Checks if new Vectorfield should be made, and if yes makes it
+            if (GameWorld.Instance.Map[obj.position] != playerGridPoint)
+            {
+                this.playerGridPoint = GameWorld.Instance.Map[obj.position];
+                GameWorld.Instance.Map.Vectorfield(obj.position);
+            }
         }
 
         /// <summary>
@@ -255,7 +265,7 @@ namespace EtherShip
             int minX = (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Width) / 2;
             int maxX = GameWorld.Instance.GraphicsDevice.Viewport.Width - (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Width) / 2;
             int minY = (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Height) / 2;
-            int maxY = GameWorld.Instance.GraphicsDevice.Viewport.Height - (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Height / 2) - GameWorld.Instance.Menu.GetUIHeight();
+            int maxY = GameWorld.Instance.GraphicsDevice.Viewport.Height - (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Height / 2) - GameWorld.Instance.Menu.GetUIHeight() - 20;
 
             if (GameWorld.Instance.Window != null) //Prevents the program from crashing, when the window is closed
             {

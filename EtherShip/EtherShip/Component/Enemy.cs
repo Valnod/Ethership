@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
+
 namespace EtherShip
 {
     public class Enemy : Component, IUpdateable
     {
+        private Animator animator;
         public bool generating = false;
         private Vector2 push;
         private float acceleration;
@@ -24,8 +27,6 @@ namespace EtherShip
         private int value;
         private float timer;
         private float cooldown = 500;
-
-        private Player player;
 
         public int Health { get; set; }
         private int maxHealth;
@@ -45,7 +46,6 @@ namespace EtherShip
             this.push = Vector2.Zero;
             this.bountyGiven = bountyGiven;
             this.scoreGiven = scoreGiven;
-            this.player = player;
 
             ResetHealth();
         }
@@ -57,6 +57,7 @@ namespace EtherShip
         public void Update(GameTime gameTime)
         {
             Move(gameTime);
+            MapCollision();
             CheckAmIDead();
         }
 
@@ -77,6 +78,13 @@ namespace EtherShip
                 totalGravPull += tower.GetComponent<Tower>().Gravity(this.obj.position, speed);
             }
             return totalGravPull;
+        }
+
+        public void LoadContent(ContentManager content)
+        {
+            this.animator = obj.GetComponent<Animator>();
+
+            CreateAnimations();
         }
 
         public void Move(GameTime gameTime)
@@ -187,6 +195,69 @@ namespace EtherShip
                         push = Vector2.Normalize(push) * translation.Length();
                 }
             }
+        }
+
+        public void MapCollision()
+        {
+            int minX = (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Width) / 4;
+            int maxX = GameWorld.Instance.GraphicsDevice.Viewport.Width - (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Width) / 4;
+            int minY = (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Height) / 4;
+            int maxY = GameWorld.Instance.GraphicsDevice.Viewport.Height - (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Height / 4) - GameWorld.Instance.Menu.GetUIHeight() - 20;
+
+            if (GameWorld.Instance.Window != null) //Prevents the program from crashing, when the window is closed
+            {
+                if (!float.IsNaN(GameWorld.Instance.GraphicsDevice.DisplayMode.Width))
+                {
+                    if (obj.position.X > maxX) //Right GameWindow collision
+                    {
+                        obj.position.X = maxX;
+#if DEBUG
+                        obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+#endif
+                    }
+                    else if (obj.position.X < minX) //Left GameWindow collision
+                    {
+                        obj.position.X = minX;
+#if DEBUG
+                        obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+#endif
+                    }
+                }
+                if (!float.IsNaN(GameWorld.Instance.GraphicsDevice.DisplayMode.Height))
+                {
+                    if (obj.position.Y > maxY) //Bottom GameWindow collsion
+                    {
+                        obj.position.Y = maxY;
+#if DEBUG
+                        obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+#endif
+                    }
+                    else if (obj.position.Y < minY) //Top GameWindow collision
+                    {
+                        obj.position.Y = minY;
+#if DEBUG
+                        obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+#endif
+                    }
+
+                }
+
+            }
+        }
+        public void CreateAnimations()
+        {
+
+
+            animator.CreateAnimation(new Animation(6, 300, 0, 107, 100, 6, Vector2.Zero), "WalkRight");
+            animator.CreateAnimation(new Animation(6, 700, 0, 107, 100, 6, Vector2.Zero), "WalkLeft");
+        
+
+
+
+
+            animator.CheckAnimation("IdleLeft");
+
+
         }
     }
 }
