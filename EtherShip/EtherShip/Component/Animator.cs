@@ -14,17 +14,19 @@ namespace EtherShip
         public Dictionary<string, Animation> spriteFrames { get; set; }
 
         private SpriteRenderer spriteRenderer;
-        private int currentIndex;
+        private float currentIndex;
         private float fps;
         private float timeElapsed;
         private Rectangle[] rectangles;
         private string frameName;
 
+        public Rectangle[] Rectangles { get { return rectangles; } }
+
         public Animator(GameObject obj) : base(obj)
         {
             fps = 5;
-            //initialize the spriterenderer class
-            this.spriteRenderer = obj.GetComponent<SpriteRenderer>();
+            ////initialize the spriterenderer class
+            //this.spriteRenderer = obj.GetComponent<SpriteRenderer>();
 
             //initialize the dictionary
             spriteFrames = new Dictionary<string, Animation>();
@@ -32,8 +34,8 @@ namespace EtherShip
 
         public void Update(GameTime gameTime)
         {
-            timeElapsed += gameTime.ElapsedGameTime.Milliseconds;
-            currentIndex = (int)(timeElapsed * fps);
+            timeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            currentIndex = fps * timeElapsed;
 
             if (currentIndex > rectangles.Length - 1)
             {
@@ -41,7 +43,7 @@ namespace EtherShip
                 timeElapsed = 0;
                 currentIndex = 0;
             }
-            spriteRenderer.SpriteRectangle = rectangles[currentIndex];
+            obj.GetComponent<SpriteRenderer>().SpriteRectangle = rectangles[(int)currentIndex];
         }
 
         public void CreateAnimation(Animation animation, string name)
@@ -56,9 +58,9 @@ namespace EtherShip
                 //checks if it's a new animation
                 this.rectangles = spriteFrames[frameName].Rectangles;
                 //sets the rectangle
-                this.spriteRenderer.SpriteRectangle = rectangles[0];
+                obj.GetComponent<SpriteRenderer>().SpriteRectangle = rectangles[0];
                 //sets the offset
-                this.spriteRenderer.Offset = spriteFrames[frameName].Offset;
+                obj.GetComponent<SpriteRenderer>().Offset = spriteFrames[frameName].Offset;
                 //sets the animation name
                 this.frameName = frameName;
                 //sets the fps
@@ -74,7 +76,10 @@ namespace EtherShip
         {
             foreach (Component component in obj.components)
             {
-                OnAnimationDone(animationName);
+                if (component is IAnimateable)
+                {
+                    (component as IAnimateable).OnAnimationDone(animationName);
+                }
             }
         }
     }

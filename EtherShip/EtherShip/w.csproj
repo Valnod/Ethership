@@ -70,6 +70,7 @@
     <Compile Include="Animation.cs" />
     <Compile Include="EndGame.cs" />
     <Compile Include="EnumLists.cs" />
+    <Compile Include="Interfaces\IAnimateable.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="Clutter.cs" />
     <Compile Include="Collision\CollisionCheck.cs" />
