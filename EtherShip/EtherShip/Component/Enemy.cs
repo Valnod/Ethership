@@ -56,7 +56,8 @@ namespace EtherShip
         }
         public void Update(GameTime gameTime)
         {
-            Move(gameTime);
+            //Move(gameTime);
+            Move2(gameTime);
             MapCollision();
             CheckAmIDead();
         }
@@ -85,6 +86,30 @@ namespace EtherShip
             this.animator = obj.GetComponent<Animator>();
 
             CreateAnimations();
+        }
+
+        public void Move2(GameTime gameTime)
+        {
+            translation = Vector2.Zero;
+            //the number indicates the strength 
+            direction = Vector2.Normalize(direction + GameWorld.Instance.Map[obj.position].directionVec * 0.2f);  
+            //Does so the sprite points in the movement direction. The number is an adjustment so the sprite is turned correctly
+            obj.GetComponent<SpriteRenderer>().Rotation = (float)Math.Atan2(direction.X, -direction.Y) - 1.5f; 
+            translation = (direction * speed) / gameTime.ElapsedGameTime.Milliseconds;
+
+            //calculates gravity pull
+            g = GravityPull();
+            //Ensures that the gravity pull can't be greater than the tranlation vector, ensuring you can't be trapped by gravity
+            if (g.Length() > translation.Length())
+                g = Vector2.Normalize(g) * speed * gravityEfftectiveness;
+            //Adds gravity pull
+            translation += g;
+
+            //Looks at collision
+            OBJCollision();
+
+            obj.position += translation + push;
+            push = Vector2.Zero;
         }
 
         public void Move(GameTime gameTime)
@@ -186,7 +211,7 @@ namespace EtherShip
                         else if (go.GetComponent<Tower>() != null)
                             obj.GetComponent<SpriteRenderer>().Color = Color.RoyalBlue;
                         else if (go.GetComponent<Wall>() != null)
-                            obj.GetComponent<SpriteRenderer>().Color = Color.Black;
+                            obj.GetComponent<SpriteRenderer>().Color = Color.Beige;
                     }
 #endif
 

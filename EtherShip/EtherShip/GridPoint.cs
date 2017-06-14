@@ -13,6 +13,7 @@ namespace EtherShip
         public GameObject Occupant { get; set; }
         public Color Color { get; set; }
         public int Heat { get; set; }
+        public Vector2 directionVec { get; set; }
 
         public GridPoint(Vector2 pos, GameObject occupant)
         {
@@ -20,6 +21,7 @@ namespace EtherShip
             this.Occupant = occupant;
             this.Color = Color.Black;
             this.Heat = 0;
+            directionVec = Vector2.Zero;
         }
     }
 }
