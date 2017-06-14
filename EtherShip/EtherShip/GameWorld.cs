@@ -123,7 +123,7 @@ namespace EtherShip
             gameObjectPool.CreatePlayer();
 
             //testing waves
-            Wave = new Wave(0, 60, Map);
+            Wave = new Wave(0, 20, Map);
             Wave.Start();
 
             gameObjectPool.AddToActive();
