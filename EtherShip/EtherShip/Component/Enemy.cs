@@ -94,16 +94,15 @@ namespace EtherShip
             //the number indicates the strength 
             direction = Vector2.Normalize(direction + GameWorld.Instance.Map[obj.position].directionVec * 0.2f);  
             //Does so the sprite points in the movement direction. The number is an adjustment so the sprite is turned correctly
-            obj.GetComponent<SpriteRenderer>().Rotation = (float)Math.Atan2(direction.X, -direction.Y) - 1.5f; 
-            translation = (direction * speed) / gameTime.ElapsedGameTime.Milliseconds;
+            obj.GetComponent<SpriteRenderer>().Rotation = (float)Math.Atan2(direction.X, -direction.Y) - 1.5f;
 
             //calculates gravity pull
             g = GravityPull();
             //Ensures that the gravity pull can't be greater than the tranlation vector, ensuring you can't be trapped by gravity
             if (g.Length() > translation.Length())
                 g = Vector2.Normalize(g) * speed * gravityEfftectiveness;
-            //Adds gravity pull
-            translation += g;
+
+            translation = (direction * speed + g) / gameTime.ElapsedGameTime.Milliseconds;
 
             //Looks at collision
             OBJCollision();
