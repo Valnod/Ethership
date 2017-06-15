@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace EtherShip
 {
-    public class Enemy : Component, IUpdateable
+    public class Enemy : Component, IUpdateable, Iloadable
     {
         private Animator animator;
         public bool generating = false;
@@ -59,6 +59,8 @@ namespace EtherShip
             //Move(gameTime);
             Move2(gameTime);
             MapCollision();
+            animator.CheckAnimation("Move");
+
             CheckAmIDead();
         }
 
@@ -96,7 +98,7 @@ namespace EtherShip
             //Does so the sprite points in the movement direction. The number is an adjustment so the sprite is turned correctly
             obj.GetComponent<SpriteRenderer>().Rotation = (float)Math.Atan2(direction.X, -direction.Y) - 1.5f;
 
-            //calculates gravity pull
+            //Calculates gravity pull
             g = GravityPull();
             //Ensures that the gravity pull can't be greater than the tranlation vector, ensuring you can't be trapped by gravity
             if (g.Length() > translation.Length())
@@ -272,16 +274,24 @@ namespace EtherShip
         {
 
 
-            animator.CreateAnimation(new Animation(6, 300, 0, 107, 100, 6, Vector2.Zero), "WalkRight");
-            animator.CreateAnimation(new Animation(6, 700, 0, 107, 100, 6, Vector2.Zero), "WalkLeft");
+            animator.CreateAnimation(new Animation(10, 0, 0, 400, 400, 5, Vector2.Zero), "Move");
+            animator.CreateAnimation(new Animation(10, 0, 0, 400, 400, 5, Vector2.Zero), "Dead");
         
 
 
 
 
-            animator.CheckAnimation("IdleLeft");
+            animator.CheckAnimation("Move");
 
 
         }
+        public void OnAnimationDone(string animationName)
+        {
+            foreach (Component component in obj.components)
+            {
+                OnAnimationDone(animationName);
+            }
+        }
+
     }
 }
