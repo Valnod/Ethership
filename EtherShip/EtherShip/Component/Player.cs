@@ -19,7 +19,7 @@ namespace EtherShip
         private Vector2 direction;
         private SpriteRenderer spriteRenderer;
         private Animator animator;
-        private int health;
+        public int Health { get; set; }
         private float speed;
         private float maxSpeed;
         private float minSpeed;
@@ -33,6 +33,7 @@ namespace EtherShip
         private bool cdTimer; //Cooldown of the anti-gravity ability
         private float timer = 0; //Timer for both anti-gravity effect and the anti gravity ability
         private Vector2 translation;
+        private GridPoint playerGridPoint;
         
 
         public int Score { get; set; }
@@ -41,7 +42,7 @@ namespace EtherShip
         public Player(GameObject obj, Vector2 direction, int health, bool antiGravity) : base(obj)
         {
             this.direction = direction;
-            this.health = health;
+            this.Health = health;
             this.antiGravity = false;
             this.cdTimer = false;
             speed = 0;
@@ -50,6 +51,7 @@ namespace EtherShip
             spriteRenderer = obj.GetComponent<SpriteRenderer>();
             animator = obj.GetComponent<Animator>();
             this.invincible = false;
+            this.Credit = 9011;
         }
 
         /// <summary>
@@ -77,7 +79,7 @@ namespace EtherShip
             }
             else
             {
-                if(health <= 0)
+                if(Health <= 0)
                 {
                     GameWorld.Instance.GameOver = true;
                 }
@@ -85,7 +87,9 @@ namespace EtherShip
 
             if (antiGravity == true || cdTimer == true)
             {
+#if DEBUG
                 obj.GetComponent<SpriteRenderer>().Color = Color.DarkGreen;
+#endif 
                 timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (timer >= 5) //5 or more sec
                 {
@@ -139,14 +143,11 @@ namespace EtherShip
             {
                 obj.GetComponent<SpriteRenderer>().Rotation -= elapsed;
                 obj.GetComponent<SpriteRenderer>().Rotation = obj.GetComponent<SpriteRenderer>().Rotation % circle;
-                obj.GetComponent<SpriteRenderer>().Rotation -= 0.05f; // Rotate the sprite (clockwise left)  
-               //if(keystate.)
-                //GameWorld.Instance.SFX.leftKnirtEffect.Play();
-
+                obj.GetComponent<SpriteRenderer>().Rotation -= 0.05f; // Rotate the sprite (clockwise left)
             }
             //if (keystate.IsKeyDown(Keys.S))
             //{
-            //    //Down (unnecessary?)
+            //    Down (unnecessary?)
             //}
             if (keystate.IsKeyDown(Keys.D))
             {
@@ -179,6 +180,13 @@ namespace EtherShip
             {
                 //soundTest.soundEffects[0].CreateInstance().Play();
                 AntiGravity(gameTime); //Activate anti-gravity ability
+            }
+
+            //Checks if new Vectorfield should be made, and if yes makes it
+            if (GameWorld.Instance.Map[obj.position] != playerGridPoint)
+            {
+                this.playerGridPoint = GameWorld.Instance.Map[obj.position];
+                GameWorld.Instance.Map.Vectorfield(obj.position);
             }
         }
 
@@ -229,7 +237,7 @@ namespace EtherShip
 #endif
                             if (!invincible)
                             {
-                                health -= 1;
+                                Health -= 1;
                                 invincible = true;
                             }
                         }
@@ -252,10 +260,10 @@ namespace EtherShip
 
         public void MapCollision()
         {
-            int minX = (obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Width) / 2;
-            int maxX = GameWorld.Instance.GraphicsDevice.Viewport.Width - (obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Width) / 2;
-            int minY = (obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Height) / 2;
-            int maxY = GameWorld.Instance.GraphicsDevice.Viewport.Height - (obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Height / 2) - GameWorld.Instance.Menu.GetUIHeight() - GameWorld.Instance.Map.GridPointSize;
+            int minX = (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Width) / 2;
+            int maxX = GameWorld.Instance.GraphicsDevice.Viewport.Width - (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Width) / 2;
+            int minY = (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Height) / 2;
+            int maxY = GameWorld.Instance.GraphicsDevice.Viewport.Height - (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Height / 2) - GameWorld.Instance.Menu.GetUIHeight() - 20;
 
             if (GameWorld.Instance.Window != null) //Prevents the program from crashing, when the window is closed
             {
@@ -264,27 +272,37 @@ namespace EtherShip
                     if (obj.position.X > maxX) //Right GameWindow collision
                     {
                         obj.position.X = maxX;
+#if DEBUG
                         obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+#endif
                     }
                     else if (obj.position.X < minX) //Left GameWindow collision
                     {
                         obj.position.X = minX;
+#if DEBUG
                         obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+#endif
                     }
-                }
-                if (!float.IsNaN(GameWorld.Instance.GraphicsDevice.DisplayMode.Height))
+                    }
+                    if (!float.IsNaN(GameWorld.Instance.GraphicsDevice.DisplayMode.Height))
                 {
                     if (obj.position.Y > maxY) //Bottom GameWindow collsion
                     {
                         obj.position.Y = maxY;
+#if DEBUG
                         obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+#endif
                     }
                     else if (obj.position.Y < minY) //Top GameWindow collision
                     {
                         obj.position.Y = minY;
+#if DEBUG
                         obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+#endif
                     }
+
                 }
+
             }
         }
     }

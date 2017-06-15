@@ -69,7 +69,8 @@ namespace EtherShip
                     //Don't do anything if you try to place a building outside the grid
                 }
                 else if (ms.X >= 0 && ms.X < GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Width
-                && ms.Y >= 0 && ms.Y < GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Height - GameWorld.Instance.Menu.GetUIHeight() - GameWorld.Instance.Map.GridPointSize)
+                && ms.Y >= 0 && ms.Y < GameWorld.Instance.GraphicsDevice.Viewport.Bounds.Height - GameWorld.Instance.Menu.GetUIHeight() - GameWorld.Instance.Map.GridPointSize 
+                && ((GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit >= 50 && placingTower) || (GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit >= 5 && placingWall)))
                 {
                     //Gets the position on the mapgrid closest to the mouseposition
                     posVec = GameWorld.Instance.Map[posVec].Pos;
@@ -80,6 +81,7 @@ namespace EtherShip
                         if (GameWorld.Instance.Map[posVec].Occupant == null) //If there's no object on the spot
                         {
                             GameWorld.Instance.gameObjectPool.CreateTower(posVec);
+                            GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit -= 50;
                         }
                         else //If there's an object on the spot
                         {
@@ -91,6 +93,7 @@ namespace EtherShip
                         if (GameWorld.Instance.Map[posVec].Occupant == null) //Same as above
                         {
                             GameWorld.Instance.gameObjectPool.CreateWall(posVec);
+                            GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit -= 5;
                         }
                         else //Same as above
                         {

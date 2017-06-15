@@ -25,7 +25,7 @@ namespace EtherShip
 
         public CollisionCircle(GameObject obj) : base(obj)
         {
-            this.Radius = (obj.GetComponent<SpriteRenderer>().spriteRectangleForCollision.Width)/2;
+            this.Radius = (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Width)/2;
             edges = new Vector2[numberOfEdges, 2];
             lengthOfEdges = new List<float>();
             GenerateSides();
@@ -60,7 +60,7 @@ namespace EtherShip
 #if DEBUG //draws the points which makes up the collision box
             for (int i = 0; i < edges.GetLength(0) - 1; i++)
             {
-                spriteBatch.Draw(pointSprite, edges[i, 1] + obj.position, sourceRectPoint, Color.Black, 1f, Vector2.Zero, 1f, SpriteEffects.None, 1);
+                spriteBatch.Draw(pointSprite, edges[i, 1] + obj.position, sourceRectPoint, Color.Red, 1f, Vector2.Zero, 1f, SpriteEffects.None, 1);
             }
 #endif
         }

@@ -11,8 +11,6 @@ namespace EtherShip
     class Wave
     {
         public int wave;
-
-
         public GameObject obj;
         private int numberOfEnemies;        // number of enemies to spawn
         public int WaveNumber { get; set; } // wich wave it is        
@@ -22,9 +20,6 @@ namespace EtherShip
         private bool enemyAtEnd;            //has an enemy reached the player?
         private bool spawningEnemies;       // are we still spawning enemies?
         private Map map;                    // a reference to the map
-
-
-        
 
         //public bool RoundOver
         //{
@@ -56,36 +51,36 @@ namespace EtherShip
             
             enemiesSpawned++;
             //defines the changes from wave to wave, should one round be stronger etc etc.
-            if(WaveNumber == 5)
+            if(WaveNumber == 2)
             {
-                //GameWorld.Instance.gameObjectPool.CreateWhale();
+                GameWorld.Instance.gameObjectPool.CreateWhale();
                 spawningEnemies = false;
            }
         }
         public void Start()
         {
-            //if (WaveNumber == 5)
-            //{
-            //    spawningEnemies = false;
-            //}
-            //spawningEnemies = true;
+            if (WaveNumber == 5)
+            {
+                spawningEnemies = false;
+            }
+            spawningEnemies = true;
         }
         public void WaveOver()
         {
-            //if (GameWorld.Instance.gameObjectPool.ActiveWhaleList.Count > 0)
-            //{
-            //    spawningEnemies = false;
+            if (GameWorld.Instance.gameObjectPool.ActiveWhaleList.Count > 0)
+            {
+                spawningEnemies = false;
 
-            //}
+            }
 
-            //else
-            //{
+            else
+            {
 
             enemiesSpawned = 0;
                 GameWorld.Instance.BetweenRounds = true;
                 WaveNumber++;
                 spawningEnemies = true;
-            //}
+            }
             
         }
        
@@ -110,7 +105,6 @@ namespace EtherShip
             {
                 WaveOver();
             }
-
         }
     }
 }

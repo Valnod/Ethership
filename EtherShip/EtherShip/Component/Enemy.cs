@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
+
 namespace EtherShip
 {
-    public class Enemy : Component, IUpdateable
+    public class Enemy : Component, IUpdateable, Iloadable
     {
-        public bool Generating = false;
+        private Animator animator;
+        public bool generating = false;
         private Vector2 push;
         private float acceleration;
         private float speedElement;
@@ -24,8 +27,6 @@ namespace EtherShip
         private int value;
         private float timer;
         private float cooldown = 500;
-
-        private Player player;
 
         public int Health { get; set; }
         private int maxHealth;
@@ -45,7 +46,6 @@ namespace EtherShip
             this.push = Vector2.Zero;
             this.bountyGiven = bountyGiven;
             this.scoreGiven = scoreGiven;
-            this.player = player;
 
             ResetHealth();
         }
@@ -56,7 +56,11 @@ namespace EtherShip
         }
         public void Update(GameTime gameTime)
         {
-            Move(gameTime);
+            //Move(gameTime);
+            Move2(gameTime);
+            MapCollision();
+            animator.CheckAnimation("Move");
+
             CheckAmIDead();
         }
 
@@ -79,17 +83,47 @@ namespace EtherShip
             return totalGravPull;
         }
 
+        public void LoadContent(ContentManager content)
+        {
+            this.animator = obj.GetComponent<Animator>();
+
+            CreateAnimations();
+        }
+
+        public void Move2(GameTime gameTime)
+        {
+            translation = Vector2.Zero;
+            //the number indicates the strength 
+            direction = Vector2.Normalize(direction + GameWorld.Instance.Map[obj.position].directionVec * 0.2f);  
+            //Does so the sprite points in the movement direction. The number is an adjustment so the sprite is turned correctly
+            obj.GetComponent<SpriteRenderer>().Rotation = (float)Math.Atan2(direction.X, -direction.Y) - 1.5f;
+
+            //Calculates gravity pull
+            g = GravityPull();
+            //Ensures that the gravity pull can't be greater than the tranlation vector, ensuring you can't be trapped by gravity
+            if (g.Length() > translation.Length())
+                g = Vector2.Normalize(g) * speed * gravityEfftectiveness;
+
+            translation = (direction * speed + g) / gameTime.ElapsedGameTime.Milliseconds;
+
+            //Looks at collision
+            OBJCollision();
+
+            obj.position += translation + push;
+            push = Vector2.Zero;
+        }
+
         public void Move(GameTime gameTime)
         {
             timer += gameTime.ElapsedGameTime.Milliseconds;
 
-            if (NewRoute == null || (!Generating && timer >= cooldown))
+            if (NewRoute == null || (!generating && timer >= cooldown))
             {
                int width = GameWorld.Instance.WindowWidth,
-                    height = GameWorld.Instance.WindowHeigth;
+                    height = GameWorld.Instance.WindowHeight;
                new System.Threading.Thread(() => NewRoute = AI.Pathfind(GameWorld.Instance.Map[obj.position], GameWorld.Instance.Map[GameWorld.Instance.gameObjectPool.player.position],
                    width, height)).Start();
-                Generating = true;
+                generating = true;
                 timer = 0;
             }
             else if (NewRoute != null)
@@ -98,11 +132,11 @@ namespace EtherShip
 
                 if (CurrentRoute.Count > currentWayPoint)
                 {
-                    Generating = false;
+                    generating = false;
                     Vector2 routeDirection = CurrentRoute[currentWayPoint].Pos - obj.position;
                     translation = Vector2.Normalize(routeDirection) * speed;
 
-                    //calculates gravity pull
+                    //Calculates gravity pull
                     g = GravityPull();
                     //Ensures that the gravity pull can't be greater than the tranlation vector, ensuring you can't be trapped by gravity
                     if (g.Length() > translation.Length())
@@ -135,23 +169,17 @@ namespace EtherShip
         }
 
         /// <summary>
-        /// Checks if health is below 0, and if so move the object to inactive..
+        /// Checks if health is below 0, and if so move the object to inactive.
         /// </summary>
         public void CheckAmIDead()
         {
             if (Health < 0)
             {
-           GameWorld.Instance.gameObjectPool.RemoveActive.Add(obj);
+                GameWorld.Instance.gameObjectPool.RemoveActive.Add(obj);
 
-            GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit += BountyGiven;
-            GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Score += scoreGiven;
-            }
-
-            
-
- 
-          
-            
+                GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit += BountyGiven;
+                GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Score += scoreGiven;
+            }            
         }
 
 
@@ -162,7 +190,7 @@ namespace EtherShip
         {
             push = Vector2.Zero;
             //Checks if this collides with another gameobject.
-            foreach (GameObject go in GameWorld.Instance.gameObjectPool.CollisionListForEnemy())
+            foreach (GameObject go in GameWorld.Instance.gameObjectPool.CollisionForEnemies)
             {
                 //Checks the distance to the objects, and only cheecks for collision if the given object is close enough for a check to be meaningfull.
                 if (go != this.obj && ((obj.position - go.position).Length() < 200))
@@ -184,7 +212,7 @@ namespace EtherShip
                         else if (go.GetComponent<Tower>() != null)
                             obj.GetComponent<SpriteRenderer>().Color = Color.RoyalBlue;
                         else if (go.GetComponent<Wall>() != null)
-                            obj.GetComponent<SpriteRenderer>().Color = Color.Black;
+                            obj.GetComponent<SpriteRenderer>().Color = Color.Beige;
                     }
 #endif
 
@@ -192,6 +220,78 @@ namespace EtherShip
                     if (push.Length() > translation.Length())
                         push = Vector2.Normalize(push) * translation.Length();
                 }
+            }
+            //Removes this enemy from the list
+            GameWorld.Instance.gameObjectPool.CollisionForEnemies.Remove(this.obj);
+        }
+
+        public void MapCollision()
+        {
+            int minX = (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Width) / 4;
+            int maxX = GameWorld.Instance.GraphicsDevice.Viewport.Width - (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Width) / 4;
+            int minY = (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Height) / 4;
+            int maxY = GameWorld.Instance.GraphicsDevice.Viewport.Height - (obj.GetComponent<SpriteRenderer>().SpriteRectangleForCollision.Height / 4) - GameWorld.Instance.Menu.GetUIHeight() - 20;
+
+            if (GameWorld.Instance.Window != null) //Prevents the program from crashing, when the window is closed
+            {
+                if (!float.IsNaN(GameWorld.Instance.GraphicsDevice.DisplayMode.Width))
+                {
+                    if (obj.position.X > maxX) //Right GameWindow collision
+                    {
+                        obj.position.X = maxX;
+#if DEBUG
+                        obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+#endif
+                    }
+                    else if (obj.position.X < minX) //Left GameWindow collision
+                    {
+                        obj.position.X = minX;
+#if DEBUG
+                        obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+#endif
+                    }
+                }
+                if (!float.IsNaN(GameWorld.Instance.GraphicsDevice.DisplayMode.Height))
+                {
+                    if (obj.position.Y > maxY) //Bottom GameWindow collsion
+                    {
+                        obj.position.Y = maxY;
+#if DEBUG
+                        obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+#endif
+                    }
+                    else if (obj.position.Y < minY) //Top GameWindow collision
+                    {
+                        obj.position.Y = minY;
+#if DEBUG
+                        obj.GetComponent<SpriteRenderer>().Color = Color.Yellow;
+#endif
+                    }
+
+                }
+
+            }
+        }
+        public void CreateAnimations()
+        {
+
+
+            animator.CreateAnimation(new Animation(10, 0, 0, 400, 400, 5, Vector2.Zero), "Move");
+            animator.CreateAnimation(new Animation(10, 0, 0, 400, 400, 5, Vector2.Zero), "Dead");
+        
+
+
+
+
+            animator.CheckAnimation("Move");
+
+
+        }
+        public void OnAnimationDone(string animationName)
+        {
+            foreach (Component component in obj.components)
+            {
+                OnAnimationDone(animationName);
             }
         }
 

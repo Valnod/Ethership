@@ -12,6 +12,7 @@ namespace EtherShip
 {
     class GameObjectPool
     {
+        private Object thisLock = new object();
         public GameObject gameObject;
 
         private bool generateThread;
@@ -20,9 +21,15 @@ namespace EtherShip
        
         public List<GameObject> AddActive { get; set; }
         public List<GameObject> RemoveActive { get; set; }
+        public List<GameObject> CollisionForEnemies { get; set; }
 
         // Enemy
-        public List<GameObject> ActiveEnemyList { get; set; }
+        private List<GameObject> activeEnemyList;
+        public List<GameObject> ActiveEnemyList
+        {
+            get { lock (thisLock) { return activeEnemyList; } }
+            set { lock (thisLock) { activeEnemyList = value; } }
+        }
         private List<GameObject> InactiveEnemyList;
         //Tower
         public List<GameObject> ActiveTowerList { get; set; }
@@ -62,8 +69,8 @@ namespace EtherShip
             RemoveActive = new List<GameObject>();
 
             generateThread = true;
-            runThread = true;
-            done = new bool[3];
+            runThread = true;   
+            done = new bool[2];
             for (int i = 0; i < done.Count(); i++)
                 done[i] = true;
         }
@@ -79,8 +86,9 @@ namespace EtherShip
             else
             {
                 GameObject obj = new GameObject(new Vector2(GameWorld.Instance.Window.ClientBounds.Width / 2, 40));
-                obj.AddComponnent(new Enemy(obj, 10, 3f, 1, new Vector2(), 10, 35));
-                obj.AddComponnent(new SpriteRenderer(obj, "EnemyShip_00000", 0.2f, 0f, 0.5f));
+                obj.AddComponnent(new Animator(obj));
+                obj.AddComponnent(new Enemy(obj, 10, 8f, 1, new Vector2(), 10, 35));
+                obj.AddComponnent(new SpriteRenderer(obj, "enemyShipAnimation", 0.2f, 0f, 0.5f));
                 obj.LoadContent(GameWorld.Instance.Content);
                 obj.AddComponnent(new CollisionCircle(obj));
                 obj.GetComponent<CollisionCircle>().LoadContent(GameWorld.Instance.Content);
@@ -104,13 +112,13 @@ namespace EtherShip
                 InactiveWallList[0].position = position;
                 AddActive.Add(InactiveWallList[0]);
 
-                GameWorld.Instance.Map[position].Occupant = InactiveTowerList[0];
+                GameWorld.Instance.Map[position].Occupant = InactiveWallList[0];
             }
             else
             {
                 GameObject obj = new GameObject(position);
                 obj.AddComponnent(new Wall(obj));
-                obj.AddComponnent(new SpriteRenderer(obj, "Wall_00030", 0.2f, 0f, 0.5f));
+                obj.AddComponnent(new SpriteRenderer(obj, "Wall_00030", 0.128f, 0f, 0.5f));
                 obj.LoadContent(GameWorld.Instance.Content);
                 obj.AddComponnent(new CollisionRectangle(obj));
                 obj.GetComponent<CollisionRectangle>().LoadContent(GameWorld.Instance.Content);
@@ -119,7 +127,7 @@ namespace EtherShip
                 GameWorld.Instance.Map[position].Occupant = obj;
             }
         }
-
+        
         public void DeleteWall(GameObject wall)
         {
 
@@ -152,8 +160,8 @@ namespace EtherShip
             {
                 GameObject obj = new GameObject(towerPos);
                 obj.AddComponnent(new Tower(obj, 500000, 300));
-                obj.AddComponnent(new SpriteRenderer(obj, "TowerRemove_00000", 0.2f, 0f, 1f));
-                obj.AddComponnent(new SpriteRenderer(obj, "turret with harpoon", 0.2f, 0f, 1f));
+                obj.AddComponnent(new SpriteRenderer(obj, "TowerRemove_00000", 0.128f, 0f, 1f));
+                obj.AddComponnent(new SpriteRenderer(obj, "turret with harpoon", 0.128f, 0f, 1f));
                 obj.LoadContent(GameWorld.Instance.Content);
                 obj.AddComponnent(new CollisionCircle(obj));
                 obj.GetComponent<CollisionCircle>().LoadContent(GameWorld.Instance.Content);
@@ -192,7 +200,7 @@ namespace EtherShip
             }
         }
 
-        public void DeleteProjectile(GameObject projectile)
+        public void DeleteProjectile(GameObject projectile) 
         {
 
         }
@@ -206,8 +214,8 @@ namespace EtherShip
             }
             else
             {
-                GameObject obj = new GameObject(new Vector2(400, 400));
-                obj.AddComponnent(new Whale(obj, new Vector2(1, 0), new Vector2(1, 0), 10, 5, 1f));
+                GameObject obj = new GameObject(new Vector2(1220, 250));
+                obj.AddComponnent(new Whale(obj, new Vector2(1, 0), new Vector2(1, 0), 10, 20, 1f, 100, 200));
                 obj.AddComponnent(new SpriteRenderer(obj, "Whale", 0.2f, 0f, 0.5f));
                 obj.LoadContent(GameWorld.Instance.Content);
                 obj.AddComponnent(new CollisionCircle(obj));
@@ -228,7 +236,7 @@ namespace EtherShip
         public void CreatePlayer()
         {
             GameObject obj = new GameObject(new Vector2(100, 100));
-            obj.AddComponnent(new Player(obj, new Vector2(1, 0), 3, false));
+            obj.AddComponnent(new Player(obj, new Vector2(1, 0), 3123, false));
             obj.AddComponnent(new SpriteRenderer(obj, "space whaler ship", 0.2f, 0f, 1f));
             obj.LoadContent(GameWorld.Instance.Content);
             obj.AddComponnent(new CollisionCircle(obj));
@@ -242,44 +250,44 @@ namespace EtherShip
         /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
         {
-            //player.Update(gameTime);
+            player.Update(gameTime);
 
-            //for (int i = 0; i < ActiveTowerList.Count(); i++)
-            //    ActiveTowerList[i].Update(gameTime);
-            //for (int i = 0; i < ActiveEnemyList.Count(); i++)
-            //    ActiveEnemyList[i].Update(gameTime);
-            //for (int i = 0; i < ActiveWallList.Count(); i++)
-            //    ActiveWallList[i].Update(gameTime);
-            //for (int i = 0; i < ActiveWhaleList.Count(); i++)
-            //    ActiveWhaleList[i].Update(gameTime);
-            //for (int i = 0; i < ActiveClutterList.Count(); i++)
-            //    ActiveClutterList[i].Update(gameTime);
-            //for (int i = 0; i < ActiveProjectileList.Count(); i++)
-            //    ActiveProjectileList[i].Update(gameTime);
+            for (int i = 0; i < ActiveTowerList.Count(); i++)
+                ActiveTowerList[i].Update(gameTime);
+            for (int i = 0; i < ActiveEnemyList.Count(); i++)
+                ActiveEnemyList[i].Update(gameTime);
+            for (int i = 0; i < ActiveWallList.Count(); i++)
+                ActiveWallList[i].Update(gameTime);
+            for (int i = 0; i < ActiveWhaleList.Count(); i++)
+                ActiveWhaleList[i].Update(gameTime);
+            for (int i = 0; i < ActiveClutterList.Count(); i++)
+                ActiveClutterList[i].Update(gameTime);
+            for (int i = 0; i < ActiveProjectileList.Count(); i++)
+                ActiveProjectileList[i].Update(gameTime);
 
-            if (generateThread)
-            {
-                StartThreads(gameTime);
-                generateThread = false;
-            }
 
-            if (!done[2])
-            {
-                player.Update(gameTime);
-                done[2] = true;
-            }
+            //if (generateThread)
+            //{
+            //    StartThreads(gameTime);
+            //    generateThread = false;
+            //}
 
-            if(done.All(x => x))
-            {
-                for (int i = 0; i < done.Count(); i++)
-                    done[i] = false;
-            }
+            //if (!done[1])
+            //{
+            //    player.Update(gameTime);
+            //    done[1] = true;
+            //}
+
+            //if (done.All(x => x))
+            //{
+            //    for (int i = 0; i < done.Count(); i++)
+            //        done[i] = false;
+            //}
         }
 
         private void StartThreads(GameTime gameTime)
         {
             //done 0
-            //Towers, walls and clutter
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
@@ -293,32 +301,16 @@ namespace EtherShip
                             ActiveWallList[i].Update(gameTime);
                         for (int i = 0; i < ActiveClutterList.Count(); i++)
                             ActiveClutterList[i].Update(gameTime);
-                        done[0] = true;
-                    }
-                }
-            }).Start();
-
-            //done 1
-            //Enemy, whale and projectile
-            new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                while (runThread)
-                {
-                    if (!done[1])
-                    {
                         for (int i = 0; i < ActiveEnemyList.Count(); i++)
                             ActiveEnemyList[i].Update(gameTime);
                         for (int i = 0; i < ActiveWhaleList.Count(); i++)
                             ActiveWhaleList[i].Update(gameTime);
                         for (int i = 0; i < ActiveProjectileList.Count(); i++)
                             ActiveProjectileList[i].Update(gameTime);
-                        done[1] = true;
+                        done[0] = true;
                     }
                 }
             }).Start();
-
-
         }
 
         /// <summary>
@@ -452,18 +444,15 @@ namespace EtherShip
         }
 
         /// <summary>
-        /// Returns a list of all GameObjects the enemy shall check collision with.
+        /// Updates the collision list for the enemies.
         /// </summary>
         /// <returns></returns>
-        public List<GameObject> CollisionListForEnemy()
+        public void CollisionListForEnemy()
         {
-            List<GameObject> list = new List<GameObject>();
-
-            var allObjects = ActiveClutterList.Concat(ActiveEnemyList)
+            CollisionForEnemies = ActiveClutterList.Concat(ActiveEnemyList)
                                     .Concat(ActiveWallList)
                                     .Concat(ActiveTowerList)
                                     .ToList();
-            return allObjects;
         }
 
         /// <summary>

@@ -16,17 +16,23 @@ namespace EtherShip
         public int XGridAmount { get; set; }
         public int YGridAmount { get; set; }
 
+        private List<GridPoint> gridPoints;
+        private List<GridPoint> tempGridPoints;
+
         private string spriteName;
         private Texture2D sprite;
         private Rectangle sourceRect;
 
         private Texture2D pointSprite;
         private Rectangle sourceRectPoint;
+        private SpriteFont font;
 
         public Map(string spriteName)
         {
             this.spriteName = spriteName;
-            this.GridPointSize = 25;
+            this.GridPointSize = 50;
+            gridPoints = new List<GridPoint>();
+            tempGridPoints = new List<GridPoint>();
         }
 
         //Returns the gridpoint that is closest to the position
@@ -47,9 +53,10 @@ namespace EtherShip
 
 #if DEBUG //draws the points which makes up the grid
             foreach(GridPoint gp in MapGrid)
-            {
                 spriteBatch.Draw(pointSprite, gp.Pos, sourceRectPoint, gp.Color, 1f, Vector2.Zero, 1f, SpriteEffects.None, 1);
-            }
+
+            foreach (GridPoint gp in MapGrid)
+                spriteBatch.DrawString(font, "" + gp.Heat, gp.Pos, Color.Red, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1);
 #endif
         }
 
@@ -80,11 +87,13 @@ namespace EtherShip
         /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
-#if DEBUG  //Texture and rect to draw the point, which makes up the grid
+#if DEBUG   //Texture and rect to draw the point, which makes up the grid
             pointSprite = content.Load<Texture2D>("rectangle");
             sourceRectPoint = new Rectangle(0, 0, 2, 2);
+            font = content.Load<SpriteFont>("Font");
 #endif
             GenerateMapGrid();
+
             //Draws the background
             sprite = content.Load<Texture2D>("starBackground");
             sourceRect = new Rectangle(0, 0, sprite.Width, sprite.Height);
@@ -99,9 +108,163 @@ namespace EtherShip
                     if(MapGrid[x, y] == gridPoint)
                     {
                         GameWorld.Instance.gameObjectPool.RemoveActive.Add(MapGrid[x, y].Occupant);
+                        if (MapGrid[x, y].Occupant.GetComponent<Tower>() != null)
+                            GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit += 40;
+                        if (MapGrid[x, y].Occupant.GetComponent<Wall>() != null)
+                            GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit += 4;
                         MapGrid[x, y].Occupant = null;
                     }
                 }
+            }
+        }
+
+
+        /// <summary>
+        /// Generates a vectorfield with target at pos.
+        /// </summary>
+        /// <param name="pos"></param>
+        public void Vectorfield(Vector2 pos)
+        {
+            //Resets the heat field
+            foreach (GridPoint gp in MapGrid)
+                gp.Heat = 0;
+            //Reesets the vector field
+            foreach (GridPoint gp in MapGrid)
+                gp.Heat = 0;
+
+            int x = (int)(pos.X / GridPointSize);
+            int y = (int)(pos.Y / GridPointSize);
+
+            //Begins the heat field 
+            if (x < MapGrid.GetLength(0) && x >= 0 && (y + 1) < MapGrid.GetLength(1) && (y + 1) >= 0 && MapGrid[x, y + 1].Occupant == null && MapGrid[x, y + 1].Heat == 0)
+            {
+                MapGrid[x, y + 1].Heat = 1;
+                gridPoints.Add(MapGrid[x, y + 1]);
+            }
+            if (x < MapGrid.GetLength(0) && x >= 0 && (y - 1) < MapGrid.GetLength(1) && (y - 1) >= 0 && MapGrid[x, y - 1].Occupant == null && MapGrid[x, y - 1].Heat == 0)
+            {
+                MapGrid[x, y - 1].Heat = 1;
+                gridPoints.Add(MapGrid[x, y - 1]);
+            }
+            if ((x + 1) < MapGrid.GetLength(0) && (x + 1) >= 0 && y < MapGrid.GetLength(1) && y >= 0 && MapGrid[x + 1, y].Occupant == null && MapGrid[x + 1, y].Heat == 0)
+            {
+                MapGrid[x + 1, y].Heat = 1;
+                gridPoints.Add(MapGrid[x + 1, y]);
+            }
+            if ((x - 1) < MapGrid.GetLength(0) && (x - 1) >= 0 && y < MapGrid.GetLength(1) && y >= 0 && MapGrid[x - 1, y].Occupant == null && MapGrid[x - 1, y].Heat == 0)
+            {
+                MapGrid[x - 1, y].Heat = 1;
+                gridPoints.Add(MapGrid[x - 1, y]);
+            }
+            //Makes the rest of the heat field
+            Heatfield(gridPoints, 1);
+            //Does so the players position in the heat field is 0
+            MapGrid[x, y].Heat = 0;
+
+            //Generates the direction vectors
+            Vectors();
+        }
+
+        /// <summary>
+        /// Generates a heat field.
+        /// </summary>
+        /// <param name="gridPoints"></param>
+        /// <param name="heat"></param>
+        private void Heatfield(List<GridPoint> gridPoints, int heat)
+        {
+            for(int i = 0; i < gridPoints.Count; i++)
+            {
+                int x = (int)(gridPoints[i].Pos.X / GridPointSize);
+                int y = (int)(gridPoints[i].Pos.Y / GridPointSize);
+
+                if (x < MapGrid.GetLength(0) && x >= 0 && (y + 1) < MapGrid.GetLength(1) && (y + 1) >= 0 && MapGrid[x, y + 1].Occupant == null && MapGrid[x, y + 1].Heat == 0)
+                {
+                    MapGrid[x, y + 1].Heat = heat + 1;
+                    tempGridPoints.Add(MapGrid[x, y + 1]);
+                }
+                if (x < MapGrid.GetLength(0) && x >= 0 && (y - 1) < MapGrid.GetLength(1) && (y - 1) >= 0 && MapGrid[x, y - 1].Occupant == null && MapGrid[x, y - 1].Heat == 0)
+                {
+                    MapGrid[x, y - 1].Heat = heat + 1;
+                    tempGridPoints.Add(MapGrid[x, y - 1]);
+                }
+                if ((x + 1) < MapGrid.GetLength(0) && (x + 1) >= 0 && y < MapGrid.GetLength(1) && y >= 0 && MapGrid[x + 1, y].Occupant == null && MapGrid[x + 1, y].Heat == 0)
+                {
+                    MapGrid[x + 1, y].Heat = heat + 1;
+                    tempGridPoints.Add(MapGrid[x + 1, y]);
+                }
+                if ((x - 1) < MapGrid.GetLength(0) && (x - 1) >= 0 && y < MapGrid.GetLength(1) && y >= 0 && MapGrid[x - 1, y].Occupant == null && MapGrid[x - 1, y].Heat == 0)
+                {
+                    MapGrid[x - 1, y].Heat = heat + 1;
+                    tempGridPoints.Add(MapGrid[x - 1, y]);
+                }
+            }
+
+            gridPoints.Clear();
+            if(tempGridPoints.Count > 0)
+            {
+                for (int i = 0; i < tempGridPoints.Count; i++)
+                    gridPoints.Add(tempGridPoints[i]);
+                tempGridPoints.Clear();
+                Heatfield(gridPoints, heat + 1);
+            }
+        }
+
+        private void Vectors()
+        {
+            GridPoint tempPoint = MapGrid[0, 0];
+            foreach(GridPoint gp in MapGrid)
+            {
+                int x = (int)(gp.Pos.X / GridPointSize);
+                int y = (int)(gp.Pos.Y / GridPointSize);
+                int tempHeat = 10000;
+
+                //Finds the gridpoint around the point which has the lowest heat
+
+                if (x < MapGrid.GetLength(0) && x >= 0 && (y + 1) < MapGrid.GetLength(1) && (y + 1) >= 0 && tempHeat > MapGrid[x, y + 1].Heat && MapGrid[x, y + 1].Occupant == null)
+                {
+                    tempPoint = MapGrid[x, y + 1];
+                    tempHeat = MapGrid[x, y + 1].Heat;
+                }
+                if (x < MapGrid.GetLength(0) && x >= 0 && (y - 1) < MapGrid.GetLength(1) && (y - 1) >= 0 && tempHeat > MapGrid[x, y - 1].Heat && MapGrid[x, y - 1].Occupant == null)
+                {
+                    tempPoint = MapGrid[x, y - 1];
+                    tempHeat = MapGrid[x, y - 1].Heat;
+                }
+                if ((x + 1) < MapGrid.GetLength(0) && (x + 1) >= 0 && y < MapGrid.GetLength(1) && y >= 0 && tempHeat > MapGrid[x + 1, y].Heat && MapGrid[x + 1, y].Occupant == null)
+                {
+                    tempPoint = MapGrid[x + 1, y];
+                    tempHeat = MapGrid[x + 1, y].Heat;
+                }
+                if ((x - 1) < MapGrid.GetLength(0) && (x - 1) >= 0 && y < MapGrid.GetLength(1) && y >= 0 && tempHeat > MapGrid[x - 1, y].Heat && MapGrid[x - 1, y].Occupant == null)
+                {
+                    tempPoint = MapGrid[x - 1, y];
+                    tempHeat = MapGrid[x - 1, y].Heat;
+                }
+
+                //Diagonal
+                if ((x + 1) < MapGrid.GetLength(0) && (x + 1) >= 0 && (y + 1) < MapGrid.GetLength(1) && (y + 1) >= 0 && tempHeat > MapGrid[(x + 1), y + 1].Heat && MapGrid[x + 1, y + 1].Occupant == null)
+                {
+                    tempPoint = MapGrid[(x + 1), y + 1];
+                    tempHeat = MapGrid[(x + 1), y + 1].Heat;
+                }
+                if ((x - 1) < MapGrid.GetLength(0) && (x - 1) >= 0 && (y - 1) < MapGrid.GetLength(1) && (y - 1) >= 0 && tempHeat > MapGrid[(x - 1), y - 1].Heat && MapGrid[x - 1, y - 1].Occupant == null)
+                {
+                    tempPoint = MapGrid[(x - 1), y - 1];
+                    tempHeat = MapGrid[(x - 1), y - 1].Heat;
+                }
+                if ((x + 1) < MapGrid.GetLength(0) && (x + 1) >= 0 && (y - 1) < MapGrid.GetLength(1) && (y - 1) >= 0 && tempHeat > MapGrid[x + 1, (y - 1)].Heat && MapGrid[x + 1, y - 1].Occupant == null)
+                {
+                    tempPoint = MapGrid[x + 1, (y - 1)];
+                    tempHeat = MapGrid[x + 1, (y - 1)].Heat;
+                }
+                if ((x - 1) < MapGrid.GetLength(0) && (x - 1) >= 0 && (y + 1) < MapGrid.GetLength(1) && (y + 1) >= 0 && tempHeat > MapGrid[x - 1, (y + 1)].Heat && MapGrid[x - 1, y + 1].Occupant == null)
+                {
+                    tempPoint = MapGrid[x - 1, (y + 1)];
+                    tempHeat = MapGrid[x - 1, (y + 1)].Heat;
+                }
+
+                //sets the points direstion vector
+                gp.directionVec = Vector2.Normalize(tempPoint.Pos - gp.Pos);
             }
         }
     }

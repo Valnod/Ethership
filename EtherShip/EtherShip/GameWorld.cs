@@ -7,6 +7,7 @@ using System.IO;
 using System.Xml;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
+using System.Threading;
 
 namespace EtherShip
 {
@@ -22,8 +23,10 @@ namespace EtherShip
     ////####kan ikke lige kommme på hvordan pokker det fúngere fra en anden klasse :s
 
         public int WindowWidth { get; set; }
-        public int WindowHeigth { get; set; }
+        public int WindowHeight { get; set; }
         public SFX SFX { get; set; }
+        public int SpriteWidth { get; set; }
+        public int SpriteHeight { get; set; }
 
         public Menu Menu { get; set; }
         GraphicsDeviceManager graphics;
@@ -95,18 +98,14 @@ namespace EtherShip
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
-            ////set the GraphicsDeviceManager's fullscreen property
-            //graphics.ToggleFullScreen();
-            ////Makes the window borderless
-            //Window.IsBorderless = true;
-            //Changes the windw resolution
             WindowWidth = 1280;
-            WindowHeigth = 720;
+            WindowHeight = 720;
             graphics.PreferredBackBufferWidth = WindowWidth;
-            graphics.PreferredBackBufferHeight = WindowHeigth;
+            graphics.PreferredBackBufferHeight = WindowHeight;
             graphics.ApplyChanges();
-            this.Window.AllowUserResizing = true;
+            this.Window.AllowUserResizing = false;
+            SpriteWidth = 400;
+            SpriteHeight = 400;
 
             SFX = new SFX();
             betweenRounds = true;
@@ -128,7 +127,7 @@ namespace EtherShip
             gameObjectPool.CreatePlayer();
 
             //testing waves
-            Wave = new Wave(0, 1, Map);
+            Wave = new Wave(0, 40, Map);
             Wave.Start();
 
             gameObjectPool.AddToActive();
@@ -145,15 +144,20 @@ namespace EtherShip
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Menu.LoadContent(Content);
-            
+
             //MUSIC bad location FIX FIX FIX #########################################
-            song = Content.Load<Song>("ebAndFlow");
-            MediaPlayer.Play(song);
-            MediaPlayer.IsRepeating = true;
-
-
-            SFX.LoadContent(Content);
+            
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                song = Content.Load<Song>("ebAndFlow");
+                MediaPlayer.Play(song);
+                MediaPlayer.IsRepeating = true;
+                SFX.LoadContent(Content);
+            }).Start();
+           
             Map.LoadContent(Content);
+            Map.Vectorfield(gameObjectPool.player.position);
             endGame.LoadContent(Content);
             // TODO: use this.Content to load your game content here
         }
@@ -173,12 +177,7 @@ namespace EtherShip
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
-        {
-
-
-            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            //    Exit();
-            
+        {            
             // TODO: Add your update logic here
 
             //Updates mouse state
@@ -191,9 +190,9 @@ namespace EtherShip
 
                 if (betweenRounds == true)
                 {
-                    if (keystate.IsKeyDown(Keys.B))
+                    if (keystate.IsKeyDown(Keys.B) && !BuildMode)
                         buildMode = true;
-                    else if (keystate.IsKeyDown(Keys.N))
+                    else if (keystate.IsKeyDown(Keys.N) && BuildMode)
                         buildMode = false;
 
                     this.IsMouseVisible = true;
@@ -219,6 +218,7 @@ namespace EtherShip
                 //Adds and removes GameObjects from the game
                 gameObjectPool.RemoveFromActive();
                 gameObjectPool.AddToActive();
+                gameObjectPool.CollisionListForEnemy();
             }
             else
                 endGame.Update(gameTime);
