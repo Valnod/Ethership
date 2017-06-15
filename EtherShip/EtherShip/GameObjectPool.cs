@@ -21,6 +21,7 @@ namespace EtherShip
        
         public List<GameObject> AddActive { get; set; }
         public List<GameObject> RemoveActive { get; set; }
+        public List<GameObject> CollisionForEnemies { get; set; }
 
         // Enemy
         private List<GameObject> activeEnemyList;
@@ -86,7 +87,7 @@ namespace EtherShip
             {
                 GameObject obj = new GameObject(new Vector2(GameWorld.Instance.Window.ClientBounds.Width / 2, 40));
                 obj.AddComponnent(new Animator(obj));
-                obj.AddComponnent(new Enemy(obj, 10, 15f, 1, new Vector2(), 10, 35));
+                obj.AddComponnent(new Enemy(obj, 10, 8f, 1, new Vector2(), 10, 35));
                 obj.AddComponnent(new SpriteRenderer(obj, "enemyShipAnimation", 0.2f, 0f, 0.5f));
                 obj.LoadContent(GameWorld.Instance.Content);
                 obj.AddComponnent(new CollisionCircle(obj));
@@ -213,8 +214,8 @@ namespace EtherShip
             }
             else
             {
-                GameObject obj = new GameObject(new Vector2(400, 400));
-                obj.AddComponnent(new Whale(obj, new Vector2(1, 0), new Vector2(1, 0), 10, 5, 1f));
+                GameObject obj = new GameObject(new Vector2(1220, 250));
+                obj.AddComponnent(new Whale(obj, new Vector2(1, 0), new Vector2(1, 0), 10, 20, 1f, 100, 200));
                 obj.AddComponnent(new SpriteRenderer(obj, "Whale", 0.2f, 0f, 0.5f));
                 obj.LoadContent(GameWorld.Instance.Content);
                 obj.AddComponnent(new CollisionCircle(obj));
@@ -235,7 +236,7 @@ namespace EtherShip
         public void CreatePlayer()
         {
             GameObject obj = new GameObject(new Vector2(100, 100));
-            obj.AddComponnent(new Player(obj, new Vector2(1, 0), 3, false));
+            obj.AddComponnent(new Player(obj, new Vector2(1, 0), 3123, false));
             obj.AddComponnent(new SpriteRenderer(obj, "space whaler ship", 0.2f, 0f, 1f));
             obj.LoadContent(GameWorld.Instance.Content);
             obj.AddComponnent(new CollisionCircle(obj));
@@ -443,18 +444,15 @@ namespace EtherShip
         }
 
         /// <summary>
-        /// Returns a list of all GameObjects the enemy shall check collision with.
+        /// Updates the collision list for the enemies.
         /// </summary>
         /// <returns></returns>
-        public List<GameObject> CollisionListForEnemy()
+        public void CollisionListForEnemy()
         {
-            List<GameObject> list = new List<GameObject>();
-
-            var allObjects = ActiveClutterList.Concat(ActiveEnemyList)
+            CollisionForEnemies = ActiveClutterList.Concat(ActiveEnemyList)
                                     .Concat(ActiveWallList)
                                     .Concat(ActiveTowerList)
                                     .ToList();
-            return allObjects;
         }
 
         /// <summary>

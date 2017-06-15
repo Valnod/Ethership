@@ -87,7 +87,7 @@ namespace EtherShip
         /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
-#if DEBUG  //Texture and rect to draw the point, which makes up the grid
+#if DEBUG   //Texture and rect to draw the point, which makes up the grid
             pointSprite = content.Load<Texture2D>("rectangle");
             sourceRectPoint = new Rectangle(0, 0, 2, 2);
             font = content.Load<SpriteFont>("Font");

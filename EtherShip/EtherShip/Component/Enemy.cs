@@ -190,7 +190,7 @@ namespace EtherShip
         {
             push = Vector2.Zero;
             //Checks if this collides with another gameobject.
-            foreach (GameObject go in GameWorld.Instance.gameObjectPool.CollisionListForEnemy())
+            foreach (GameObject go in GameWorld.Instance.gameObjectPool.CollisionForEnemies)
             {
                 //Checks the distance to the objects, and only cheecks for collision if the given object is close enough for a check to be meaningfull.
                 if (go != this.obj && ((obj.position - go.position).Length() < 200))
@@ -221,6 +221,8 @@ namespace EtherShip
                         push = Vector2.Normalize(push) * translation.Length();
                 }
             }
+            //Removes this enemy from the list
+            GameWorld.Instance.gameObjectPool.CollisionForEnemies.Remove(this.obj);
         }
 
         public void MapCollision()
