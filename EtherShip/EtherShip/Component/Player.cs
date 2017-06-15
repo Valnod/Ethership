@@ -139,7 +139,10 @@ namespace EtherShip
             {
                 obj.GetComponent<SpriteRenderer>().Rotation -= elapsed;
                 obj.GetComponent<SpriteRenderer>().Rotation = obj.GetComponent<SpriteRenderer>().Rotation % circle;
-                obj.GetComponent<SpriteRenderer>().Rotation -= 0.05f; // Rotate the sprite (clockwise left)                
+                obj.GetComponent<SpriteRenderer>().Rotation -= 0.05f; // Rotate the sprite (clockwise left)  
+               //if(keystate.)
+                //GameWorld.Instance.SFX.leftKnirtEffect.Play();
+
             }
             //if (keystate.IsKeyDown(Keys.S))
             //{
