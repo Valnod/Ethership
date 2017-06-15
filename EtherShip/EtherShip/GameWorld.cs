@@ -25,6 +25,8 @@ namespace EtherShip
         public int WindowWidth { get; set; }
         public int WindowHeight { get; set; }
         public SFX SFX { get; set; }
+        public int SpriteWidth { get; set; }
+        public int SpriteHeight { get; set; }
 
         public Menu Menu { get; set; }
         GraphicsDeviceManager graphics;
@@ -96,18 +98,14 @@ namespace EtherShip
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
-            ////set the GraphicsDeviceManager's fullscreen property
-            //graphics.ToggleFullScreen();
-            ////Makes the window borderless
-            //Window.IsBorderless = true;
-            //Changes the windw resolution
             WindowWidth = 1280;
             WindowHeight = 720;
             graphics.PreferredBackBufferWidth = WindowWidth;
             graphics.PreferredBackBufferHeight = WindowHeight;
             graphics.ApplyChanges();
             this.Window.AllowUserResizing = false;
+            SpriteWidth = 400;
+            SpriteHeight = 400;
 
             SFX = new SFX();
             betweenRounds = true;
@@ -129,7 +127,7 @@ namespace EtherShip
             gameObjectPool.CreatePlayer();
 
             //testing waves
-            Wave = new Wave(0, 1, Map);
+            Wave = new Wave(0, 0, Map);
             Wave.Start();
 
             gameObjectPool.AddToActive();
@@ -152,25 +150,14 @@ namespace EtherShip
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
-               
-                    
-                        song = Content.Load<Song>("ebAndFlow");
-                        MediaPlayer.Play(song);
-                        MediaPlayer.IsRepeating = true;
-                        SFX.LoadContent(Content);
-                    
-                
+                song = Content.Load<Song>("ebAndFlow");
+                MediaPlayer.Play(song);
+                MediaPlayer.IsRepeating = true;
+                SFX.LoadContent(Content);
             }).Start();
-
-
-
-            
-                
-            
-
-
            
             Map.LoadContent(Content);
+            Map.Vectorfield(gameObjectPool.player.position);
             endGame.LoadContent(Content);
             // TODO: use this.Content to load your game content here
         }
@@ -190,12 +177,7 @@ namespace EtherShip
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
-        {
-
-
-            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            //    Exit();
-            
+        {            
             // TODO: Add your update logic here
 
             //Updates mouse state
@@ -210,7 +192,7 @@ namespace EtherShip
                 {
                     if (keystate.IsKeyDown(Keys.B) && !BuildMode)
                         buildMode = true;
-                    else if (keystate.IsKeyDown(Keys.B) && BuildMode)
+                    else if (keystate.IsKeyDown(Keys.N) && BuildMode)
                         buildMode = false;
 
                     this.IsMouseVisible = true;
