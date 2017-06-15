@@ -127,7 +127,7 @@ namespace EtherShip
             gameObjectPool.CreatePlayer();
 
             //testing waves
-            Wave = new Wave(0, 0, Map);
+            Wave = new Wave(0, 40, Map);
             Wave.Start();
 
             gameObjectPool.AddToActive();
@@ -218,6 +218,7 @@ namespace EtherShip
                 //Adds and removes GameObjects from the game
                 gameObjectPool.RemoveFromActive();
                 gameObjectPool.AddToActive();
+                gameObjectPool.CollisionListForEnemy();
             }
             else
                 endGame.Update(gameTime);
