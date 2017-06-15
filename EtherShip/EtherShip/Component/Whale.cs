@@ -21,6 +21,9 @@ namespace EtherShip
 
         public int Health { get; set; }
 
+        protected int bountyGiven;
+        protected int scoreGiven;
+
         //AI
 
         private bool generating = false;
@@ -36,7 +39,7 @@ namespace EtherShip
         List<GridPoint> NewRoute = null;
         List<GridPoint> CurrentRoute = null;
 
-        public Whale(GameObject obj, Vector2 target, Vector2 direction, int value, int health, float speed) : base(obj)
+        public Whale(GameObject obj, Vector2 target, Vector2 direction, int value, int health, float speed, int bountyGiven, int scoreGiven) : base(obj)
         {
             this.target = target;
             this.direction = direction;
@@ -44,7 +47,14 @@ namespace EtherShip
             this.Health = health;
             this.speed = speed;
 
+            this.bountyGiven = bountyGiven;
+            this.scoreGiven = scoreGiven;
+
             target = new Vector2(GameWorld.Instance.Map.MapGrid.GetLength(0) / (GameWorld.Instance.Map.GridPointSize * 2), (GameWorld.Instance.Map.MapGrid.GetLength(1) / 2) * (GameWorld.Instance.Map.GridPointSize));
+        }
+        public int BountyGiven
+        {
+            get { return bountyGiven; }
         }
 
         public void Update(GameTime gameTime)
@@ -94,7 +104,7 @@ namespace EtherShip
 
         public void RouteDone()
         {
-            if ((GameWorld.Instance.Map[obj.position].Pos - target).Length() < 264
+            if ((GameWorld.Instance.Map[obj.position].Pos - target).Length() < 330
                 )
             {
                 GameWorld.Instance.gameObjectPool.RemoveActive.Add(obj);
@@ -107,7 +117,14 @@ namespace EtherShip
         public void CheckAmIDeadWhale()
         {
             if (Health < 0)
+            {
+                GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit += BountyGiven;
+                GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Score += scoreGiven;
+
                 GameWorld.Instance.gameObjectPool.RemoveActive.Add(obj);
+
+            }
+                
         }
     }
 }

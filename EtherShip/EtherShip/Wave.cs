@@ -67,20 +67,20 @@ namespace EtherShip
         }
         public void WaveOver()
         {
-            //if (GameWorld.Instance.gameObjectPool.ActiveWhaleList.Count > 0)
-            //{
-            //    spawningEnemies = false;
+            if (GameWorld.Instance.gameObjectPool.ActiveWhaleList.Count > 0)
+            {
+                spawningEnemies = false;
 
-            //}
+            }
 
-            //else
-            //{
+            else
+            {
 
             enemiesSpawned = 0;
                 GameWorld.Instance.BetweenRounds = true;
                 WaveNumber++;
                 spawningEnemies = true;
-            //}
+            }
             
         }
        
