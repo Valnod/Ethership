@@ -51,9 +51,7 @@ namespace EtherShip
             spriteRenderer = obj.GetComponent<SpriteRenderer>();
             animator = obj.GetComponent<Animator>();
             this.invincible = false;
-            this.Credit = 90;
-
-            this.Health = 100;
+            this.Credit = 9011;
         }
 
         /// <summary>

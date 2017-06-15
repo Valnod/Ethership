@@ -214,8 +214,8 @@ namespace EtherShip
             }
             else
             {
-                GameObject obj = new GameObject(new Vector2(400, 400));
-                obj.AddComponnent(new Whale(obj, new Vector2(1, 0), new Vector2(1, 0), 10, 5, 1f));
+                GameObject obj = new GameObject(new Vector2(1220, 250));
+                obj.AddComponnent(new Whale(obj, new Vector2(1, 0), new Vector2(1, 0), 10, 20, 1f, 100, 200));
                 obj.AddComponnent(new SpriteRenderer(obj, "Whale", 0.2f, 0f, 0.5f));
                 obj.LoadContent(GameWorld.Instance.Content);
                 obj.AddComponnent(new CollisionCircle(obj));
@@ -236,7 +236,7 @@ namespace EtherShip
         public void CreatePlayer()
         {
             GameObject obj = new GameObject(new Vector2(100, 100));
-            obj.AddComponnent(new Player(obj, new Vector2(1, 0), 3, false));
+            obj.AddComponnent(new Player(obj, new Vector2(1, 0), 3123, false));
             obj.AddComponnent(new SpriteRenderer(obj, "space whaler ship", 0.2f, 0f, 1f));
             obj.LoadContent(GameWorld.Instance.Content);
             obj.AddComponnent(new CollisionCircle(obj));
