@@ -87,7 +87,7 @@ namespace EtherShip
             {
                 GameObject obj = new GameObject(new Vector2(GameWorld.Instance.Window.ClientBounds.Width / 2, 40));
                 obj.AddComponnent(new Animator(obj));
-                obj.AddComponnent(new Enemy(obj, 10, 12f, 1, new Vector2(), 10, 35));
+                obj.AddComponnent(new Enemy(obj, 3, 15f, 1, new Vector2(), 10, 35));
                 obj.AddComponnent(new SpriteRenderer(obj, "enemyShipAnimation", 0.2f, 0f, 0.5f));
                 obj.LoadContent(GameWorld.Instance.Content);
                 obj.AddComponnent(new CollisionCircle(obj));

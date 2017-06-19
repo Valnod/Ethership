@@ -48,11 +48,11 @@ namespace EtherShip
             this.cdTimer = false;
             speed = 0;
             minSpeed = 0;
-            maxSpeed = 6;
+            maxSpeed = 10;
             spriteRenderer = obj.GetComponent<SpriteRenderer>();
             animator = obj.GetComponent<Animator>();
             this.invincible = false;
-            this.Credit = 90;
+            this.Credit = 900;
 
             
         }
