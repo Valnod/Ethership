@@ -94,7 +94,7 @@ namespace EtherShip
         {
             translation = Vector2.Zero;
             //the number indicates the strength 
-            direction = Vector2.Normalize(direction + GameWorld.Instance.Map[obj.position].directionVec * 0.2f);  
+            direction = Vector2.Normalize(direction + GameWorld.Instance.Map[obj.position].directionVec * 0.02f);  
             //Does so the sprite points in the movement direction. The number is an adjustment so the sprite is turned correctly
             obj.GetComponent<SpriteRenderer>().Rotation = (float)Math.Atan2(direction.X, -direction.Y) - 1.5f;
 

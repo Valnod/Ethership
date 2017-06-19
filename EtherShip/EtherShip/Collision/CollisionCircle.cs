@@ -17,7 +17,7 @@ namespace EtherShip
         public List<float> lengthOfEdges;
 
         //Indicates the number of edges that make up the polygon
-        private int numberOfEdges = 36;
+        private int numberOfEdges = 10;
 
         //Used to draw the points
         private Texture2D pointSprite;
