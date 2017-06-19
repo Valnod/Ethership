@@ -75,18 +75,13 @@ namespace EtherShip
                     //Gets the position on the mapgrid closest to the mouseposition
                     posVec = GameWorld.Instance.Map[posVec].Pos;
 
-                    //Removes credits 
-                    if (placingTower)
-                        GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit -= 50;
-                    else if (placingWall)
-                        GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit -= 5;
-
                     //Builds the building
                     if (placingTower)
                     {
                         if (GameWorld.Instance.Map[posVec].Occupant == null) //If there's no object on the spot
                         {
                             GameWorld.Instance.gameObjectPool.CreateTower(posVec);
+                            GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit -= 50;
                         }
                         else //If there's an object on the spot
                         {
@@ -98,6 +93,7 @@ namespace EtherShip
                         if (GameWorld.Instance.Map[posVec].Occupant == null) //Same as above
                         {
                             GameWorld.Instance.gameObjectPool.CreateWall(posVec);
+                            GameWorld.Instance.gameObjectPool.player.GetComponent<Player>().Credit -= 5;
                         }
                         else //Same as above
                         {

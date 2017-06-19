@@ -25,6 +25,8 @@ namespace EtherShip
         public int WindowWidth { get; set; }
         public int WindowHeight { get; set; }
         public SFX SFX { get; set; }
+        public int SpriteWidth { get; set; }
+        public int SpriteHeight { get; set; }
 
         public Menu Menu { get; set; }
         GraphicsDeviceManager graphics;
@@ -102,6 +104,8 @@ namespace EtherShip
             graphics.PreferredBackBufferHeight = WindowHeight;
             graphics.ApplyChanges();
             this.Window.AllowUserResizing = false;
+            SpriteWidth = 400;
+            SpriteHeight = 400;
 
             SFX = new SFX();
             betweenRounds = true;
@@ -123,7 +127,7 @@ namespace EtherShip
             gameObjectPool.CreatePlayer();
 
             //testing waves
-            Wave = new Wave(0, 20, Map);
+            Wave = new Wave(0, 1, Map);
             Wave.Start();
 
             gameObjectPool.AddToActive();
@@ -214,6 +218,7 @@ namespace EtherShip
                 //Adds and removes GameObjects from the game
                 gameObjectPool.RemoveFromActive();
                 gameObjectPool.AddToActive();
+                gameObjectPool.CollisionListForEnemy();
             }
             else
                 endGame.Update(gameTime);

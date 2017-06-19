@@ -15,7 +15,7 @@
     <MonoGamePlatform>Windows</MonoGamePlatform>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>C:\Users\theni\Desktop\newfolder\</PublishUrl>
+    <PublishUrl>C:\Users\theni\Desktop\EthershipInstaller1.2\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -25,7 +25,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationRevision>7</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -70,6 +70,7 @@
     <Compile Include="Animation.cs" />
     <Compile Include="EndGame.cs" />
     <Compile Include="EnumLists.cs" />
+    <Compile Include="Interfaces\IAnimateable.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="Clutter.cs" />
     <Compile Include="Collision\CollisionCheck.cs" />

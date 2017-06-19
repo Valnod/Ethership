@@ -28,6 +28,7 @@ namespace EtherShip
         private bool invincible; //When true your invincible and can't collide with enemies 
         private float invincibleTime = 1000; //Indicates the amount of time your invincible
         private float invincibleTimer; //Indicates the amount of time you have been invincible
+        private float gravityEfftectiveness = 0.55f;
 
         public bool antiGravity; //Anti-gravity effect
         private bool cdTimer; //Cooldown of the anti-gravity ability
@@ -47,13 +48,13 @@ namespace EtherShip
             this.cdTimer = false;
             speed = 0;
             minSpeed = 0;
-            maxSpeed = 10;
+            maxSpeed = 6;
             spriteRenderer = obj.GetComponent<SpriteRenderer>();
             animator = obj.GetComponent<Animator>();
             this.invincible = false;
             this.Credit = 90;
 
-            this.Health = 100;
+            
         }
 
         /// <summary>
@@ -168,7 +169,7 @@ namespace EtherShip
                 }
                 //Ensures that the gravity pull can't be greater than the tranlation vector, ensuring you can't be trapped by gravity
                 if (g.Length() > translation.Length())
-                    g = Vector2.Normalize(g) * maxSpeed * 6;
+                    g = Vector2.Normalize(g) * maxSpeed * gravityEfftectiveness;
                 translation = (g + translation * speed) / (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
                 //Checks collision and changes the push vector accordingly

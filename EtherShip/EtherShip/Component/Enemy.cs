@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace EtherShip
 {
-    public class Enemy : Component, IUpdateable
+    public class Enemy : Component, IUpdateable, Iloadable
     {
         private Animator animator;
         public bool generating = false;
@@ -58,6 +58,8 @@ namespace EtherShip
         {
             Move2(gameTime);
             MapCollision();
+            animator.CheckAnimation("Move");
+
             CheckAmIDead();
         }
 
@@ -91,7 +93,7 @@ namespace EtherShip
         {
             translation = Vector2.Zero;
             //the number indicates the strength 
-            direction = Vector2.Normalize(direction + GameWorld.Instance.Map[obj.position].directionVec * 0.2f);  
+            direction = Vector2.Normalize(direction + GameWorld.Instance.Map[obj.position].directionVec * 0.02f);  
             //Does so the sprite points in the movement direction. The number is an adjustment so the sprite is turned correctly
             obj.GetComponent<SpriteRenderer>().Rotation = (float)Math.Atan2(direction.X, -direction.Y) - 1.5f;
 
@@ -187,7 +189,7 @@ namespace EtherShip
         {
             push = Vector2.Zero;
             //Checks if this collides with another gameobject.
-            foreach (GameObject go in GameWorld.Instance.gameObjectPool.CollisionListForEnemy())
+            foreach (GameObject go in GameWorld.Instance.gameObjectPool.CollisionForEnemies)
             {
                 //Checks the distance to the objects, and only cheecks for collision if the given object is close enough for a check to be meaningfull.
                 if (go != this.obj && ((obj.position - go.position).Length() < 200))
@@ -218,6 +220,8 @@ namespace EtherShip
                         push = Vector2.Normalize(push) * translation.Length();
                 }
             }
+            //Removes this enemy from the list
+            GameWorld.Instance.gameObjectPool.CollisionForEnemies.Remove(this.obj);
         }
 
         public void MapCollision()
@@ -271,16 +275,24 @@ namespace EtherShip
         {
 
 
-            animator.CreateAnimation(new Animation(6, 300, 0, 107, 100, 6, Vector2.Zero), "WalkRight");
-            animator.CreateAnimation(new Animation(6, 700, 0, 107, 100, 6, Vector2.Zero), "WalkLeft");
+            animator.CreateAnimation(new Animation(10, 0, 0, 400, 400, 5, Vector2.Zero), "Move");
+            animator.CreateAnimation(new Animation(10, 0, 0, 400, 400, 5, Vector2.Zero), "Dead");
         
 
 
 
 
-            animator.CheckAnimation("IdleLeft");
+            animator.CheckAnimation("Move");
 
 
         }
+        public void OnAnimationDone(string animationName)
+        {
+            foreach (Component component in obj.components)
+            {
+                OnAnimationDone(animationName);
+            }
+        }
+
     }
 }

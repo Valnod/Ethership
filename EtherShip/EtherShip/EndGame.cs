@@ -123,9 +123,9 @@ namespace EtherShip
             spriteBatch.Draw(sprite, pos, rectangle, color, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
 
             pos = new Vector2(buttonX - text2.Count() * charSize, buttonY - 140);
-            spriteBatch.DrawString(font, text2, pos, Color.Black, 0, Vector2.Zero, textSizeScaleFactor, SpriteEffects.None, 1);
+            spriteBatch.DrawString(font, text2, pos, Color.Red, 0, Vector2.Zero, textSizeScaleFactor, SpriteEffects.None, 1);
             pos = new Vector2(buttonX - text.Count() * charSize, buttonY - 100);
-            spriteBatch.DrawString(font, text, pos, Color.Black, 0, Vector2.Zero, textSizeScaleFactor, SpriteEffects.None, 1);
+            spriteBatch.DrawString(font, text, pos, Color.Red, 0, Vector2.Zero, textSizeScaleFactor, SpriteEffects.None, 1);
         }
 
         /// <summary>

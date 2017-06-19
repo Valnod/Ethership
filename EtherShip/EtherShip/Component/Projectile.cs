@@ -31,7 +31,7 @@ namespace EtherShip
 
         public void Move(GameTime gameTime)
         {
-            obj.GetComponent<SpriteRenderer>().Color = Color.IndianRed;
+            obj.GetComponent<SpriteRenderer>().Color = Color.NavajoWhite;
             translation = Vector2.Normalize(target.position - obj.position) * speed / (float)gameTime.ElapsedGameTime.Milliseconds;
             obj.position += translation;
         }

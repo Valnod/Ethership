@@ -17,7 +17,7 @@ namespace EtherShip
         public List<float> lengthOfEdges;
 
         //Indicates the number of edges that make up the polygon
-        private int numberOfEdges = 36;
+        private int numberOfEdges = 10;
 
         //Used to draw the points
         private Texture2D pointSprite;
@@ -60,7 +60,7 @@ namespace EtherShip
 #if DEBUG //draws the points which makes up the collision box
             for (int i = 0; i < edges.GetLength(0) - 1; i++)
             {
-                spriteBatch.Draw(pointSprite, edges[i, 1] + obj.position, sourceRectPoint, Color.Black, 1f, Vector2.Zero, 1f, SpriteEffects.None, 1);
+                spriteBatch.Draw(pointSprite, edges[i, 1] + obj.position, sourceRectPoint, Color.Red, 1f, Vector2.Zero, 1f, SpriteEffects.None, 1);
             }
 #endif
         }

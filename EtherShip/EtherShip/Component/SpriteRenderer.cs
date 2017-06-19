@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace EtherShip
 {
-    class SpriteRenderer : Component, IDrawable, IUpdateable, Iloadable
+    class SpriteRenderer : Component, IDrawable, Iloadable
     {
         public Texture2D Sprite { get; set; }
         public string SpriteName { get; set; }
@@ -23,7 +23,7 @@ namespace EtherShip
         public Color Color { get; set; }
         public Rectangle SpriteRectangleForCollision
         {
-            get { return new Rectangle(0, 0, (int)(Sprite.Width * scaleFactor), (int)(Sprite.Height * scaleFactor)); }
+            get { return new Rectangle(0, 0, (int)(GameWorld.Instance.SpriteWidth * scaleFactor), (int)(GameWorld.Instance.SpriteHeight * scaleFactor)); }
         }
 
         public SpriteRenderer(GameObject obj, string spriteName, float scaleFactor, float rotation, float layerDepth) : base(obj)
@@ -38,19 +38,14 @@ namespace EtherShip
         public void LoadContent(ContentManager content)
         {
             Sprite = content.Load<Texture2D>(SpriteName);
-            origin.X = Sprite.Width / 2;
-            origin.Y = Sprite.Height / 2;
-            SpriteRectangle = new Rectangle(0, 0, Sprite.Width, Sprite.Height);
-        }
-
-        public void Update(GameTime gameTime)
-        {
-            //andet projekt har ikke en update i spriteRenderer ...? 
-        }
+            origin.X = GameWorld.Instance.SpriteWidth / 2;
+            origin.Y = GameWorld.Instance.SpriteHeight / 2;
+            SpriteRectangle = new Rectangle(0, 0, GameWorld.Instance.SpriteWidth, GameWorld.Instance.SpriteHeight);
+        }    
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Sprite, obj.position, SpriteRectangle, Color, Rotation, origin, scaleFactor, SpriteEffects.None, layerDepth);
+            spriteBatch.Draw(Sprite, obj.position + Offset, SpriteRectangle, Color, Rotation, origin, scaleFactor, SpriteEffects.None, layerDepth);
         }
     }
 }
