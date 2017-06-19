@@ -56,7 +56,6 @@ namespace EtherShip
         }
         public void Update(GameTime gameTime)
         {
-            //Move(gameTime);
             Move2(gameTime);
             MapCollision();
             CheckAmIDead();
